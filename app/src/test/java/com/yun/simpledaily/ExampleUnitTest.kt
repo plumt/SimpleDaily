@@ -1,4 +1,4 @@
-package com.yun.myapplication
+package com.yun.simpledaily
 
 import org.junit.Test
 

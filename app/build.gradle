@@ -10,7 +10,7 @@ android {
     compileSdk 30
 
     defaultConfig {
-        applicationId "com.yun.myapplication"
+        applicationId "com.yun.simpledaily"
         minSdkVersion 26
         targetSdkVersion 30
         versionCode 1
@@ -161,4 +161,7 @@ dependencies {
     //google gps
 //    implementation 'com.google.android.gms:play-services-maps:17.0.0'
 //    implementation 'com.google.android.gms:play-services-location:17.0.0'
+
+    // 크롤링
+    implementation 'org.jsoup:jsoup:1.13.1'
 }

@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">SimpleDaily</string>
+
+    <string name="signal_url">https://api.signal.bz</string>
 </resources>
