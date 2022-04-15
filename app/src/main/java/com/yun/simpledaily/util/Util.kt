@@ -2,9 +2,12 @@ package com.yun.simpledaily.util
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.net.Uri
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
+import com.github.twocoffeesoneteam.glidetovectoryou.GlideToVectorYou
+import com.yun.simpledaily.R
 
 object PreferenceManager {
     const val PREFERENCES_NAME = "portpolio"
@@ -51,10 +54,19 @@ object Util {
     @BindingAdapter("setImages")
     @JvmStatic
     fun ImageView.setImages(path: String?) {
-        this.run {
-            Glide.with(context)
-                .load(path)
-                .into(this)
+//        this.run {
+//            Glide.with(context)
+//                .load(path).circleCrop()
+//                .error(R.drawable.ic_launcher_background).circleCrop()
+//                .into(this)
+//        }
+
+        if(path != null && path != "") {
+            val url = Uri.parse(path)
+            GlideToVectorYou
+                .init()
+                .with(context)
+                .load(url, this);
         }
     }
 

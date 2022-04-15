@@ -2,4 +2,6 @@
     <string name="app_name">SimpleDaily</string>
 
     <string name="signal_url">https://api.signal.bz</string>
+    <string name="weather_url">https://search.naver.com/search.naver?where=nexearch&amp;sm=top_hty&amp;fbm=1&amp;ie=utf8&amp;query=</string>
+    <string name="weather_img_url">https://ssl.pstatic.net/sstatic/keypage/outside/scui/weather_new_new/img/weather_svg/</string>
 </resources>

@@ -14,7 +14,7 @@ class RealTimeModel {
         //언론사별 가장 많이 본 뉴스
         val naver: ArrayList<Naver>,
 
-        val youtube: ArrayList<Youtube>
+//        val youtube: ArrayList<Youtube>
 
     )
 

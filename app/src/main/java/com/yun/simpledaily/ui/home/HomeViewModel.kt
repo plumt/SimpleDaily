@@ -2,24 +2,62 @@ package com.yun.simpledaily.ui.home
 
 import android.app.Application
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.yun.simpledaily.R
 import com.yun.simpledaily.base.BaseViewModel
+import com.yun.simpledaily.data.Constant.COMPARE_WEATHER
+import com.yun.simpledaily.data.Constant.DUST_UV
+import com.yun.simpledaily.data.Constant.HOURLY
+import com.yun.simpledaily.data.Constant.HOURLY_HUMIDITY_NUM
+import com.yun.simpledaily.data.Constant.HOURLY_HUMIDITY_TIME
+import com.yun.simpledaily.data.Constant.HOURLY_PRECIPITATION_NUM
+import com.yun.simpledaily.data.Constant.HOURLY_PRECIPITATION_PERCENT
+import com.yun.simpledaily.data.Constant.HOURLY_PRECIPITATION_TIME
+import com.yun.simpledaily.data.Constant.HOURLY_WEATHER_INFO
+import com.yun.simpledaily.data.Constant.HOURLY_WEATHER_NUM
+import com.yun.simpledaily.data.Constant.HOURLY_WEATHER_TIME
+import com.yun.simpledaily.data.Constant.HOURLY_WIND_DIRECTION
+import com.yun.simpledaily.data.Constant.HOURLY_WIND_NUM
+import com.yun.simpledaily.data.Constant.HOURLY_WIND_TIME
+import com.yun.simpledaily.data.Constant.NOW_WEATHER
+import com.yun.simpledaily.data.Constant.SUMMARY_LIST
 import com.yun.simpledaily.data.Constant.TAG
+import com.yun.simpledaily.data.Constant.TEMPERATURE
+import com.yun.simpledaily.data.Constant.WEATHER
+import com.yun.simpledaily.data.Constant.WEATHER_IMG
+import com.yun.simpledaily.data.Constant.WEATHER_LOCATION_NM
+import com.yun.simpledaily.data.Constant.WEEK_DOW
+import com.yun.simpledaily.data.Constant.WEEK_FORECAST
+import com.yun.simpledaily.data.Constant.WEEK_HIGHEST
+import com.yun.simpledaily.data.Constant.WEEK_LOWEST
+import com.yun.simpledaily.data.Constant.WEEK_PRECIPITATION
+import com.yun.simpledaily.data.Constant.WEEK_PRECIPITATION_DETAIL
+import com.yun.simpledaily.data.Constant.WEEK_TIME
 import com.yun.simpledaily.data.model.RealTimeModel
 import com.yun.simpledaily.data.repository.api.Api
-import com.yun.simpledaily.util.PreferenceManager
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.newSingleThreadContext
 import org.jsoup.Jsoup
-import org.koin.core.qualifier.named
-import java.lang.Exception
 
 class HomeViewModel(
-    application: Application
+    application: Application,
+    private val api: Api
 ) : BaseViewModel(application) {
 
+    val imagePath = MutableLiveData("")
+    val location = MutableLiveData("")
+    val temperature = MutableLiveData("")
+    val weather = MutableLiveData("")
+    val compare = MutableLiveData("")
+    val weatherDetail = MutableLiveData("")
+    val dust = MutableLiveData("")
+    val uDust = MutableLiveData("")
+    val uv = MutableLiveData("")
+
     init {
+        addWeather()
     }
 
     fun realtime() {
@@ -27,130 +65,136 @@ class HomeViewModel(
         // api : https://api.signal.bz/news/realtime
         // 사이트 : https://www.signal.bz/
 
-        val api = Api.realtime()
         viewModelScope.launch {
             try {
-                (callApi().realtime()) as RealTimeModel.RS).run {
-                    Log.d(TAG,"result : ${this.top10}")
+                (callApi(api.realtime()) as RealTimeModel.RS).run {
+                    Log.d(TAG, "result : ${this.top10}")
                 }
-            } catch (e: Exception){
-                Log.e(TAG,"${e.printStackTrace()}")
+            } catch (e: Exception) {
+                Log.e(TAG, "${e.printStackTrace()}")
             }
         }
     }
 
-    fun weather() {
-        val url =
-            "https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=1&ie=utf8&query=서울날씨"
+    fun addWeather() {
+
+//        https://ssl.pstatic.net/sstatic/keypage/outside/scui/weather_new_new/img/weather_svg/icon_flat_wt41.svg
+        // 1부터 41까지 날씨 이미지
+
+        val url = mContext.getString(R.string.weather_url) + "김포시고촌읍날씨"
 
         viewModelScope.async {
             try {
+                launch(newSingleThreadContext(WEATHER)) {
 
-                launch(newSingleThreadContext("weather")) {
+
 
                     // 전체 데이터
                     val doc = Jsoup.connect(url).get()
 
+
                     // 검새어 (ex - 서울날씨, 부산날씨
-                    val location = doc.select(".title_area._area_panel .title")
+                    location.postValue(doc.select(WEATHER_LOCATION_NM)[0].text())
 
-                    // 현재 온도
-                    val temperature = doc.select(".temperature_text")
+                    // 날씨 이미지
+                    val path = doc.select(WEATHER_IMG)[0].className().replace("wt_","").replace("ico_","flat_").replace(" ","_")
+                    imagePath.postValue("${mContext.getString(R.string.weather_img_url)}$path.svg")
+//
+//                    // 현재 온도
+                    temperature.postValue(doc.select(TEMPERATURE)[0].text().replace("온도","온도 : "))
+//
+//                    // 현재 날씨
+                    weather.postValue("|  ${doc.select(NOW_WEATHER)[0].text()}")
+//
+//                    // 어제보다 높거나 낮은 정도
+                    compare.postValue("어제보다 ${doc.select(COMPARE_WEATHER)[0].text()}")
 
-                    // 현재 날씨
-                    val weather = doc.select(".weather_main")
-
-                    // 어제보다 높거나 낮은 정도
-                    val tempinfo = doc.select(".temperature_info .temperature.up")
+                    Log.d(TAG,"어제보다 ${doc.select(COMPARE_WEATHER)[0].text()}")
 
                     // 현재 강수, 습도, 바람 (ex - 강수확률 0% 습도 25% 바람(북서풍) 2m/s
-                    val summary_list = doc.select(".temperature_info .summary_list")
-
+                    weatherDetail.postValue(doc.select(SUMMARY_LIST)[0].text().replace("%","% | "))
 
                     // 미세먼지, 초미세먼지
-                    val dust = doc.select(".item_today.level2")
+                    dust.postValue(doc.select(DUST_UV)[0].text())
+                    uDust.postValue(doc.select(DUST_UV)[1].text())
 
                     // 자외선
-                    val sun = doc.select(".item_today.level3")
+                    uv.postValue(doc.select(DUST_UV)[2].text())
 
-                    // 시간별 정보 all
-                    val hour_data =
-                        doc.select(".forecast_wrap._selectable_tab .hourly_forecast._tab_content")
+                    Log.d(TAG,"${doc.select(DUST_UV)[0].text()}  ${doc.select(DUST_UV)[1].text()}  ${doc.select(DUST_UV)[2].text()}")
 
-                    // 시간별 날씨 디테일
-                    val hour_wea_time = hour_data[0].select(".weather_graph_box .time")
-                    val hour_wea_num = hour_data[0].select(".weather_graph_box .num")
-                    val hour_wea_wea = hour_data[0].select(".weather_graph_box .blind")
+                    // 시간별 정보 모든 데이터
+                    val hour_data = doc.select(HOURLY)
 
-                    // 시간별 강수 디테일
-                    val hour_rain_time = hour_data[1].select(".precipitation_graph_box .text")
-                    val hour_rain_num = hour_data[1].select(".precipitation_graph_box .data_inner")
-                    val hour_rain_per = hour_data[1].select(".precipitation_graph_box .value")
 
-                    // 시간별 바람 디테일
-                    val hour_wind_time = hour_data[2].select(".wind_graph_box .time")
-                    val hour_wind_num = hour_data[2].select(".wind_graph_box .num")
-                    val hour_wind_way = hour_data[2].select(".wind_graph_box .icon_wrap .data")
+                    // 시간별 날씨 디테일(날짜, 온도, 상태)
+                    val hour_wea_time = hour_data[0].select(HOURLY_WEATHER_TIME)
+                    val hour_wea_num = hour_data[0].select(HOURLY_WEATHER_NUM)
+                    val hour_wea_wea = hour_data[0].select(HOURLY_WEATHER_INFO)
 
-                    // 시간별 습도 디테일
-                    val hour_hum_time = hour_data[3].select(".climate_box .time_wrap .text")
-                    val hour_hum_num = hour_data[3].select(".climate_box .graph_wrap .num")
+                    // 시간별 강수 디테일(닐짜, 강수량, 확률)
+                    val hour_rain_time = hour_data[1].select(HOURLY_PRECIPITATION_TIME)
+                    val hour_rain_num = hour_data[1].select(HOURLY_PRECIPITATION_NUM)
+                    val hour_rain_per = hour_data[1].select(HOURLY_PRECIPITATION_PERCENT)
+
+                    // 시간별 바람 디테일(날짜, 풍속, 방향)
+                    val hour_wind_time = hour_data[2].select(HOURLY_WIND_TIME)
+                    val hour_wind_num = hour_data[2].select(HOURLY_WIND_NUM)
+                    val hour_wind_way = hour_data[2].select(HOURLY_WIND_DIRECTION)
+
+                    // 시간별 습도 디테일(날짜, 습도)
+                    val hour_hum_time = hour_data[3].select(HOURLY_HUMIDITY_TIME)
+                    val hour_hum_num = hour_data[3].select(HOURLY_HUMIDITY_NUM)
 
                     // 주간 예보
-                    val week = doc.select(".weekly_forecast_area._toggle_panel .week_item")
+                    val week = doc.select(WEEK_FORECAST)
+
+
 
                     // 주간 예보 디테일 - 요일
-                    val week_weekend = week[0].select(".cell_date .day")
+                    val week_weekend = week[0].select(WEEK_DOW)
                     // 주간 예보 디테일 - 날짜
-                    val week_date = week[0].select(".cell_date .date")
+                    val week_date = week[0].select(WEEK_TIME)
                     // 주간 예보 디테일 - 오전 강수 확률
                     val week_am_rain =
-                        week[0].select(".cell_weather .weather_left")[0].select(".rainfall")
+                        week[0].select(WEEK_PRECIPITATION)[0].select(WEEK_PRECIPITATION_DETAIL)
                     // 주간 예보 디테일 - 오후 강수 확률
                     val week_pm_rain =
-                        week[0].select(".cell_weather .weather_left")[1].select(".rainfall")
+                        week[0].select(WEEK_PRECIPITATION)[1].select(WEEK_PRECIPITATION_DETAIL)
                     // 주간 예보 디테일 - 최저기온
-                    val week_low_temp = week[0].select(".cell_temperature .lowest")
+                    val week_low_temp = week[0].select(WEEK_LOWEST)
                     // 주간 예보 디테일 - 최고기온
-                    val week_high_temp = week[0].select(".cell_temperature .highest")
+                    val week_high_temp = week[0].select(WEEK_HIGHEST)
 
 
-                    if (temperature.isNotEmpty() && weather.isNotEmpty() && tempinfo.isNotEmpty()) {
-                        val local = location[0].text()
-                        val tem = temperature[0].text()
-                        val wea = weather[0].text()
-                        val info = tempinfo[0].text()
-                        val list = summary_list[0].text()
-                        val dus1 = dust[0].text()
-                        val dus2 = dust[1].text()
-                        val sun = sun[0].text()
 
-                        Log.d("lys", "$local / $tem / $info / $wea / $list / $dus1 / $dus2 / $sun")
+
+//                        Log.d(TAG, "${location.value} / ${temperature.value} / ${compare.value} / ${weather.value} / $list / $dus1 / $dus2 / $sun")
 
                         Log.d(
-                            "lys",
+                            TAG,
                             "시간별 날씨 : ${hour_wea_time[0].text()} ${hour_wea_num[0].text()}  ${hour_wea_wea[0].text()}   size:${hour_wea_time.size} / ${hour_wea_num.size} / ${hour_wea_wea.size}"
                         )
                         Log.d(
-                            "lys",
+                            TAG,
                             "시간반 강수 : ${hour_rain_time[0].text()} ${hour_rain_num[0].text()}  ${hour_rain_per[0].text()}   size:${hour_rain_time.size} / ${hour_rain_num.size} / ${hour_rain_per.size}"
                         )
                         Log.d(
-                            "lys",
+                            TAG,
                             "시간별 바람 : ${hour_wind_time[0].text()} ${hour_wind_num[0].text()}  ${hour_wind_way[0].text()}   size:${hour_wind_time.size} / ${hour_wind_num.size} / ${hour_wind_way.size}"
                         )
                         Log.d(
-                            "lys",
+                            TAG,
                             "시간별 습도 : ${hour_hum_time[0].text()} ${hour_hum_num[0].text()}   size:${hour_hum_time.size} / ${hour_hum_num.size}"
                         )
 
 //                        Log.d("lys","주간예보 : ${week[0]}")
 
                         Log.d(
-                            "lys",
+                            TAG,
                             "주간예보 : ${week_weekend.text()} / ${week_date.text()} / ${week_am_rain.text()} / ${week_pm_rain.text()} / ${week_low_temp.text()} / ${week_high_temp.text()}"
                         )
-                    }
+
                 }
 
 

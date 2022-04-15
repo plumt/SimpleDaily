@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="com.yun.simpledaily.data.Constant" />
+
+        <variable
+            name="imagepath"
+            type="String" />
+
+        <variable
+            name="location"
+            type="String" />
+
+        <variable
+            name="temperature"
+            type="String" />
+
+        <variable
+            name="weather"
+            type="String" />
+
+        <variable
+            name="compare"
+            type="String" />
+
+        <variable
+            name="detail"
+            type="String" />
+
+        <variable
+            name="dust"
+            type="String" />
+
+        <variable
+            name="udust"
+            type="String" />
+
+        <variable
+            name="uv"
+            type="String" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/white">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.05" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.95" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cv_now_weather"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/gl_end"
+            app:layout_constraintStart_toStartOf="@id/gl_start"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/tv_location"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:includeFontPadding="false"
+                    android:text="@{location + `  ` + weather}"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/img_now_weather"
+                    setImages="@{imagepath}"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="15dp"
+                    app:layout_constraintStart_toStartOf="@id/tv_location"
+                    app:layout_constraintTop_toBottomOf="@id/tv_location" />
+
+                <TextView
+                    android:id="@+id/tv_now_temperature"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="7dp"
+                    android:includeFontPadding="false"
+                    android:text="@{temperature}"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    app:layout_constraintBottom_toTopOf="@id/tv_compare"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/img_now_weather"
+                    app:layout_constraintTop_toTopOf="@id/img_now_weather" />
+
+                <TextView
+                    android:id="@+id/tv_compare"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="false"
+                    android:text="@{compare}"
+                    android:textColor="@color/black"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toTopOf="@id/tv_detail"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/tv_now_temperature"
+                    app:layout_constraintTop_toBottomOf="@id/tv_now_temperature" />
+
+                <TextView
+                    android:id="@+id/tv_detail"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="false"
+                    android:text="@{detail}"
+                    android:textColor="@color/black"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toBottomOf="@id/img_now_weather"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/tv_now_temperature"
+                    app:layout_constraintTop_toBottomOf="@id/tv_compare" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/mcv_dust"
+                    android:layout_width="0dp"
+                    android:layout_height="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="2.5dp"
+                    android:layout_marginBottom="10dp"
+                    android:insetLeft="0dp"
+                    android:insetRight="0dp"
+                    app:cardBackgroundColor="#f3f3f3"
+                    app:cardCornerRadius="21dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/mcv_udust"
+                    app:layout_constraintStart_toStartOf="@id/img_now_weather"
+                    app:layout_constraintTop_toBottomOf="@id/img_now_weather"
+                    app:strokeColor="#cccccc"
+                    app:strokeWidth="1dp">
+
+                    <TextView
+                        android:id="@+id/tv_dust"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#ffffff"
+                        android:gravity="center"
+                        android:includeFontPadding="false"
+                        android:singleLine="true"
+                        android:text="@{dust}"
+                        android:textColor="@color/color_979797"
+                        android:textSize="12sp" />
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/mcv_udust"
+                    android:layout_width="0dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="2.5dp"
+                    android:layout_marginEnd="2.5dp"
+                    android:insetLeft="0dp"
+                    android:insetRight="0dp"
+                    app:cardBackgroundColor="#f3f3f3"
+                    app:cardCornerRadius="21dp"
+                    app:layout_constraintEnd_toStartOf="@id/mcv_uv"
+                    app:layout_constraintStart_toEndOf="@id/mcv_dust"
+                    app:layout_constraintTop_toTopOf="@id/mcv_dust"
+                    app:strokeColor="#cccccc"
+                    app:strokeWidth="1dp">
+
+                    <TextView
+                        android:id="@+id/tv_udust"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#ffffff"
+                        android:gravity="center"
+                        android:includeFontPadding="false"
+                        android:singleLine="true"
+                        android:text="@{udust}"
+                        android:textColor="@color/color_979797"
+                        android:textSize="12sp" />
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/mcv_uv"
+                    android:layout_width="0dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="2.5dp"
+                    android:layout_marginEnd="10dp"
+                    android:insetLeft="0dp"
+                    android:insetRight="0dp"
+                    app:cardBackgroundColor="#f3f3f3"
+                    app:cardCornerRadius="21dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/mcv_udust"
+                    app:layout_constraintTop_toTopOf="@id/mcv_dust"
+                    app:strokeColor="#cccccc"
+                    app:strokeWidth="1dp">
+
+                    <TextView
+                        android:id="@+id/tv_uv"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#ffffff"
+                        android:gravity="center"
+                        android:includeFontPadding="false"
+                        android:singleLine="true"
+                        android:text="@{uv}"
+                        android:textColor="@color/color_979797"
+                        android:textSize="12sp" />
+                </com.google.android.material.card.MaterialCardView>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

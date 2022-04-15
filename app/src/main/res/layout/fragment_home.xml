@@ -12,10 +12,38 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.05" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.95" />
+
+
+        <include
+            layout="@layout/view_now_weather"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="home fragment" />
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            android:id="@+id/ic_now_weather"
+            app:imagepath="@{home.imagePath}"
+            app:location="@{home.location}"
+            app:temperature="@{home.temperature}"
+            app:weather="@{home.weather}"
+            app:compare="@{home.compare}"
+            app:detail="@{home.weatherDetail}"
+            app:dust="@{home.dust}"
+            app:udust="@{home.uDust}"
+            app:uv="@{home.uv}"
+
+            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
