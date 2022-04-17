@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="hourlyWeatherItemListener"
+            type="com.yun.simpledaily.base.BaseRecyclerAdapter.OnItemClickListener" />
+
+        <variable
+            name="itemHourlyWeather"
+            type="com.yun.simpledaily.data.model.HourlyWeatherModel.RS" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:background="@color/white"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_hourly_temperature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:text="@{itemHourlyWeather.num}"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="@id/img_hourly_weather"
+            app:layout_constraintEnd_toEndOf="@id/img_hourly_weather"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:visibility="@{!itemHourlyWeather.url.equals(``) ? View.VISIBLE : View.INVISIBLE}"
+            android:id="@+id/img_hourly_weather"
+            setImages="@{itemHourlyWeather.url}"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_hourly_temperature" />
+
+        <TextView
+            android:id="@+id/tv_hourly_weather"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:includeFontPadding="true"
+            android:text="@{itemHourlyWeather.wea}"
+            android:textColor="@color/black"
+            android:textSize="10sp"
+            app:layout_constraintStart_toStartOf="@id/img_hourly_weather"
+            app:layout_constraintEnd_toEndOf="@id/img_hourly_weather"
+            app:layout_constraintTop_toBottomOf="@id/img_hourly_weather"/>
+
+        <TextView
+            android:id="@+id/tv_hourly_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:text="@{itemHourlyWeather.time}"
+            android:textColor="@color/black"
+            android:textSize="12.5sp"
+            app:layout_constraintStart_toStartOf="@id/img_hourly_weather"
+            app:layout_constraintEnd_toEndOf="@id/img_hourly_weather"
+            android:layout_marginTop="10dp"
+            app:layout_constraintTop_toBottomOf="@id/tv_hourly_weather"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="com.yun.simpledaily.util.Util" />
+        <import type="android.view.View" />
+
+        <variable
+            name="itemPopularNews"
+            type="com.yun.simpledaily.data.model.RealTimeModel.Articles" />
+
+        <variable
+            name="popularNewsListener"
+            type="com.yun.simpledaily.base.BaseRecyclerAdapter.OnItemClickListener" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@color/white">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            app:cardCornerRadius="0dp"
+            app:cardElevation="0dp"
+            android:onClick="@{(v)->popularNewsListener.onItemClick(itemPopularNews, v)}">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cv_thumbnail"
+                    android:layout_width="135dp"
+                    android:layout_height="90dp"
+                    android:backgroundTint="@color/white"
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="0dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                        android:id="@+id/img_thumbnail"
+                        setNewsImages="@{itemPopularNews.image}"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <TextView
+                    android:id="@+id/tv_rank"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:includeFontPadding="false"
+                    android:text="@{Util.INSTANCE.newsRank(itemPopularNews.id)}"
+                    android:textColor="@color/color_FBA53B"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/cv_thumbnail"
+                    app:layout_constraintBottom_toTopOf="@id/tv_title"
+                    app:layout_constraintTop_toTopOf="@id/cv_thumbnail" />
+
+                <TextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="5dp"
+                    android:includeFontPadding="false"
+                    android:singleLine="true"
+                    android:text="@{itemPopularNews.title}"
+                    android:textColor="@color/black"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/cv_thumbnail"
+                    app:layout_constraintBottom_toTopOf="@id/tv_desc"
+                    app:layout_constraintTop_toBottomOf="@id/tv_rank" />
+
+                <TextView
+                    android:id="@+id/tv_desc"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="3dp"
+                    android:ellipsize="end"
+                    android:gravity="left|top"
+                    android:includeFontPadding="false"
+                    android:maxLines="3"
+                    android:text="@{itemPopularNews.desc}"
+                    android:textColor="@color/color_777777"
+                    android:textSize="10sp"
+                    app:layout_constraintBottom_toBottomOf="@id/cv_thumbnail"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/cv_thumbnail"
+                    app:layout_constraintTop_toBottomOf="@id/tv_title" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <View
+            app:layout_constraintTop_toBottomOf="@id/cv"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/color_f4f4f4"
+            android:visibility="@{itemPopularNews.id >= 9 ? View.GONE : View.VISIBLE}"
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

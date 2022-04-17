@@ -8,6 +8,10 @@ import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.github.twocoffeesoneteam.glidetovectoryou.GlideToVectorYou
 import com.yun.simpledaily.R
+import com.yun.simpledaily.data.Constant.BAD
+import com.yun.simpledaily.data.Constant.GOOD
+import com.yun.simpledaily.data.Constant.NOMAL
+import com.yun.simpledaily.data.Constant.WORST
 
 object PreferenceManager {
     const val PREFERENCES_NAME = "portpolio"
@@ -51,22 +55,64 @@ object PreferenceManager {
 }
 
 object Util {
+
+    fun newsRank(rank: Int?): String {
+        return if (rank == null) ""
+        else "인기 ${rank + 1}위"
+    }
+
+    fun backColor(num: Int?): Int {
+        return if (num == null) 1
+        else when (num) {
+            1, 4, 5, 8, 9 -> 0
+            else -> 1
+        }
+    }
+
+    fun dustCheck(str: String?): Int {
+        return if (str == null) 0
+        else when {
+            str.contains("좋음") -> GOOD
+            str.contains("보통") -> NOMAL
+            str.contains("매우") -> WORST
+            str.contains("나쁨") -> BAD
+            else -> 0
+        }
+    }
+
+    fun uvCheck(str: String?): Int {
+        return if (str == null) 0
+        else when {
+//            str.contains("좋음") -> GOOD
+//            str.contains("보통") -> NOMAL
+            str.contains("매우") -> WORST
+            str.contains("높음") -> BAD
+            else -> 0
+        }
+    }
+
+
     @BindingAdapter("setImages")
     @JvmStatic
     fun ImageView.setImages(path: String?) {
-//        this.run {
-//            Glide.with(context)
-//                .load(path).circleCrop()
-//                .error(R.drawable.ic_launcher_background).circleCrop()
-//                .into(this)
-//        }
 
-        if(path != null && path != "") {
-            val url = Uri.parse(path)
+        if (!path.isNullOrEmpty()) {
             GlideToVectorYou
                 .init()
                 .with(context)
-                .load(url, this);
+                .setPlaceHolder(R.color.white, R.color.white)
+                .load(Uri.parse(path), this);
+        }
+    }
+
+    @BindingAdapter("setNewsImages")
+    @JvmStatic
+    fun ImageView.setNewsImages(path: String?) {
+        this.run {
+            Glide.with(context)
+                .load(path)
+                .centerCrop()
+                .into(this)
         }
     }
 

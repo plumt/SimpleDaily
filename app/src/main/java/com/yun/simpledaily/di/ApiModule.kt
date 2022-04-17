@@ -10,10 +10,10 @@ val apiModule = module {
     fun providerSignalApi(retrofit: Retrofit): Api {
         return retrofit.create(Api::class.java)
     }
-//    fun providerAddressApi(retrofit: Retrofit): Api {
-//        return retrofit.create(Api::class.java)
-//    }
+    fun providerLocationApi(retrofit: Retrofit): Api {
+        return retrofit.create(Api::class.java)
+    }
 
     single(named("signal")) { providerSignalApi(get(named("signal"))) }
-//    single(named("address")) { providerAddressApi(get(named("address"))) }
+    single(named("location")) { providerLocationApi(get(named("location"))) }
 }

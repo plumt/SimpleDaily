@@ -1,49 +1,281 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <variable
             name="home"
             type="com.yun.simpledaily.ui.home.HomeViewModel" />
+
+        <import type="android.view.View" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scroll"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:overScrollMode="never">
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/gl_start"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.05" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/gl_end"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.95" />
-
-
-        <include
-            layout="@layout/view_now_weather"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            android:id="@+id/ic_now_weather"
-            app:imagepath="@{home.imagePath}"
-            app:location="@{home.location}"
-            app:temperature="@{home.temperature}"
-            app:weather="@{home.weather}"
-            app:compare="@{home.compare}"
-            app:detail="@{home.weatherDetail}"
-            app:dust="@{home.dust}"
-            app:udust="@{home.uDust}"
-            app:uv="@{home.uv}"
+            android:layout_height="match_parent"
+            android:background="@color/white">
 
-            />
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/gl_start"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.05" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/gl_end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.95" />
+
+            <TextView
+                android:id="@+id/tv_now_weather"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:shadowColor="#33000000"
+                android:shadowDx="3.0"
+                android:shadowDy="3.0"
+                android:shadowRadius="1.0"
+                android:text="@string/now_weather"
+                android:textColor="@color/color_FBA53B"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@id/gl_start"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <include
+                android:id="@+id/ic_now_weather"
+                layout="@layout/view_now_weather"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="@{home.searchLocation.equals(``) ? View.GONE : View.VISIBLE}"
+                app:compare="@{home.compare}"
+                app:detail="@{home.weatherDetail}"
+                app:dust="@{home.dust}"
+                app:imagepath="@{home.imagePath}"
+                app:layout_constraintTop_toBottomOf="@id/tv_now_weather"
+                app:location="@{home.location}"
+                app:temperature="@{home.temperature}"
+                app:udust="@{home.uDust}"
+                app:uv="@{home.uv}"
+                app:weather="@{home.weather}" />
+
+            <TextView
+                android:id="@+id/tv_no_now_weather"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:includeFontPadding="false"
+                android:text="@string/no_weather"
+                android:textColor="@color/color_777777"
+                android:textSize="10sp"
+                android:textStyle="bold"
+                android:visibility="@{home.searchLocation.equals(``) ? View.VISIBLE : View.GONE}"
+                app:layout_constraintEnd_toEndOf="@id/gl_end"
+                app:layout_constraintStart_toStartOf="@id/gl_start"
+                app:layout_constraintTop_toBottomOf="@id/ic_now_weather" />
+
+            <TextView
+                android:id="@+id/tv_hourly_weather"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:shadowColor="#33000000"
+                android:shadowDx="3.0"
+                android:shadowDy="3.0"
+                android:shadowRadius="1.0"
+                android:text="@string/hourly_weather"
+                android:textColor="@color/color_FBA53B"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@id/gl_start"
+                app:layout_constraintTop_toBottomOf="@id/tv_no_now_weather" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cv_hourly_weather"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
+                android:visibility="@{home.searchLocation.equals(``) ? View.GONE : View.VISIBLE}"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="5dp"
+                app:layout_constraintEnd_toEndOf="@id/gl_end"
+                app:layout_constraintStart_toStartOf="@id/gl_start"
+                app:layout_constraintTop_toBottomOf="@id/tv_hourly_weather">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_hourly_weather"
+                    replaceAll="@{home.hourlyWeatherList}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="3dp"
+                    android:layout_marginBottom="20dp"
+                    android:orientation="horizontal"
+                    android:overScrollMode="never"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/item_hourly_weather" />
+            </com.google.android.material.card.MaterialCardView>
+
+
+            <include
+                android:id="@+id/ic_other_weather"
+                layout="@layout/view_more"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:visibility="@{home.searchLocation.equals(``) ? View.GONE : View.VISIBLE}"
+                app:layout_constraintTop_toBottomOf="@id/cv_hourly_weather"
+                app:listener="@{home.onClick}"
+                app:title="@{@string/hourly_more_txt}"
+                app:type="@{@string/hourly}" />
+
+            <include
+                android:id="@+id/ic_week_weather"
+                layout="@layout/view_more"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="@{home.searchLocation.equals(``) ? View.GONE : View.VISIBLE}"
+                app:layout_constraintTop_toBottomOf="@id/ic_other_weather"
+                app:listener="@{home.onClick}"
+                app:title="@{@string/week_more_txt}"
+                app:type="@{@string/week}" />
+
+            <TextView
+                android:id="@+id/tv_no_hourly_weather"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:includeFontPadding="false"
+                android:text="@string/no_weather"
+                android:textColor="@color/color_777777"
+                android:textSize="10sp"
+                android:textStyle="bold"
+                android:visibility="@{home.searchLocation.equals(``) ? View.VISIBLE : View.GONE}"
+                app:layout_constraintEnd_toEndOf="@id/gl_end"
+                app:layout_constraintStart_toStartOf="@id/gl_start"
+                app:layout_constraintTop_toBottomOf="@id/ic_week_weather" />
+
+            <TextView
+                android:id="@+id/tv_realtime_top10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:shadowColor="#33000000"
+                android:shadowDx="3.0"
+                android:shadowDy="3.0"
+                android:shadowRadius="1.0"
+                android:text="@string/realtime_top10"
+                android:textColor="@color/color_FBA53B"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@id/gl_start"
+                app:layout_constraintTop_toBottomOf="@id/tv_no_hourly_weather" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cv_realtime_top10"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="5dp"
+                app:layout_constraintEnd_toEndOf="@id/gl_end"
+                app:layout_constraintStart_toStartOf="@id/gl_start"
+                app:layout_constraintTop_toBottomOf="@id/tv_realtime_top10">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_realtime_top10"
+                    replaceAll="@{home.realTimeTop10}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="3dp"
+                    android:layout_marginBottom="10dp"
+                    android:overScrollMode="never"
+                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    app:spanCount="2"
+                    tools:listitem="@layout/item_hourly_weather" />
+            </com.google.android.material.card.MaterialCardView>
+
+
+            <TextView
+                android:id="@+id/tv_realtime_popular_news"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:shadowColor="#33000000"
+                android:shadowDx="3.0"
+                android:shadowDy="3.0"
+                android:shadowRadius="1.0"
+                android:text="@string/realtime_popular_news"
+                android:textColor="@color/color_FBA53B"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@id/gl_start"
+                app:layout_constraintTop_toBottomOf="@id/cv_realtime_top10" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cv_popular_news"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="3dp"
+                app:layout_constraintEnd_toEndOf="@id/gl_end"
+                app:layout_constraintStart_toStartOf="@id/gl_start"
+                app:layout_constraintTop_toBottomOf="@id/tv_realtime_popular_news">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_popular_news"
+                    replaceAll="@{home.popularNews}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:overScrollMode="never"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/item_popular_news" />
+            </com.google.android.material.card.MaterialCardView>
+
+            <include
+                android:id="@+id/ic_press_news"
+                layout="@layout/view_more"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                app:layout_constraintTop_toBottomOf="@id/cv_popular_news"
+                app:listener="@{home.onClick}"
+                app:title="@{@string/press_news}"
+                app:type="@{@string/news}" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                app:layout_constraintTop_toBottomOf="@id/ic_press_news" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+
 </layout>

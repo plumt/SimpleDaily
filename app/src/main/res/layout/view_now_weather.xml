@@ -4,6 +4,7 @@
     <data>
 
         <import type="com.yun.simpledaily.data.Constant" />
+        <import type="com.yun.simpledaily.util.Util" />
 
         <variable
             name="imagepath"
@@ -66,8 +67,8 @@
             android:id="@+id/cv_now_weather"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="5dp"
             app:cardBackgroundColor="@color/white"
             app:cardCornerRadius="10dp"
             app:cardElevation="5dp"
@@ -84,7 +85,8 @@
                     android:id="@+id/tv_location"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="20dp"
                     android:includeFontPadding="false"
                     android:text="@{location + `  ` + weather}"
                     android:textColor="@color/black"
@@ -98,7 +100,7 @@
                     setImages="@{imagepath}"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="10dp"
                     android:layout_marginBottom="15dp"
                     app:layout_constraintStart_toStartOf="@id/tv_location"
                     app:layout_constraintTop_toBottomOf="@id/tv_location" />
@@ -147,9 +149,9 @@
                     android:id="@+id/mcv_dust"
                     android:layout_width="0dp"
                     android:layout_height="20dp"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="8dp"
                     android:layout_marginEnd="2.5dp"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginBottom="15dp"
                     android:insetLeft="0dp"
                     android:insetRight="0dp"
                     app:cardBackgroundColor="#f3f3f3"
@@ -158,7 +160,7 @@
                     app:layout_constraintEnd_toStartOf="@id/mcv_udust"
                     app:layout_constraintStart_toStartOf="@id/img_now_weather"
                     app:layout_constraintTop_toBottomOf="@id/img_now_weather"
-                    app:strokeColor="#cccccc"
+                    app:strokeColor="@{Util.INSTANCE.dustCheck(dust) == Constant.INSTANCE.GOOD ? @color/color_297EFF : Util.INSTANCE.dustCheck(dust) == Constant.INSTANCE.NOMAL ? @color/color_2ED33E : Util.INSTANCE.dustCheck(dust) == Constant.INSTANCE.BAD ? @color/color_FBA53B : Util.INSTANCE.dustCheck(dust) == Constant.INSTANCE.WORST ? @color/color_FB3B3B : @color/color_cccccc}"
                     app:strokeWidth="1dp">
 
                     <TextView
@@ -170,8 +172,8 @@
                         android:includeFontPadding="false"
                         android:singleLine="true"
                         android:text="@{dust}"
-                        android:textColor="@color/color_979797"
-                        android:textSize="12sp" />
+                        android:textColor="@{Util.INSTANCE.dustCheck(dust) == Constant.INSTANCE.GOOD ? @color/color_297EFF : Util.INSTANCE.dustCheck(dust) == Constant.INSTANCE.NOMAL ? @color/color_2ED33E : Util.INSTANCE.dustCheck(dust) == Constant.INSTANCE.BAD ? @color/color_FBA53B : Util.INSTANCE.dustCheck(dust) == Constant.INSTANCE.WORST ? @color/color_FB3B3B : @color/color_cccccc}"
+                        android:textSize="9sp" />
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
@@ -187,7 +189,7 @@
                     app:layout_constraintEnd_toStartOf="@id/mcv_uv"
                     app:layout_constraintStart_toEndOf="@id/mcv_dust"
                     app:layout_constraintTop_toTopOf="@id/mcv_dust"
-                    app:strokeColor="#cccccc"
+                    app:strokeColor="@{Util.INSTANCE.dustCheck(udust) == Constant.INSTANCE.GOOD ? @color/color_297EFF : Util.INSTANCE.dustCheck(udust) == Constant.INSTANCE.NOMAL ? @color/color_2ED33E : Util.INSTANCE.dustCheck(udust) == Constant.INSTANCE.BAD ? @color/color_FBA53B : Util.INSTANCE.dustCheck(udust) == Constant.INSTANCE.WORST ? @color/color_FB3B3B : @color/color_cccccc}"
                     app:strokeWidth="1dp">
 
                     <TextView
@@ -199,8 +201,8 @@
                         android:includeFontPadding="false"
                         android:singleLine="true"
                         android:text="@{udust}"
-                        android:textColor="@color/color_979797"
-                        android:textSize="12sp" />
+                        android:textColor="@{Util.INSTANCE.dustCheck(udust) == Constant.INSTANCE.GOOD ? @color/color_297EFF : Util.INSTANCE.dustCheck(udust) == Constant.INSTANCE.NOMAL ? @color/color_2ED33E : Util.INSTANCE.dustCheck(udust) == Constant.INSTANCE.BAD ? @color/color_FBA53B : Util.INSTANCE.dustCheck(udust) == Constant.INSTANCE.WORST ? @color/color_FB3B3B : @color/color_cccccc}"
+                        android:textSize="9sp" />
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
@@ -216,7 +218,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/mcv_udust"
                     app:layout_constraintTop_toTopOf="@id/mcv_dust"
-                    app:strokeColor="#cccccc"
+                    app:strokeColor="@{Util.INSTANCE.uvCheck(uv) == Constant.INSTANCE.BAD ? @color/color_FBA53B : Util.INSTANCE.uvCheck(uv) == Constant.INSTANCE.WORST ? @color/color_FB3B3B : @color/color_cccccc}"
                     app:strokeWidth="1dp">
 
                     <TextView
@@ -228,8 +230,8 @@
                         android:includeFontPadding="false"
                         android:singleLine="true"
                         android:text="@{uv}"
-                        android:textColor="@color/color_979797"
-                        android:textSize="12sp" />
+                        android:textColor="@{Util.INSTANCE.uvCheck(uv) == Constant.INSTANCE.BAD ? @color/color_FBA53B : Util.INSTANCE.uvCheck(uv) == Constant.INSTANCE.WORST ? @color/color_FB3B3B : @color/color_cccccc}"
+                        android:textSize="9sp" />
                 </com.google.android.material.card.MaterialCardView>
 
             </androidx.constraintlayout.widget.ConstraintLayout>

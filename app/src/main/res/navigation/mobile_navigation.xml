@@ -5,12 +5,62 @@
     android:id="@+id/mobile_navigation"
     app:startDestination="@+id/homeFragment">
 
+    <action
+        android:id="@+id/action_global_homeFragment"
+        app:destination="@id/homeFragment"
+        app:popUpTo="@id/mobile_navigation"
+        app:popUpToInclusive="true" />
+
+    <action
+        android:id="@+id/action_global_memoFragment"
+        app:destination="@id/memoFragment"
+        app:popUpTo="@id/mobile_navigation"
+        app:popUpToInclusive="true" />
+
+    <action
+        android:id="@+id/action_global_calendarFragment"
+        app:destination="@id/calendarFragment"
+        app:popUpTo="@id/mobile_navigation"
+        app:popUpToInclusive="true" />
+
+    <action
+        android:id="@+id/action_global_settingFragment"
+        app:destination="@id/settingFragment"
+        app:popUpTo="@id/mobile_navigation"
+        app:popUpToInclusive="true" />
 
     <fragment
         tools:layout="@layout/fragment_home"
         android:id="@+id/homeFragment"
         android:name="com.yun.simpledaily.ui.home.HomeFragment"
-        android:label="HomeFragment" />
+        android:label="홈" />
 
+    <fragment
+        tools:layout="@layout/fragment_calendar"
+        android:id="@+id/calendarFragment"
+        android:name="com.yun.simpledaily.ui.calendar.CalendarFragment"
+        android:label="일정" />
+
+    <fragment
+        tools:layout="@layout/fragment_memo"
+        android:id="@+id/memoFragment"
+        android:name="com.yun.simpledaily.ui.memo.MemoFragment"
+        android:label="메모" />
+
+    <fragment
+        tools:layout="@layout/fragment_setting"
+        android:id="@+id/settingFragment"
+        android:name="com.yun.simpledaily.ui.setting.SettingFragment"
+        android:label="설정" >
+        <action
+            android:id="@+id/action_settingFragment_to_locationFragment"
+            app:destination="@id/locationFragment" />
+    </fragment>
+
+    <fragment
+        tools:layout="@layout/fragment_location"
+        android:id="@+id/locationFragment"
+        android:name="com.yun.simpledaily.ui.location.LocationFragment"
+        android:label="지역" />
 
 </navigation>

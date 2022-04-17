@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="com.yun.simpledaily.util.Util" />
+
+        <variable
+            name="realTimeTop10ItemListener"
+            type="com.yun.simpledaily.base.BaseRecyclerAdapter.OnItemClickListener" />
+
+        <variable
+            name="itemRealTimeTop10"
+            type="com.yun.simpledaily.data.model.RealTimeModel.Top10" />
+    </data>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@{Util.INSTANCE.backColor(itemRealTimeTop10.rank) == 0 ? @color/white : @color/color_f4f4f4}">
+
+        <com.google.android.material.card.MaterialCardView
+            app:cardElevation="0dp"
+            android:clickable="true"
+            app:cardCornerRadius="0dp"
+            android:paddingTop="2.5dp"
+            android:paddingBottom="2.5dp"
+            android:backgroundTint="@{Util.INSTANCE.backColor(itemRealTimeTop10.rank) == 0 ? @color/white : @color/color_f4f4f4}"
+            android:onClick="@{(v) -> realTimeTop10ItemListener.onItemClick(itemRealTimeTop10, v)}"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:gravity="left|center_vertical"
+                    android:includeFontPadding="false"
+                    android:singleLine="true"
+                    android:text="@{itemRealTimeTop10.rank + `. ` + itemRealTimeTop10.keyword}"
+                    android:textColor="@color/black"
+                    android:textSize="11.5sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/img_state"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/img_state"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_margin="5dp"
+                    android:src="@{itemRealTimeTop10.state.equals(`s`) ? @drawable/ic_rank_keep_icon : itemRealTimeTop10.state.equals(`+`) ? @drawable/ic_rank_up_icon : itemRealTimeTop10.state.equals(`-`) ? @drawable/ic_rank_down_icon : @drawable/ic_rank_new_icon}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

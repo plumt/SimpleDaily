@@ -1,10 +1,7 @@
 package com.yun.simpledaily.util
 
 import android.app.Application
-import com.yun.simpledaily.di.apiModule
-import com.yun.simpledaily.di.networkModule
-import com.yun.simpledaily.di.sharedPreferences
-import com.yun.simpledaily.di.viewModelModule
+import com.yun.simpledaily.di.*
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -20,7 +17,8 @@ class SimpleDailyApplication  : Application() {
                     viewModelModule,
                     sharedPreferences,
                     networkModule,
-                    apiModule
+                    apiModule,
+                    databaseModule
                 )
             )
             koin.createRootScope()

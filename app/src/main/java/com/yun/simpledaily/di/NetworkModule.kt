@@ -46,9 +46,9 @@ val networkModule = module {
         val baseUrl = androidContext().getString(R.string.signal_url)
         provideRetrofit(get(), baseUrl)
     }
-//
-//    single(named("address")) {
-//        val baseUrl = androidContext().getString(R.string.ADDRESS_URL)
-//        provideRetrofit(get(), baseUrl)
-//    }
+
+    single(named("location")) {
+        val baseUrl = androidContext().getString(R.string.ADDRESS_URL)
+        provideRetrofit(get(), baseUrl)
+    }
 }

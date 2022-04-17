@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="index"
+            type="Integer" />
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <com.google.android.material.circularreveal.cardview.CircularRevealCardView
+            android:layout_width="5dp"
+            android:layout_height="5dp"
+            android:layout_margin="3dp"
+            android:backgroundTint="@color/color_777777"
+            android:visibility="@{index == 1 ? View.GONE : View.VISIBLE}" />
+
+        <com.google.android.material.circularreveal.cardview.CircularRevealCardView
+            android:layout_width="20dp"
+            android:layout_height="5dp"
+            android:layout_margin="3dp"
+            android:backgroundTint="@color/color_FBA53B"
+            android:visibility="@{index == 1 ? View.VISIBLE : View.GONE}" />
+
+        <com.google.android.material.circularreveal.cardview.CircularRevealCardView
+            android:layout_width="5dp"
+            android:layout_height="5dp"
+            android:layout_margin="3dp"
+            android:backgroundTint="@color/color_777777"
+            android:visibility="@{index == 2 ? View.GONE : View.VISIBLE}" />
+
+        <com.google.android.material.circularreveal.cardview.CircularRevealCardView
+            android:layout_width="20dp"
+            android:layout_height="5dp"
+            android:layout_margin="3dp"
+            android:backgroundTint="@color/color_FBA53B"
+            android:visibility="@{index == 2 ? View.VISIBLE : View.GONE}" />
+
+        <com.google.android.material.circularreveal.cardview.CircularRevealCardView
+            android:layout_width="5dp"
+            android:layout_height="5dp"
+            android:layout_margin="3dp"
+            android:backgroundTint="@color/color_777777"
+            android:visibility="@{index == 3 ? View.GONE : View.VISIBLE}" />
+
+        <com.google.android.material.circularreveal.cardview.CircularRevealCardView
+            android:layout_width="20dp"
+            android:layout_height="5dp"
+            android:layout_margin="3dp"
+            android:backgroundTint="@color/color_FBA53B"
+            android:visibility="@{index == 3 ? View.VISIBLE : View.GONE}" />
+
+    </LinearLayout>
+</layout>

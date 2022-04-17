@@ -4,6 +4,8 @@ object Constant {
     val TAG = "lys"
 
     val WEATHER = "weather"
+    val MEMO = "memo"
+
     val WEATHER_LOCATION_NM = ".title_area._area_panel .title"
     val TEMPERATURE = ".temperature_text"
     val NOW_WEATHER = ".weather_main"
@@ -30,4 +32,38 @@ object Constant {
     val WEEK_LOWEST = ".cell_temperature .lowest"
     val WEEK_HIGHEST = ".cell_temperature .highest"
     val WEATHER_IMG = ".weather_main i"
+    val WEEK_WEATHER_IMG = ".weather_box .wt_icon"
+
+    val DUST = "미세먼지"
+    val UDUST = "초미세먼지"
+    val UV = "자외선"
+
+    val GOOD = 1
+    val NOMAL = 2
+    val BAD = 3
+    val WORST = 4
+
+    val HOME = "홈"
+    val CALENDAR = "일정"
+    val _MEMO = "메모"
+    val SETTING = "설정"
+
+    val DAILY_BOARED_SETTING = "데일리 보드 설정하기"
+    val LOCATION_SETTING = "지역 설정하기"
+
+    val ALL_LOCATION = "*00000000"
+    val SECOND_LOCATION = "*000000"
+    val STEP_1 = "시·도"
+    val STEP_2 = "시·군·구"
+    val STEP_3 = "읍·면·리·동"
+
+    val FIRST_SCREEN = 1
+    val SECOND_SCREEN = 2
+    val THIRD_SCREEN = 3
+
+    val SEARCH_WEATHER = "날씨"
+
+    val SHARED_LOCATION_KEY = "location"
+    val NAVER_SEARCH_URL = "https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=0&ie=utf8&query="
+
 }

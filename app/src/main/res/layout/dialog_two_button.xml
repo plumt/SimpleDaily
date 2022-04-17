@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="title"
+            type="String" />
+
+        <variable
+            name="first_btn_text"
+            type="String" />
+
+        <variable
+            name="second_btn_text"
+            type="String" />
+
+        <variable
+            name="contents"
+            type="String" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/alert_white_border"
+        android:paddingBottom="15dp">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:text="@{title}"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@id/gl_end"
+            app:layout_constraintStart_toStartOf="@id/gl_start"
+            app:layout_constraintTop_toTopOf="parent" />
+
+<!--        <com.google.android.ads.nativetemplates.TemplateView-->
+<!--            android:id="@+id/my_template"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_marginTop="15dp"-->
+<!--            app:gnt_template_type="@layout/gnt_medium_template_view"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/tv_title" />-->
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:id="@+id/my_template"
+            android:text="광고"
+            android:gravity="center"
+            app:layout_constraintTop_toBottomOf="@id/tv_title"
+            />
+
+        <TextView
+            android:id="@+id/tv_contents"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:gravity="center"
+            android:text="@{contents}"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="@id/gl_end"
+            app:layout_constraintStart_toStartOf="@id/gl_start"
+            app:layout_constraintTop_toBottomOf="@id/my_template" />
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_one"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginEnd="5dp"
+            android:backgroundTint="@color/color_534713"
+            android:insetBottom="0dp"
+            android:stateListAnimator="@null"
+            android:text="@{first_btn_text}"
+            android:textColor="@color/white"
+            app:cornerRadius="60dp"
+            app:layout_constraintBottom_toBottomOf="@id/btn_two"
+            app:layout_constraintEnd_toStartOf="@id/btn_two"
+            app:layout_constraintStart_toStartOf="@id/gl_start"
+            app:layout_constraintTop_toTopOf="@id/btn_two" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_two"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="15dp"
+            android:backgroundTint="@color/color_FBA53B"
+            android:insetBottom="0dp"
+            android:stateListAnimator="@null"
+            android:text="@{second_btn_text}"
+            android:textColor="@color/white"
+            app:cornerRadius="60dp"
+            app:layout_constraintEnd_toEndOf="@id/gl_end"
+            app:layout_constraintStart_toEndOf="@id/btn_one"
+            app:layout_constraintTop_toBottomOf="@id/tv_contents" />
+
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.03" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.97" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
