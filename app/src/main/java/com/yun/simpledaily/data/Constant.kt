@@ -66,4 +66,10 @@ object Constant {
     val SHARED_LOCATION_KEY = "location"
     val NAVER_SEARCH_URL = "https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=0&ie=utf8&query="
 
+    val MEMO_WRITE_SCREEN = 0
+    val MEMO_LIST_SCREEN = 1
+    val MEMO_DETAIL_SCREEN = 2
+
+
+
 }

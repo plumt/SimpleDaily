@@ -53,6 +53,7 @@
                     android:shadowColor="#33000000"
                     android:shadowDx="3.0"
                     android:shadowDy="3.0"
+                    android:includeFontPadding="false"
                     android:shadowRadius="1.0"
                     android:text="@{Constant.INSTANCE.LOCATION_SETTING + `   (` + location.subTitle + `)`}"
                     android:textColor="@color/color_FBA53B"

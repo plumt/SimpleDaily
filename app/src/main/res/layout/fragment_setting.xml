@@ -54,6 +54,7 @@
                     android:text="@{Constant.INSTANCE.SETTING}"
                     android:textColor="@color/color_FBA53B"
                     android:textSize="16sp"
+                    android:includeFontPadding="false"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="@id/gl_start"

@@ -2,12 +2,14 @@ package com.yun.simpledaily.ui.memo
 
 import android.app.Application
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.yun.simpledaily.R
 import com.yun.simpledaily.base.BaseViewModel
 import com.yun.simpledaily.base.ListLiveData
 import com.yun.simpledaily.data.Constant
 import com.yun.simpledaily.data.Constant.MEMO
+import com.yun.simpledaily.data.Constant.MEMO_LIST_SCREEN
 import com.yun.simpledaily.data.Constant.TAG
 import com.yun.simpledaily.data.model.MemoModel
 import com.yun.simpledaily.data.model.MemoModels
@@ -24,35 +26,12 @@ class MemoViewModel(
 ) : BaseViewModel(application){
 
     val memoList = ListLiveData<MemoModels>()
+    val screen = MutableLiveData(MEMO_LIST_SCREEN)
+    val selectMemo = MutableLiveData<MemoModels>()
 
-    var a = 0
+    val updateMode = MutableLiveData(false)
 
-    init {
-        selectMemoList()
-//        insetMemo()
-    }
-
-    fun insetMemo(){
-        a++
-        viewModelScope.async {
-            try {
-                launch(newSingleThreadContext(MEMO)) {
-                    db.memoDao().insertMemo(MemoModel(
-                        title = "title" + a.toString(),
-                        memo = "memo" + a.toString()
-                    ))
-                }.join()
-                if(a < 2){
-                    insetMemo()
-                } else{
-                    selectMemoList()
-                }
-            } catch (e: Exception){
-                Log.e(TAG,"${e.message}")
-                e.printStackTrace()
-            }
-        }
-    }
+    val isSaveButtonClick = MutableLiveData(false)
 
     fun selectMemoList(){
         viewModelScope.async {
@@ -60,7 +39,7 @@ class MemoViewModel(
                 val list = arrayListOf<MemoModels>()
                 launch(newSingleThreadContext(MEMO)) {
                     db.memoDao().selectMemo().forEachIndexed { index, memoModel ->
-                        list.add(MemoModels(index,0,memoModel.title, memoModel.memo))
+                        list.add(MemoModels(index,0, memoModel.id, memoModel.title, memoModel.memo))
                     }
                 }.join()
                 memoList.value = list

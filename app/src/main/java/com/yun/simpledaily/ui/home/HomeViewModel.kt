@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.yun.simpledaily.R
 import com.yun.simpledaily.base.BaseViewModel
 import com.yun.simpledaily.base.ListLiveData
+import com.yun.simpledaily.data.Constant
 import com.yun.simpledaily.data.Constant.COMPARE_WEATHER
 import com.yun.simpledaily.data.Constant.DUST
 import com.yun.simpledaily.data.Constant.DUST_UV
@@ -42,7 +43,9 @@ import com.yun.simpledaily.data.Constant.WEEK_PRECIPITATION_DETAIL
 import com.yun.simpledaily.data.Constant.WEEK_TIME
 import com.yun.simpledaily.data.Constant.WEEK_WEATHER_IMG
 import com.yun.simpledaily.data.model.HourlyWeatherModel
+import com.yun.simpledaily.data.model.MemoModels
 import com.yun.simpledaily.data.model.RealTimeModel
+import com.yun.simpledaily.data.repository.DB
 import com.yun.simpledaily.data.repository.api.Api
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
@@ -53,7 +56,8 @@ import org.jsoup.select.Elements
 
 class HomeViewModel(
     application: Application,
-    private val api: Api
+    private val api: Api,
+    private val db: DB
 ) : BaseViewModel(application) {
 
     val imagePath = MutableLiveData("")
@@ -85,12 +89,30 @@ class HomeViewModel(
         apiCnt = 2
 //        addWeather()
         realtime()
+        memo()
 
         //TODO 인터넷 원하는 링크 바로가기 기능도 추가
         //TODO 캘린더로 일정 관리 기능 추가
         //TODO 메모 기능 추가
         //TODO 코로나 확진자수 필요한지
         //TODO 원하는 종목 주가 https://finance.daum.net/domestic/search?q=메지온
+    }
+
+    private fun memo(){
+        viewModelScope.async {
+            try {
+                val list = arrayListOf<MemoModels>()
+                launch(newSingleThreadContext(Constant.MEMO)) {
+                    db.memoDao().selectMemo5().forEachIndexed { index, memoModel ->
+                        Log.d(TAG,"result : ${memoModel}")
+                    }
+                }.join()
+
+            } catch (e: java.lang.Exception){
+                Log.e(TAG,"${e.message}")
+                e.printStackTrace()
+            }
+        }
     }
 
     private fun realtime() {

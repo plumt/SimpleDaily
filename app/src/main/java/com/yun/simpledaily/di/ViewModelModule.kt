@@ -5,6 +5,9 @@ import com.yun.simpledaily.ui.home.HomeViewModel
 import com.yun.simpledaily.ui.location.LocationViewModel
 import com.yun.simpledaily.ui.main.MainViewModel
 import com.yun.simpledaily.ui.memo.MemoViewModel
+import com.yun.simpledaily.ui.memo.viewpager.detail.MemoDetailViewModel
+import com.yun.simpledaily.ui.memo.viewpager.list.MemoListViewModel
+import com.yun.simpledaily.ui.memo.viewpager.write.MemoWriteViewModel
 import com.yun.simpledaily.ui.setting.SettingViewModel
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
@@ -17,7 +20,7 @@ val viewModelModule = module {
     }
 
     viewModel {
-        HomeViewModel(get(), get(named("signal")))
+        HomeViewModel(get(), get(named("signal")), get())
     }
 
     viewModel {
@@ -34,6 +37,18 @@ val viewModelModule = module {
 
     viewModel {
         LocationViewModel(get(), get(named("location")))
+    }
+
+    viewModel {
+        MemoListViewModel(get())
+    }
+
+    viewModel {
+        MemoDetailViewModel(get(), get())
+    }
+
+    viewModel {
+        MemoWriteViewModel(get(), get())
     }
 }
 

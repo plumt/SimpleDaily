@@ -83,8 +83,8 @@ object Util {
     fun uvCheck(str: String?): Int {
         return if (str == null) 0
         else when {
-//            str.contains("좋음") -> GOOD
-//            str.contains("보통") -> NOMAL
+            str.contains("좋음") -> GOOD
+            str.contains("보통") -> NOMAL
             str.contains("매우") -> WORST
             str.contains("높음") -> BAD
             else -> 0

@@ -218,7 +218,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/mcv_udust"
                     app:layout_constraintTop_toTopOf="@id/mcv_dust"
-                    app:strokeColor="@{Util.INSTANCE.uvCheck(uv) == Constant.INSTANCE.BAD ? @color/color_FBA53B : Util.INSTANCE.uvCheck(uv) == Constant.INSTANCE.WORST ? @color/color_FB3B3B : @color/color_cccccc}"
+                    app:strokeColor="@{Util.INSTANCE.uvCheck(uv) == Constant.INSTANCE.BAD ? @color/color_FBA53B : Util.INSTANCE.uvCheck(uv) == Constant.INSTANCE.WORST ? @color/color_FB3B3B : Util.INSTANCE.uvCheck(uv) == Constant.INSTANCE.NOMAL ? @color/color_2ED33E : Util.INSTANCE.uvCheck(uv) == Constant.INSTANCE.NOMAL ? @color/color_297EFF : @color/color_cccccc}"
                     app:strokeWidth="1dp">
 
                     <TextView
@@ -230,7 +230,7 @@
                         android:includeFontPadding="false"
                         android:singleLine="true"
                         android:text="@{uv}"
-                        android:textColor="@{Util.INSTANCE.uvCheck(uv) == Constant.INSTANCE.BAD ? @color/color_FBA53B : Util.INSTANCE.uvCheck(uv) == Constant.INSTANCE.WORST ? @color/color_FB3B3B : @color/color_cccccc}"
+                        android:textColor="@{Util.INSTANCE.uvCheck(uv) == Constant.INSTANCE.BAD ? @color/color_FBA53B : Util.INSTANCE.uvCheck(uv) == Constant.INSTANCE.WORST ? @color/color_FB3B3B : Util.INSTANCE.uvCheck(uv) == Constant.INSTANCE.NOMAL ? @color/color_2ED33E : Util.INSTANCE.uvCheck(uv) == Constant.INSTANCE.NOMAL ? @color/color_297EFF : @color/color_cccccc}"
                         android:textSize="9sp" />
                 </com.google.android.material.card.MaterialCardView>
 
