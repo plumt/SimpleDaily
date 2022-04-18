@@ -26,7 +26,7 @@
             android:onClick="@{(v) -> memoListener.onItemClick(itemMemo, v)}"
             app:cardCornerRadius="0dp"
             app:cardElevation="0dp"
-            app:rippleColor="@color/color_00FFFFFF">
+            app:rippleColor="@{itemMemo.ripple ? @color/gray : @color/color_00FFFFFF}">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"

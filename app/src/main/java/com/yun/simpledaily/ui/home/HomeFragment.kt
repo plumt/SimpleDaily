@@ -16,11 +16,10 @@ import com.yun.simpledaily.base.BaseRecyclerAdapter
 import com.yun.simpledaily.data.Constant.NAVER_SEARCH_URL
 import com.yun.simpledaily.data.Constant.TAG
 import com.yun.simpledaily.data.model.HourlyWeatherModel
+import com.yun.simpledaily.data.model.MemoModel
+import com.yun.simpledaily.data.model.MemoModels
 import com.yun.simpledaily.data.model.RealTimeModel
-import com.yun.simpledaily.databinding.FragmentHomeBinding
-import com.yun.simpledaily.databinding.ItemHourlyWeatherBinding
-import com.yun.simpledaily.databinding.ItemPopularNewsBinding
-import com.yun.simpledaily.databinding.ItemRealtimeTop10Binding
+import com.yun.simpledaily.databinding.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class HomeFragment
@@ -59,6 +58,19 @@ class HomeFragment
         }
 
         binding.apply {
+
+            rvMemo.run {
+                adapter = object : BaseRecyclerAdapter.Create<MemoModels, ItemMemoBinding>(
+                    R.layout.item_memo,
+                    bindingVariableId = BR.itemMemo,
+                    bindingListener = BR.memoListener
+                ){
+                    override fun onItemClick(item: MemoModels, view: View) {
+                        Toast.makeText(requireContext(),item.memo,Toast.LENGTH_SHORT).show()
+
+                    }
+                }
+            }
 
             rvHourlyWeather.run {
                 layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)

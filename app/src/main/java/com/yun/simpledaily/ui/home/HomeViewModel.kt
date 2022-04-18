@@ -43,6 +43,7 @@ import com.yun.simpledaily.data.Constant.WEEK_PRECIPITATION_DETAIL
 import com.yun.simpledaily.data.Constant.WEEK_TIME
 import com.yun.simpledaily.data.Constant.WEEK_WEATHER_IMG
 import com.yun.simpledaily.data.model.HourlyWeatherModel
+import com.yun.simpledaily.data.model.MemoModel
 import com.yun.simpledaily.data.model.MemoModels
 import com.yun.simpledaily.data.model.RealTimeModel
 import com.yun.simpledaily.data.repository.DB
@@ -81,6 +82,8 @@ class HomeViewModel(
 
     val searchLocation = MutableLiveData("")
 
+    val memoList = ListLiveData<MemoModels>()
+
     init {
         callApiList()
     }
@@ -103,11 +106,11 @@ class HomeViewModel(
             try {
                 val list = arrayListOf<MemoModels>()
                 launch(newSingleThreadContext(Constant.MEMO)) {
-                    db.memoDao().selectMemo5().forEachIndexed { index, memoModel ->
-                        Log.d(TAG,"result : ${memoModel}")
+                    db.memoDao().selectMemo5().forEach { memoModel ->
+                        list.add(0,MemoModels(memoModel.id.toInt(),0, memoModel.id, memoModel.title, memoModel.memo, true))
                     }
                 }.join()
-
+                memoList.value = list
             } catch (e: java.lang.Exception){
                 Log.e(TAG,"${e.message}")
                 e.printStackTrace()

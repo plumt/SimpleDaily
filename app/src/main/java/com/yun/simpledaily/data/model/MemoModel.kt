@@ -18,5 +18,6 @@ data class MemoModels(
     override var viewType: Int = 0,
     var id_: Long,
     var title: String = "",
-    var memo: String = ""
+    var memo: String = "",
+    var ripple: Boolean = false
 ) : Item()
