@@ -1,6 +1,16 @@
 <resources>
     <string name="app_name">SimpleDaily</string>
 
+<!--    <string name="admob_app_id"></string>-->
+<!--    <string name="admob_native_id"></string>-->
+<!--    <string name="admob_front_id"></string>-->
+<!--    <string name="admob_banner_id"></string>-->
+
+    <string name="admob_app_test_id">ca-app-pub-3940256099942544~3347511713</string>
+    <string name="admob_native_test_id">ca-app-pub-3940256099942544/2247696110</string>
+<!--    <string name="admob_front_test_id">ca-app-pub-7669498576619816/8560478693</string>-->
+<!--    <string name="admob_banner_test_id">ca-app-pub-3940256099942544/6300978111</string>-->
+
     <string name="signal_url">https://api.signal.bz</string>
     <string name="weather_url">https://search.naver.com/search.naver?where=nexearch&amp;sm=top_hty&amp;fbm=1&amp;ie=utf8&amp;query=</string>
     <string name="weather_img_url">https://ssl.pstatic.net/sstatic/keypage/outside/scui/weather_new_new/img/weather_svg/</string>
@@ -13,10 +23,15 @@
     <string name="hourly">hourly</string>
     <string name="week">week</string>
     <string name="news">news</string>
+    <string name="memo">memo</string>
+    <string name="weather">weather</string>
 
     <string name="realtime_top10">실시간 인기 검색어</string>
     <string name="realtime_popular_news">인기 뉴스</string>
     <string name="press_news">언론사별 가장 많이 본 뉴스</string>
+
+    <string name="currently_memo">최근 등록한 메모</string>
+    <string name="no_insert_memo">등록된 메모가 없습니다.</string>
 
     <string name="loading_text">데이터를 불러오는 중입니다.</string>
 
@@ -37,5 +52,13 @@
 
     <string name="toast_save">저장하였습니다.</string>
     <string name="toast_delete">삭제하였습니다.</string>
+    <string name="toast_update">수정하였습니다.</string>
+
+    <string name="delete_question">메모를 삭제하시겠습니까?</string>
+    <string name="back_question">저장되지 않은 메모가 있습니다.\n뒤로 이동하시겠습니까?</string>
+    <string name="save_question">제목과 본문 내용이 공백입니다.</string>
+
+    <string name="all_memo">메모 모두 보기</string>
+    <string name="no_location_setting">지역 설정하기</string>
 
 </resources>

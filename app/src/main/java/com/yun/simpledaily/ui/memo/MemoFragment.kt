@@ -9,12 +9,14 @@ import com.yun.simpledaily.R
 import com.yun.simpledaily.BR
 import com.yun.simpledaily.base.BaseBindingFragment
 import com.yun.simpledaily.data.Constant.MEMO_DETAIL_SCREEN
+import com.yun.simpledaily.data.Constant.MEMO_GO_LIST_SCREEN
 import com.yun.simpledaily.data.Constant.MEMO_LIST_SCREEN
 import com.yun.simpledaily.data.Constant.MEMO_WRITE_SCREEN
 import com.yun.simpledaily.databinding.FragmentMemoBinding
 import com.yun.simpledaily.ui.memo.viewpager.detail.MemoDetailFragment
 import com.yun.simpledaily.ui.memo.viewpager.list.MemoListFragment
 import com.yun.simpledaily.ui.memo.viewpager.write.MemoWriteFragment
+import com.yun.simpledaily.ui.popup.TwoButtonPopup
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class MemoFragment
@@ -28,6 +30,13 @@ class MemoFragment
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+//        sharedViewModel.selectMemoId.observe(viewLifecycleOwner){
+//            if(it != -1L){
+//                viewModel.homeSelectMemoId.value = it
+//                sharedViewModel.selectMemoId.value = -1
+//            }
+//        }
+
         binding.apply {
 
             imgAddMemo.setOnClickListener {
@@ -35,9 +44,7 @@ class MemoFragment
             }
 
             tvDelete.setOnClickListener {
-                Toast.makeText(requireContext(), requireContext().getString(R.string.toast_delete), Toast.LENGTH_SHORT).show()
-                viewModel.updateMode.value = false
-                viewModel.screen.value = MEMO_LIST_SCREEN
+                showPopup()
             }
 
             tvUpdate.setOnClickListener {
@@ -46,16 +53,16 @@ class MemoFragment
 
             tvBack.setOnClickListener {
                 viewModel.updateMode.value = false
-                viewModel.screen.value = MEMO_LIST_SCREEN
+                viewModel.isBackButtonCLick.value = true
+//                viewModel.screen.value = MEMO_LIST_SCREEN
             }
 
-            binding.tvSave.setOnClickListener {
-                Toast.makeText(requireContext(), requireContext().getString(R.string.toast_save), Toast.LENGTH_SHORT).show()
-                viewModel.updateMode.value = false
+            tvSave.setOnClickListener {
                 viewModel.isSaveButtonClick.value = true
-                if(viewModel.screen.value == MEMO_WRITE_SCREEN){
-                    viewModel.screen.value = MEMO_LIST_SCREEN
-                }
+//                viewModel.updateMode.value = false
+//                if(viewModel.screen.value == MEMO_WRITE_SCREEN){
+//                    viewModel.screen.value = MEMO_LIST_SCREEN
+//                }
             }
 
             vpMemo.run {
@@ -80,15 +87,37 @@ class MemoFragment
         viewModel.apply {
             screen.observe(viewLifecycleOwner) {
                 if (it == MEMO_LIST_SCREEN || it == MEMO_DETAIL_SCREEN || it == MEMO_WRITE_SCREEN) {
+                    sharedViewModel.memoScreen.value = it
                     binding.vpMemo.setCurrentItem(it, true)
                 }
                 if(it == MEMO_LIST_SCREEN){
-                    viewModel.selectMemoList()
+                    viewModel.selectMemoList(sharedViewModel.selectMemoId.value!!)
+                    if(sharedViewModel.selectMemoId.value != -1L){
+                        sharedViewModel.selectMemoId.value = -1
+                    }
+
                 }
             }
 
 
         }
-
+    }
+    private fun showPopup(){
+        TwoButtonPopup().apply {
+            showPopup(
+                requireContext(),
+                requireContext().getString(R.string.notice),
+                requireContext().getString(R.string.delete_question),
+                secondBtn = requireContext().getString(R.string.memo_delete)
+            )
+            setDialogListener(object : TwoButtonPopup.CustomDialogListener {
+                override fun onResultClicked(result: Boolean) {
+                    if (result) {
+                        viewModel.updateMode.value = false
+                        viewModel.isDeleteButtonClick.value = true
+                    }
+                }
+            })
+        }
     }
 }

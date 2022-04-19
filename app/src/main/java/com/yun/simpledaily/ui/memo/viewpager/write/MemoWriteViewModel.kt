@@ -5,6 +5,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.yun.simpledaily.R
 import com.yun.simpledaily.base.BaseViewModel
 import com.yun.simpledaily.data.Constant
 import com.yun.simpledaily.data.model.MemoModel
@@ -33,10 +34,7 @@ class MemoWriteViewModel(
                         )
                     )
                 }.join()
-                etTitle.value = ""
-                etMemo.value = ""
-                Toast.makeText(mContext, "작성하였습니다.", Toast.LENGTH_SHORT).show()
-
+                Toast.makeText(mContext, mContext.getString(R.string.toast_save), Toast.LENGTH_SHORT).show()
             } catch (e: Exception) {
                 Log.e(Constant.TAG, "${e.message}")
                 e.printStackTrace()
@@ -44,6 +42,11 @@ class MemoWriteViewModel(
 
 
         }
+    }
+
+    fun clearMemo(){
+        etTitle.value = ""
+        etMemo.value = ""
     }
 
 }

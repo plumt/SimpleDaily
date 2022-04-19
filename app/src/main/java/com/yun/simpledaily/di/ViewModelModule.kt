@@ -1,5 +1,6 @@
 package com.yun.simpledaily.di
 
+import com.yun.simpledaily.ui.board.BoardSettingViewModel
 import com.yun.simpledaily.ui.calendar.CalendarViewModel
 import com.yun.simpledaily.ui.home.HomeViewModel
 import com.yun.simpledaily.ui.location.LocationViewModel
@@ -20,7 +21,7 @@ val viewModelModule = module {
     }
 
     viewModel {
-        HomeViewModel(get(), get(named("signal")), get())
+        HomeViewModel(get(), get(named("signal")), get(), get())
     }
 
     viewModel {
@@ -49,6 +50,10 @@ val viewModelModule = module {
 
     viewModel {
         MemoWriteViewModel(get(), get())
+    }
+
+    viewModel {
+        BoardSettingViewModel(get(), get())
     }
 }
 

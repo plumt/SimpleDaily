@@ -42,22 +42,22 @@
             app:layout_constraintStart_toStartOf="@id/gl_start"
             app:layout_constraintTop_toTopOf="parent" />
 
-<!--        <com.google.android.ads.nativetemplates.TemplateView-->
-<!--            android:id="@+id/my_template"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:layout_marginTop="15dp"-->
-<!--            app:gnt_template_type="@layout/gnt_medium_template_view"-->
-<!--            app:layout_constraintTop_toBottomOf="@id/tv_title" />-->
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
+        <com.google.android.ads.nativetemplates.TemplateView
             android:id="@+id/my_template"
-            android:text="광고"
-            android:gravity="center"
-            app:layout_constraintTop_toBottomOf="@id/tv_title"
-            />
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="15dp"
+            app:gnt_template_type="@layout/gnt_medium_template_view"
+            app:layout_constraintTop_toBottomOf="@id/tv_title" />
+
+<!--        <TextView-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="200dp"-->
+<!--            android:id="@+id/my_template"-->
+<!--            android:text="광고"-->
+<!--            android:gravity="center"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/tv_title"-->
+<!--            />-->
 
         <TextView
             android:id="@+id/tv_contents"
