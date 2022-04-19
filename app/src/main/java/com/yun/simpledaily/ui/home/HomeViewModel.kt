@@ -127,8 +127,10 @@ class HomeViewModel(
                 val list = arrayListOf<MemoModels>()
                 launch(newSingleThreadContext(Constant.MEMO)) {
                     //TODO 메모 개수가 3개보다 적으면, 그 숫자만큼 last 값으로 해줘야 함
-                    db.memoDao().selectMemo3().forEachIndexed { index, memoModel ->
-                        list.add(MemoModels(index,0, memoModel.id, memoModel.title, memoModel.memo, true, 2))
+                    val data = db.memoDao().selectMemo3()
+                    val size = if(data.isEmpty()) 0 else data.size - 1
+                    data.forEachIndexed { index, memoModel ->
+                        list.add(MemoModels(index,0, memoModel.id, memoModel.title, memoModel.memo, true, size))
                     }
                 }.join()
                 memoList.value = list
