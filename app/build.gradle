@@ -3,11 +3,12 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'kotlin-parcelize'
-//    id 'com.google.gms.google-services'
+    id 'com.google.gms.google-services'
 }
 
 android {
-    compileSdk 30
+    compileSdkVersion 30
+    buildToolsVersion "30.0.3"
 
     defaultConfig {
         applicationId "com.yun.simpledaily"
@@ -51,7 +52,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.3.0'
     implementation 'com.google.android.material:material:1.3.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-//    implementation 'com.google.firebase:firebase-messaging-ktx:22.0.0'
+    implementation 'com.google.firebase:firebase-messaging-ktx:22.0.0'
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
@@ -138,11 +139,11 @@ dependencies {
 //    implementation "com.polidea.rxandroidble2:rxandroidble:1.12.1"
 
     // 파이어 베이스
-//    implementation platform('com.google.firebase:firebase-bom:29.2.1')
-//    implementation 'com.google.firebase:firebase-messaging:20.1.2'
-//    implementation 'com.google.firebase:firebase-config:19.1.4'
-//    implementation 'com.google.firebase:firebase-config-ktx'
-//    implementation 'com.google.firebase:firebase-analytics:17.4.3'
+    implementation platform('com.google.firebase:firebase-bom:29.2.1')
+    implementation 'com.google.firebase:firebase-messaging:20.1.2'
+    implementation 'com.google.firebase:firebase-config:19.1.4'
+    implementation 'com.google.firebase:firebase-config-ktx'
+    implementation 'com.google.firebase:firebase-analytics:17.4.3'
 
 
     implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.0'
@@ -151,9 +152,7 @@ dependencies {
     //textview readmore
     implementation 'kr.co.prnd:readmore-textview:1.0.0'
 
-//    implementation project(':nativetemplates')
-
-//    implementation 'com.google.firebase:firebase-ads:19.0.0'
+    implementation 'com.google.firebase:firebase-ads:19.0.0'
 
     //google gps
 //    implementation 'com.google.android.gms:play-services-maps:17.0.0'
@@ -165,8 +164,8 @@ dependencies {
 
     implementation 'com.github.corouteam:GlideToVectorYou:v2.0.0'
 
-    implementation 'com.android.support:design:29.0.0'
+//    implementation 'com.android.support:design:29.0.0'
 
-    // indicator
-    implementation 'com.tbuonomo.andrui:viewpagerdotsindicator:4.1.2'
+    implementation project(':nativetemplates')
+
 }

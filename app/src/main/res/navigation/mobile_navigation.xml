@@ -55,6 +55,9 @@
         <action
             android:id="@+id/action_settingFragment_to_locationFragment"
             app:destination="@id/locationFragment" />
+        <action
+            android:id="@+id/action_settingFragment_to_boardSettingFragment"
+            app:destination="@id/boardSettingFragment" />
     </fragment>
 
     <fragment
@@ -62,5 +65,12 @@
         android:id="@+id/locationFragment"
         android:name="com.yun.simpledaily.ui.location.LocationFragment"
         android:label="지역" />
+
+    <fragment
+        tools:layout="@layout/fragment_board_setting"
+        android:id="@+id/boardSettingFragment"
+        android:name="com.yun.simpledaily.ui.board.BoardSettingFragment"
+        android:label="BoardSettingFragment" />
+
 
 </navigation>

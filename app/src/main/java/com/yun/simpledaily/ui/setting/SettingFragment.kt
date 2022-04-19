@@ -8,6 +8,7 @@ import com.yun.simpledaily.BR
 import com.yun.simpledaily.base.BaseBindingFragment
 import com.yun.simpledaily.base.BaseRecyclerAdapter
 import com.yun.simpledaily.data.Constant
+import com.yun.simpledaily.data.Constant.DAILY_BOARED_SETTING
 import com.yun.simpledaily.data.Constant.LOCATION_SETTING
 import com.yun.simpledaily.data.model.SettingModel
 import com.yun.simpledaily.databinding.FragmentSettingBinding
@@ -36,6 +37,7 @@ class SettingFragment
                 ){
                     override fun onItemClick(item: SettingModel.Setting, view: View) {
                         when(item.title){
+                            DAILY_BOARED_SETTING -> navigate(R.id.action_settingFragment_to_boardSettingFragment)
                             LOCATION_SETTING -> navigate(R.id.action_settingFragment_to_locationFragment)
                         }
                     }

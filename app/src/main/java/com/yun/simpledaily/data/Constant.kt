@@ -5,6 +5,10 @@ object Constant {
 
     val WEATHER = "weather"
     val MEMO = "memo"
+    val WEEK = "week"
+    val _HOURLY = "hourly"
+    val NEWS = "news"
+    val REAL_TIME = "realtime"
 
     val WEATHER_LOCATION_NM = ".title_area._area_panel .title"
     val TEMPERATURE = ".temperature_text"
@@ -69,6 +73,7 @@ object Constant {
     val MEMO_WRITE_SCREEN = 0
     val MEMO_LIST_SCREEN = 1
     val MEMO_DETAIL_SCREEN = 2
+    val MEMO_GO_LIST_SCREEN = 4
 
 
 

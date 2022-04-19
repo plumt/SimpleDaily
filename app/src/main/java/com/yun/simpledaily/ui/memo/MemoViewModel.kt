@@ -9,6 +9,7 @@ import com.yun.simpledaily.base.BaseViewModel
 import com.yun.simpledaily.base.ListLiveData
 import com.yun.simpledaily.data.Constant
 import com.yun.simpledaily.data.Constant.MEMO
+import com.yun.simpledaily.data.Constant.MEMO_DETAIL_SCREEN
 import com.yun.simpledaily.data.Constant.MEMO_LIST_SCREEN
 import com.yun.simpledaily.data.Constant.TAG
 import com.yun.simpledaily.data.model.MemoModel
@@ -32,27 +33,30 @@ class MemoViewModel(
     val updateMode = MutableLiveData(false)
 
     val isSaveButtonClick = MutableLiveData(false)
+    val isDeleteButtonClick = MutableLiveData(false)
+    val isBackButtonCLick = MutableLiveData(false)
 
-    fun selectMemoList(){
+    fun selectMemoList(selectId: Long){
         viewModelScope.async {
             try {
                 val list = arrayListOf<MemoModels>()
                 launch(newSingleThreadContext(MEMO)) {
-                    db.memoDao().selectMemo().forEachIndexed { index, memoModel ->
-                        list.add(MemoModels(index,0, memoModel.id, memoModel.title, memoModel.memo))
+                    val data = db.memoDao().selectMemo()
+                    data.forEachIndexed { index, memoModel ->
+                        list.add(MemoModels(index,0, memoModel.id, memoModel.title, memoModel.memo, last = data.size - 1))
+                        if(memoModel.id == selectId){
+                            selectMemo.postValue(list[index])
+                        }
                     }
                 }.join()
                 memoList.value = list
-                Log.d(TAG,"test : ${memoList.value}")
+                if(selectId != -1L){
+                    screen.value = MEMO_DETAIL_SCREEN
+                }
             } catch (e: Exception){
                 Log.e(TAG,"${e.message}")
                 e.printStackTrace()
             }
-
-
         }
-
-
-
     }
 }

@@ -43,11 +43,11 @@ import com.yun.simpledaily.data.Constant.WEEK_PRECIPITATION_DETAIL
 import com.yun.simpledaily.data.Constant.WEEK_TIME
 import com.yun.simpledaily.data.Constant.WEEK_WEATHER_IMG
 import com.yun.simpledaily.data.model.HourlyWeatherModel
-import com.yun.simpledaily.data.model.MemoModel
 import com.yun.simpledaily.data.model.MemoModels
 import com.yun.simpledaily.data.model.RealTimeModel
 import com.yun.simpledaily.data.repository.DB
 import com.yun.simpledaily.data.repository.api.Api
+import com.yun.simpledaily.util.PreferenceManager
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.newSingleThreadContext
@@ -58,7 +58,8 @@ import org.jsoup.select.Elements
 class HomeViewModel(
     application: Application,
     private val api: Api,
-    private val db: DB
+    private val db: DB,
+    private val sharedPreferences: PreferenceManager
 ) : BaseViewModel(application) {
 
     val imagePath = MutableLiveData("")
@@ -83,9 +84,25 @@ class HomeViewModel(
     val searchLocation = MutableLiveData("")
 
     val memoList = ListLiveData<MemoModels>()
+    val memoSize = MutableLiveData(0)
+
+    val isMoveNav = MutableLiveData("")
+
+    val isShowWeather = MutableLiveData<Boolean>()
+    val isShowHourly = MutableLiveData<Boolean>()
+    val isShowRealTime = MutableLiveData<Boolean>()
+    val isShowNews = MutableLiveData<Boolean>()
+    val isShowMemo = MutableLiveData<Boolean>()
 
     init {
         callApiList()
+
+        isShowWeather.value = sharedPreferences.getString(mContext, WEATHER).toBoolean()
+        isShowHourly.value = sharedPreferences.getString(mContext, Constant._HOURLY).toBoolean()
+        isShowRealTime.value = sharedPreferences.getString(mContext, Constant.REAL_TIME).toBoolean()
+        isShowNews.value = sharedPreferences.getString(mContext, Constant.NEWS).toBoolean()
+        isShowMemo.value = sharedPreferences.getString(mContext, Constant.MEMO).toBoolean()
+
     }
 
     fun callApiList(){
@@ -94,11 +111,14 @@ class HomeViewModel(
         realtime()
         memo()
 
+        //TODO 날씨
+        //TODO 뉴스 - ㅇ
         //TODO 인터넷 원하는 링크 바로가기 기능도 추가
         //TODO 캘린더로 일정 관리 기능 추가
-        //TODO 메모 기능 추가
+        //TODO 메모 기능 추가 - ㅇ
         //TODO 코로나 확진자수 필요한지
         //TODO 원하는 종목 주가 https://finance.daum.net/domestic/search?q=메지온
+        //TODO 환율 정보
     }
 
     private fun memo(){
@@ -106,11 +126,13 @@ class HomeViewModel(
             try {
                 val list = arrayListOf<MemoModels>()
                 launch(newSingleThreadContext(Constant.MEMO)) {
-                    db.memoDao().selectMemo5().forEach { memoModel ->
-                        list.add(0,MemoModels(memoModel.id.toInt(),0, memoModel.id, memoModel.title, memoModel.memo, true))
+                    //TODO 메모 개수가 3개보다 적으면, 그 숫자만큼 last 값으로 해줘야 함
+                    db.memoDao().selectMemo3().forEachIndexed { index, memoModel ->
+                        list.add(MemoModels(index,0, memoModel.id, memoModel.title, memoModel.memo, true, 2))
                     }
                 }.join()
                 memoList.value = list
+                memoSize.value = memoList.sizes()
             } catch (e: java.lang.Exception){
                 Log.e(TAG,"${e.message}")
                 e.printStackTrace()
@@ -148,16 +170,13 @@ class HomeViewModel(
     fun addWeather() {
         loading.value = true
 //        https://ssl.pstatic.net/sstatic/keypage/outside/scui/weather_new_new/img/weather_svg/icon_flat_wt41.svg
-        // 1부터 41까지 날씨 이미지
 
         viewModelScope.async {
             try {
                 var doc: Document? = null
                 launch(newSingleThreadContext(WEATHER)) {
-
                     // 전체 데이터
                     doc = Jsoup.connect(mContext.getString(R.string.weather_url) + searchLocation.value + SEARCH_WEATHER).get()
-
                 }.join()
 
                 setNowWeather(doc!!)
@@ -269,8 +288,6 @@ class HomeViewModel(
                 str.contains(UV) -> uv.value = str
             }
         }
-
-        Log.d(TAG,"dust : ${doc.select(DUST_UV)}")
     }
 
     // 시간별 날씨
@@ -303,6 +320,10 @@ class HomeViewModel(
         }.svg"
 
     fun onClick(type: String){
+        isMoveNav.value = type
+//        when(type){
+//            Constant.MEMO -> isMoveNav.value = MEMO
+//        }
         Toast.makeText(mContext,"click : $type",Toast.LENGTH_SHORT).show()
     }
 }

@@ -3,6 +3,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="itemMemo"
             type="com.yun.simpledaily.data.model.MemoModels" />
@@ -93,6 +95,7 @@
         </com.google.android.material.card.MaterialCardView>
 
         <View
+            android:visibility="@{itemMemo.id == itemMemo.last ? View.INVISIBLE : View.VISIBLE}"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/color_f4f4f4" />

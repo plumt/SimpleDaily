@@ -19,5 +19,6 @@ data class MemoModels(
     var id_: Long,
     var title: String = "",
     var memo: String = "",
-    var ripple: Boolean = false
+    var ripple: Boolean = false,
+    var last: Int = -1
 ) : Item()

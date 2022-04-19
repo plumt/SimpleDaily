@@ -1,2 +1,3 @@
 rootProject.name = "SimpleDaily"
 include ':app'
+include ':nativetemplates'

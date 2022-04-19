@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "835037832900",
+    "project_id": "simpledaily-4d83e",
+    "storage_bucket": "simpledaily-4d83e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:835037832900:android:0d71e163bcb8b436f74b91",
+        "android_client_info": {
+          "package_name": "com.yun.simpledaily"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "835037832900-s23ab1gtjq8odjr5n27q4gdvelg1fleq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.yun.simpledaily",
+            "certificate_hash": "6abee7ba4f5ea15aab87ee37bab544d5490ea0d8"
+          }
+        },
+        {
+          "client_id": "835037832900-sn0q1753kfq5rojvjhscrmvjhevi2fel.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDFfs_MpVMDjABZ1996SdaMNF0sVju9Qrg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "835037832900-sn0q1753kfq5rojvjhscrmvjhevi2fel.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

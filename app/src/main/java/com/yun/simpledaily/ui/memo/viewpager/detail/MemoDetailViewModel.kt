@@ -5,6 +5,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.yun.simpledaily.R
 import com.yun.simpledaily.base.BaseViewModel
 import com.yun.simpledaily.data.Constant
 import com.yun.simpledaily.data.model.MemoModel
@@ -24,6 +25,7 @@ class MemoDetailViewModel(
 
     val updateMode = MutableLiveData(false)
 
+
     val etTitle = MutableLiveData("")
     val etMemo = MutableLiveData("")
 
@@ -37,15 +39,26 @@ class MemoDetailViewModel(
                 launch(newSingleThreadContext(Constant.MEMO)) {
                     db.memoDao().updateMemo(MemoModel(selectMemo.value!!.id_,selectMemo.value!!.title,selectMemo.value!!.memo))
                 }.join()
-                Toast.makeText(mContext,"수정하였습니다.",Toast.LENGTH_SHORT).show()
-
+                Toast.makeText(mContext,mContext.getText(R.string.toast_update),Toast.LENGTH_SHORT).show()
             } catch (e: Exception){
                 Log.e(Constant.TAG,"${e.message}")
                 e.printStackTrace()
             }
-
-
         }
+    }
 
+    fun deleteMemo(screen: MutableLiveData<Int>){
+        viewModelScope.async {
+            try{
+                launch(newSingleThreadContext(Constant.MEMO)){
+                    db.memoDao().deleteMemo(selectMemo.value!!.id_)
+                }.join()
+                Toast.makeText(mContext,mContext.getString(R.string.toast_delete),Toast.LENGTH_SHORT).show()
+                screen.value = Constant.MEMO_LIST_SCREEN
+            } catch (e: Exception){
+                Log.e(Constant.TAG,"${e.message}")
+                e.printStackTrace()
+            }
+        }
     }
 }

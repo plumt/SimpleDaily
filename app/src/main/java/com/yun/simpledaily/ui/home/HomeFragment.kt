@@ -13,13 +13,17 @@ import com.yun.simpledaily.R
 import com.yun.simpledaily.BR
 import com.yun.simpledaily.base.BaseBindingFragment
 import com.yun.simpledaily.base.BaseRecyclerAdapter
+import com.yun.simpledaily.data.Constant.MEMO
 import com.yun.simpledaily.data.Constant.NAVER_SEARCH_URL
 import com.yun.simpledaily.data.Constant.TAG
+import com.yun.simpledaily.data.Constant.WEATHER
 import com.yun.simpledaily.data.model.HourlyWeatherModel
 import com.yun.simpledaily.data.model.MemoModel
 import com.yun.simpledaily.data.model.MemoModels
 import com.yun.simpledaily.data.model.RealTimeModel
 import com.yun.simpledaily.databinding.*
+import com.yun.simpledaily.ui.main.MainActivity
+import com.yun.simpledaily.ui.main.MainViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class HomeFragment
@@ -33,14 +37,21 @@ class HomeFragment
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        sharedViewModel.searchLocation.observe(viewLifecycleOwner){
+        sharedViewModel.searchLocation.observe(viewLifecycleOwner) {
             viewModel.searchLocation.value = it
         }
 
         viewModel.apply {
 
-            searchLocation.observe(viewLifecycleOwner){
-                if(it != "") addWeather()
+            isMoveNav.observe(viewLifecycleOwner) {
+                when (it) {
+                    MEMO -> (activity as MainActivity).binding.bottomNavView.selectedItemId = R.id.memo
+                    WEATHER -> (activity as MainActivity).binding.bottomNavView.selectedItemId = R.id.setting
+                }
+            }
+
+            searchLocation.observe(viewLifecycleOwner) {
+                if (it != "") addWeather()
                 else successCnt.value = successCnt.value!! + 1
             }
 
@@ -54,7 +65,6 @@ class HomeFragment
                     successCnt.value = 0
                 }
             }
-
         }
 
         binding.apply {
@@ -64,10 +74,10 @@ class HomeFragment
                     R.layout.item_memo,
                     bindingVariableId = BR.itemMemo,
                     bindingListener = BR.memoListener
-                ){
+                ) {
                     override fun onItemClick(item: MemoModels, view: View) {
-                        Toast.makeText(requireContext(),item.memo,Toast.LENGTH_SHORT).show()
-
+                        sharedViewModel.selectMemoId.value = item.id_
+                        (activity as MainActivity).binding.bottomNavView.selectedItemId = R.id.memo
                     }
                 }
             }
@@ -94,8 +104,7 @@ class HomeFragment
                         bindingListener = BR.realTimeTop10ItemListener
                     ) {
                     override fun onItemClick(item: RealTimeModel.Top10, view: View) {
-                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(NAVER_SEARCH_URL+item.keyword))
-                        startActivity(intent)
+                        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(NAVER_SEARCH_URL + item.keyword)))
                     }
                 }
             }
@@ -108,13 +117,10 @@ class HomeFragment
                         bindingListener = BR.popularNewsListener
                     ) {
                     override fun onItemClick(item: RealTimeModel.Articles, view: View) {
-                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(item.link))
-                        startActivity(intent)
+                        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(item.link)))
                     }
                 }
             }
-
         }
-
     }
 }
