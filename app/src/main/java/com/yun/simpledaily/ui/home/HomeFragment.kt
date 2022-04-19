@@ -46,8 +46,9 @@ class HomeFragment
             isMoveNav.observe(viewLifecycleOwner) {
                 when (it) {
                     MEMO -> (activity as MainActivity).binding.bottomNavView.selectedItemId = R.id.memo
-                    WEATHER -> (activity as MainActivity).binding.bottomNavView.selectedItemId = R.id.setting
+                    WEATHER ->(activity as MainActivity).binding.bottomNavView.selectedItemId = R.id.setting
                 }
+//                if(it != "")isMoveNav.value = ""
             }
 
             searchLocation.observe(viewLifecycleOwner) {

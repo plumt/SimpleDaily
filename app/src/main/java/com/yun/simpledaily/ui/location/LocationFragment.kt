@@ -105,7 +105,8 @@ class LocationFragment
             setDialogListener(object : OneButtonPopup.CustomDialogListener {
                 override fun onResultClicked(result: Boolean) {
                     if (result) {
-                        activity.navController.navigate(R.id.action_global_settingFragment)
+//                        activity.navController.navigate(R.id.action_global_settingFragment)
+                        activity.navController.popBackStack()
                     }
                 }
             })

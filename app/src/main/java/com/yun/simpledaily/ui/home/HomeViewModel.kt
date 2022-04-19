@@ -24,7 +24,10 @@ import com.yun.simpledaily.data.Constant.HOURLY_WEATHER_TIME
 import com.yun.simpledaily.data.Constant.HOURLY_WIND_DIRECTION
 import com.yun.simpledaily.data.Constant.HOURLY_WIND_NUM
 import com.yun.simpledaily.data.Constant.HOURLY_WIND_TIME
+import com.yun.simpledaily.data.Constant.MEMO
+import com.yun.simpledaily.data.Constant.NEWS
 import com.yun.simpledaily.data.Constant.NOW_WEATHER
+import com.yun.simpledaily.data.Constant.REAL_TIME
 import com.yun.simpledaily.data.Constant.SEARCH_WEATHER
 import com.yun.simpledaily.data.Constant.SUMMARY_LIST
 import com.yun.simpledaily.data.Constant.TAG
@@ -42,6 +45,7 @@ import com.yun.simpledaily.data.Constant.WEEK_PRECIPITATION
 import com.yun.simpledaily.data.Constant.WEEK_PRECIPITATION_DETAIL
 import com.yun.simpledaily.data.Constant.WEEK_TIME
 import com.yun.simpledaily.data.Constant.WEEK_WEATHER_IMG
+import com.yun.simpledaily.data.Constant._HOURLY
 import com.yun.simpledaily.data.model.HourlyWeatherModel
 import com.yun.simpledaily.data.model.MemoModels
 import com.yun.simpledaily.data.model.RealTimeModel
@@ -62,6 +66,12 @@ class HomeViewModel(
     private val sharedPreferences: PreferenceManager
 ) : BaseViewModel(application) {
 
+    val hourlyWeatherList = ListLiveData<HourlyWeatherModel.RS>()
+    val realTimeTop10 = ListLiveData<RealTimeModel.Top10>()
+    val popularNews = ListLiveData<RealTimeModel.Articles>()
+    val memoList = ListLiveData<MemoModels>()
+
+
     val imagePath = MutableLiveData("")
     val location = MutableLiveData("")
     val temperature = MutableLiveData("")
@@ -72,42 +82,47 @@ class HomeViewModel(
     val uDust = MutableLiveData("")
     val uv = MutableLiveData("")
 
-    val hourlyWeatherList = ListLiveData<HourlyWeatherModel.RS>()
-    val realTimeTop10 = ListLiveData<RealTimeModel.Top10>()
-    val popularNews = ListLiveData<RealTimeModel.Articles>()
-
-    val loading = MutableLiveData(false)
-
-    var apiCnt = 0
-    val successCnt = MutableLiveData(0)
-
-    val searchLocation = MutableLiveData("")
-
-    val memoList = ListLiveData<MemoModels>()
-    val memoSize = MutableLiveData(0)
-
     val isMoveNav = MutableLiveData("")
-
     val isShowWeather = MutableLiveData<Boolean>()
     val isShowHourly = MutableLiveData<Boolean>()
     val isShowRealTime = MutableLiveData<Boolean>()
     val isShowNews = MutableLiveData<Boolean>()
     val isShowMemo = MutableLiveData<Boolean>()
 
+
+    val searchLocation = MutableLiveData("")
+
+    val loading = MutableLiveData(false)
+
+    var apiCnt = 0
+    val successCnt = MutableLiveData(0)
+
+    val memoSize = MutableLiveData(0)
+
+
+
     init {
         callApiList()
+        preferencesCheck()
+    }
 
-        isShowWeather.value = sharedPreferences.getString(mContext, WEATHER).toBoolean()
-        isShowHourly.value = sharedPreferences.getString(mContext, Constant._HOURLY).toBoolean()
-        isShowRealTime.value = sharedPreferences.getString(mContext, Constant.REAL_TIME).toBoolean()
-        isShowNews.value = sharedPreferences.getString(mContext, Constant.NEWS).toBoolean()
-        isShowMemo.value = sharedPreferences.getString(mContext, Constant.MEMO).toBoolean()
-
+    private fun preferencesCheck(){
+        sharedPreferences.run {
+            if(getString(mContext, WEATHER) == "") setString(mContext, WEATHER,"true")
+            if(getString(mContext, _HOURLY) == "") setString(mContext, _HOURLY,"true")
+            if(getString(mContext, REAL_TIME) == "") setString(mContext, REAL_TIME,"true")
+            if(getString(mContext, NEWS) == "") setString(mContext, NEWS,"true")
+            if(getString(mContext, MEMO) == "") setString(mContext, MEMO,"true")
+            isShowWeather.value = getString(mContext, WEATHER).toBoolean()
+            isShowHourly.value = getString(mContext, _HOURLY).toBoolean()
+            isShowRealTime.value = getString(mContext, REAL_TIME).toBoolean()
+            isShowNews.value = getString(mContext, NEWS).toBoolean()
+            isShowMemo.value = getString(mContext, MEMO).toBoolean()
+        }
     }
 
     fun callApiList(){
         apiCnt = 2
-//        addWeather()
         realtime()
         memo()
 
@@ -126,9 +141,10 @@ class HomeViewModel(
             try {
                 val list = arrayListOf<MemoModels>()
                 launch(newSingleThreadContext(Constant.MEMO)) {
-                    //TODO 메모 개수가 3개보다 적으면, 그 숫자만큼 last 값으로 해줘야 함
-                    db.memoDao().selectMemo3().forEachIndexed { index, memoModel ->
-                        list.add(MemoModels(index,0, memoModel.id, memoModel.title, memoModel.memo, true, 2))
+                    val data = db.memoDao().selectMemo3()
+                    val size = if(data.isEmpty()) 0 else data.size - 1
+                    data.forEachIndexed { index, memoModel ->
+                        list.add(MemoModels(index,0, memoModel.id, memoModel.title, memoModel.memo, true, size))
                     }
                 }.join()
                 memoList.value = list
