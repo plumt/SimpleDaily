@@ -3,6 +3,11 @@ package com.yun.simpledaily.di
 import com.yun.simpledaily.ui.board.BoardSettingViewModel
 import com.yun.simpledaily.ui.calendar.CalendarViewModel
 import com.yun.simpledaily.ui.home.HomeViewModel
+import com.yun.simpledaily.ui.hourly.HourlyWeatherFragment
+import com.yun.simpledaily.ui.hourly.HourlyWeatherViewModel
+import com.yun.simpledaily.ui.hourly.viewpager.hum.HourlyHumViewModel
+import com.yun.simpledaily.ui.hourly.viewpager.rain.HourlyRainViewModel
+import com.yun.simpledaily.ui.hourly.viewpager.wind.HourlyWindViewModel
 import com.yun.simpledaily.ui.location.LocationViewModel
 import com.yun.simpledaily.ui.main.MainViewModel
 import com.yun.simpledaily.ui.memo.MemoViewModel
@@ -54,6 +59,22 @@ val viewModelModule = module {
 
     viewModel {
         BoardSettingViewModel(get(), get())
+    }
+
+    viewModel {
+        HourlyWeatherViewModel(get())
+    }
+
+    viewModel {
+        HourlyRainViewModel(get())
+    }
+
+    viewModel {
+        HourlyWindViewModel(get())
+    }
+
+    viewModel {
+        HourlyHumViewModel(get())
     }
 }
 

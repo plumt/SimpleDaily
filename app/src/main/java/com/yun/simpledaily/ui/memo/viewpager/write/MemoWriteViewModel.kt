@@ -31,16 +31,14 @@ class MemoWriteViewModel(
                         MemoModel(
                             title = etTitle.value!!,
                             memo = etMemo.value!!
-                        )
-                    )
+                        ))
                 }.join()
+                clearMemo()
                 Toast.makeText(mContext, mContext.getString(R.string.toast_save), Toast.LENGTH_SHORT).show()
             } catch (e: Exception) {
                 Log.e(Constant.TAG, "${e.message}")
                 e.printStackTrace()
             }
-
-
         }
     }
 
@@ -48,5 +46,4 @@ class MemoWriteViewModel(
         etTitle.value = ""
         etMemo.value = ""
     }
-
 }

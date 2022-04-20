@@ -4,10 +4,8 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.view.MotionEvent
 import android.view.View
-import android.widget.LinearLayout
-import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yun.simpledaily.R
 import com.yun.simpledaily.BR
@@ -17,13 +15,12 @@ import com.yun.simpledaily.data.Constant.MEMO
 import com.yun.simpledaily.data.Constant.NAVER_SEARCH_URL
 import com.yun.simpledaily.data.Constant.TAG
 import com.yun.simpledaily.data.Constant.WEATHER
+import com.yun.simpledaily.data.Constant._HOURLY
 import com.yun.simpledaily.data.model.HourlyWeatherModel
-import com.yun.simpledaily.data.model.MemoModel
 import com.yun.simpledaily.data.model.MemoModels
 import com.yun.simpledaily.data.model.RealTimeModel
 import com.yun.simpledaily.databinding.*
 import com.yun.simpledaily.ui.main.MainActivity
-import com.yun.simpledaily.ui.main.MainViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class HomeFragment
@@ -37,22 +34,41 @@ class HomeFragment
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        sharedViewModel.searchLocation.observe(viewLifecycleOwner) {
-            viewModel.searchLocation.value = it
+        sharedViewModel.apply {
+            showBottomView()
+
+            searchLocation.observe(viewLifecycleOwner) {
+                viewModel.searchLocation.value = it
+                viewModel.callApiList()
+            }
         }
 
         viewModel.apply {
 
             isMoveNav.observe(viewLifecycleOwner) {
                 when (it) {
+                    // 메모 화면 이동
                     MEMO -> (activity as MainActivity).binding.bottomNavView.selectedItemId = R.id.memo
-                    WEATHER -> (activity as MainActivity).binding.bottomNavView.selectedItemId = R.id.setting
-                }
-            }
 
-            searchLocation.observe(viewLifecycleOwner) {
-                if (it != "") addWeather()
-                else successCnt.value = successCnt.value!! + 1
+                    // 지역 선택 화면 이동
+                    WEATHER -> {
+                        sharedViewModel.moveLocationSettingScreen.value = true
+                        (activity as MainActivity).binding.bottomNavView.selectedItemId = R.id.setting
+                    }
+
+                    _HOURLY -> {
+                        navigate(R.id.hourlyWeatherFragment,
+                            Bundle().apply {
+                                putParcelableArrayList("rain", viewModel.hourlyRainList.value)
+                                putParcelableArrayList("wind", viewModel.hourlyWindList.value)
+                                putParcelableArrayList("hum", viewModel.hourlyHumList.value)
+                            }
+                        )
+                    }
+                }
+//                if(it != ""){
+//                    isMoveNav.value = ""
+//                }
             }
 
             loading.observe(viewLifecycleOwner) {
@@ -85,12 +101,12 @@ class HomeFragment
             rvHourlyWeather.run {
                 layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                 adapter = object :
-                    BaseRecyclerAdapter.Create<HourlyWeatherModel.RS, ItemHourlyWeatherBinding>(
+                    BaseRecyclerAdapter.Create<HourlyWeatherModel.Weather, ItemHourlyWeatherBinding>(
                         R.layout.item_hourly_weather,
                         bindingVariableId = BR.itemHourlyWeather,
                         bindingListener = BR.hourlyWeatherItemListener
                     ) {
-                    override fun onItemClick(item: HourlyWeatherModel.RS, view: View) {
+                    override fun onItemClick(item: HourlyWeatherModel.Weather, view: View) {
 
                     }
                 }

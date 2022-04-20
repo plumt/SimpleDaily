@@ -27,6 +27,15 @@ class SettingFragment
         super.onViewCreated(view, savedInstanceState)
 
 
+        sharedViewModel.apply {
+            moveLocationSettingScreen.observe(viewLifecycleOwner){
+                if(it){
+                    moveLocationSettingScreen.value = false
+                    navigate(R.id.action_settingFragment_to_locationFragment)
+                }
+            }
+        }
+
         binding.apply {
 
             rvSetting.run {

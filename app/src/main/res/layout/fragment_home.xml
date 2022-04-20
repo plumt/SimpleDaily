@@ -51,7 +51,7 @@
                 android:textColor="@color/color_FBA53B"
                 android:textSize="12sp"
                 android:textStyle="bold"
-                android:visibility="@{home.isShowWeather() ? View.VISIBLE : View.GONE}"
+                android:visibility="@{home.isShowWeather() &amp;&amp; !home.uv.equals(``) || home.searchLocation.equals(``) ? View.VISIBLE : View.GONE}"
                 app:layout_constraintStart_toStartOf="@id/gl_start"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -60,17 +60,17 @@
                 layout="@layout/view_now_weather"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="@{home.searchLocation.equals(``) || !home.isShowWeather() ? View.GONE : View.VISIBLE}"
-                app:compare="@{home.compare}"
-                app:detail="@{home.weatherDetail}"
+                android:visibility="@{home.searchLocation.equals(``) || !home.isShowWeather() || home.uv.equals(``) ? View.GONE : View.VISIBLE}"
+                app:compare="@{home.nowWeather.compare}"
+                app:detail="@{home.nowWeather.weatherDetail}"
                 app:dust="@{home.dust}"
-                app:imagepath="@{home.imagePath}"
+                app:imagepath="@{home.nowWeather.imagePath}"
                 app:layout_constraintTop_toBottomOf="@id/tv_now_weather"
-                app:location="@{home.location}"
-                app:temperature="@{home.temperature}"
+                app:location="@{home.nowWeather.location}"
+                app:temperature="@{home.nowWeather.temperature}"
                 app:udust="@{home.uDust}"
                 app:uv="@{home.uv}"
-                app:weather="@{home.weather}" />
+                app:weather="@{home.nowWeather.weather}" />
 
             <TextView
                 android:id="@+id/tv_no_now_weather"
@@ -99,6 +99,8 @@
                 app:title="@{@string/no_location_setting}"
                 app:type="@{@string/weather}" />
 
+<!--            /////////////////////////////////////////////////////////////////////-->
+
             <TextView
                 android:id="@+id/tv_hourly_weather"
                 android:layout_width="wrap_content"
@@ -112,7 +114,7 @@
                 android:textColor="@color/color_FBA53B"
                 android:textSize="12sp"
                 android:textStyle="bold"
-                android:visibility="@{home.isShowHourly() ? View.VISIBLE : View.GONE}"
+                android:visibility="@{home.isShowHourly() &amp;&amp; !home.hourlyWeatherList.empty || home.searchLocation.equals(``) ? View.VISIBLE : View.GONE}"
                 app:layout_constraintStart_toStartOf="@id/gl_start"
                 app:layout_constraintTop_toBottomOf="@id/ic_no_now_weather" />
 
@@ -122,7 +124,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="5dp"
-                android:visibility="@{!home.searchLocation.equals(``) &amp;&amp; home.isShowHourly() ? View.VISIBLE : View.GONE}"
+                android:visibility="@{!home.searchLocation.equals(``) &amp;&amp; home.isShowHourly() &amp;&amp; !home.hourlyWeatherList.empty ? View.VISIBLE : View.GONE}"
                 app:cardBackgroundColor="@color/white"
                 app:cardCornerRadius="10dp"
                 app:cardElevation="5dp"
@@ -151,7 +153,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:visibility="@{!home.searchLocation.equals(``) &amp;&amp; home.isShowHourly() ? View.VISIBLE : View.GONE}"
+                android:visibility="@{!home.searchLocation.equals(``) &amp;&amp; home.isShowHourly() &amp;&amp; !home.hourlyWeatherList.empty? View.VISIBLE : View.GONE}"
                 app:layout_constraintTop_toBottomOf="@id/cv_hourly_weather"
                 app:listener="@{home.onClick}"
                 app:title="@{@string/hourly_more_txt}"
@@ -162,7 +164,7 @@
                 layout="@layout/view_more"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="@{!home.searchLocation.equals(``) &amp;&amp; home.isShowHourly() ? View.VISIBLE : View.GONE}"
+                android:visibility="@{!home.searchLocation.equals(``) &amp;&amp; home.isShowHourly() &amp;&amp; !home.hourlyWeatherList.empty? View.VISIBLE : View.GONE}"
                 app:layout_constraintTop_toBottomOf="@id/ic_other_weather"
                 app:listener="@{home.onClick}"
                 app:title="@{@string/week_more_txt}"
@@ -178,7 +180,7 @@
                 android:textColor="@color/color_777777"
                 android:textSize="10sp"
                 android:textStyle="bold"
-                android:visibility="@{home.searchLocation.equals(``) &amp;&amp; !home.isShowHourly() ? View.VISIBLE : View.GONE}"
+                android:visibility="@{home.searchLocation.equals(``) &amp;&amp; home.isShowHourly() ? View.VISIBLE : View.GONE}"
                 app:layout_constraintEnd_toEndOf="@id/gl_end"
                 app:layout_constraintStart_toStartOf="@id/gl_start"
                 app:layout_constraintTop_toBottomOf="@id/ic_week_weather" />
@@ -189,11 +191,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:visibility="@{home.searchLocation.equals(``) &amp;&amp; !home.isShowHourly() ? View.VISIBLE : View.GONE}"
+                android:visibility="@{home.searchLocation.equals(``) &amp;&amp; home.isShowHourly() ? View.VISIBLE : View.GONE}"
                 app:layout_constraintTop_toBottomOf="@id/tv_no_hourly_weather"
                 app:listener="@{home.onClick}"
                 app:title="@{@string/no_location_setting}"
                 app:type="@{@string/weather}" />
+
+<!--            //////////////////////////////////////////////////////////////////////-->
 
             <TextView
                 android:id="@+id/tv_realtime_top10"
@@ -208,7 +212,7 @@
                 android:textColor="@color/color_FBA53B"
                 android:textSize="12sp"
                 android:textStyle="bold"
-                android:visibility="@{home.isShowRealTime() ? View.VISIBLE : View.GONE}"
+                android:visibility="@{home.isShowRealTime() &amp;&amp; !home.realTimeTop10.empty ? View.VISIBLE : View.GONE}"
                 app:layout_constraintStart_toStartOf="@id/gl_start"
                 app:layout_constraintTop_toBottomOf="@id/ic_no_hourly_weather" />
 
@@ -218,7 +222,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
-                android:visibility="@{home.isShowRealTime() ? View.VISIBLE : View.GONE}"
+                android:visibility="@{home.isShowRealTime() &amp;&amp; !home.realTimeTop10.empty ? View.VISIBLE : View.GONE}"
                 app:cardBackgroundColor="@color/white"
                 app:cardCornerRadius="10dp"
                 app:cardElevation="5dp"
@@ -255,7 +259,7 @@
                 android:textColor="@color/color_FBA53B"
                 android:textSize="12sp"
                 android:textStyle="bold"
-                android:visibility="@{home.isShowNews() ? View.VISIBLE : View.GONE}"
+                android:visibility="@{home.isShowNews() &amp;&amp; !home.popularNews.empty ? View.VISIBLE : View.GONE}"
                 app:layout_constraintStart_toStartOf="@id/gl_start"
                 app:layout_constraintTop_toBottomOf="@id/cv_realtime_top10" />
 
@@ -265,7 +269,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
-                android:visibility="@{home.isShowNews() ? View.VISIBLE : View.GONE}"
+                android:visibility="@{home.isShowNews() &amp;&amp; !home.popularNews.empty ? View.VISIBLE : View.GONE}"
                 app:cardBackgroundColor="@color/white"
                 app:cardCornerRadius="10dp"
                 app:cardElevation="3dp"
@@ -292,7 +296,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:visibility="@{home.isShowNews() ? View.VISIBLE : View.GONE}"
+                android:visibility="@{home.isShowNews() &amp;&amp; !home.popularNews.empty ? View.VISIBLE : View.GONE}"
                 app:layout_constraintTop_toBottomOf="@id/cv_popular_news"
                 app:listener="@{home.onClick}"
                 app:title="@{@string/press_news}"

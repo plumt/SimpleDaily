@@ -56,6 +56,11 @@ object PreferenceManager {
 
 object Util {
 
+    fun percentToValue(str: String) : Int =
+        if(str == "" || str.replace("%","").toFloat() < 33) 1
+        else if(str.replace("%","").toFloat() < 66) 2
+        else 3
+
     fun newsRank(rank: Int?): String {
         return if (rank == null) ""
         else "인기 ${rank + 1}위"

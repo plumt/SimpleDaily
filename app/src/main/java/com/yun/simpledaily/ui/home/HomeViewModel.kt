@@ -2,13 +2,11 @@ package com.yun.simpledaily.ui.home
 
 import android.app.Application
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.yun.simpledaily.R
 import com.yun.simpledaily.base.BaseViewModel
 import com.yun.simpledaily.base.ListLiveData
-import com.yun.simpledaily.data.Constant
 import com.yun.simpledaily.data.Constant.COMPARE_WEATHER
 import com.yun.simpledaily.data.Constant.DUST
 import com.yun.simpledaily.data.Constant.DUST_UV
@@ -24,7 +22,10 @@ import com.yun.simpledaily.data.Constant.HOURLY_WEATHER_TIME
 import com.yun.simpledaily.data.Constant.HOURLY_WIND_DIRECTION
 import com.yun.simpledaily.data.Constant.HOURLY_WIND_NUM
 import com.yun.simpledaily.data.Constant.HOURLY_WIND_TIME
+import com.yun.simpledaily.data.Constant.MEMO
+import com.yun.simpledaily.data.Constant.NEWS
 import com.yun.simpledaily.data.Constant.NOW_WEATHER
+import com.yun.simpledaily.data.Constant.REAL_TIME
 import com.yun.simpledaily.data.Constant.SEARCH_WEATHER
 import com.yun.simpledaily.data.Constant.SUMMARY_LIST
 import com.yun.simpledaily.data.Constant.TAG
@@ -42,8 +43,10 @@ import com.yun.simpledaily.data.Constant.WEEK_PRECIPITATION
 import com.yun.simpledaily.data.Constant.WEEK_PRECIPITATION_DETAIL
 import com.yun.simpledaily.data.Constant.WEEK_TIME
 import com.yun.simpledaily.data.Constant.WEEK_WEATHER_IMG
+import com.yun.simpledaily.data.Constant._HOURLY
 import com.yun.simpledaily.data.model.HourlyWeatherModel
 import com.yun.simpledaily.data.model.MemoModels
+import com.yun.simpledaily.data.model.NowWeatherModel
 import com.yun.simpledaily.data.model.RealTimeModel
 import com.yun.simpledaily.data.repository.DB
 import com.yun.simpledaily.data.repository.api.Api
@@ -62,29 +65,21 @@ class HomeViewModel(
     private val sharedPreferences: PreferenceManager
 ) : BaseViewModel(application) {
 
-    val imagePath = MutableLiveData("")
-    val location = MutableLiveData("")
-    val temperature = MutableLiveData("")
-    val weather = MutableLiveData("")
-    val compare = MutableLiveData("")
-    val weatherDetail = MutableLiveData("")
+    val hourlyWeatherList = ListLiveData<HourlyWeatherModel.Weather>()
+    val hourlyRainList = ListLiveData<HourlyWeatherModel.Weather>()
+    val hourlyWindList = ListLiveData<HourlyWeatherModel.Weather>()
+    val hourlyHumList = ListLiveData<HourlyWeatherModel.Weather>()
+    val weekWeatherList = ListLiveData<HourlyWeatherModel.Weather>()
+    val realTimeTop10 = ListLiveData<RealTimeModel.Top10>()
+    val popularNews = ListLiveData<RealTimeModel.Articles>()
+    val memoList = ListLiveData<MemoModels>()
+
+
+    val nowWeather = MutableLiveData<NowWeatherModel.Weather>()
+
     val dust = MutableLiveData("")
     val uDust = MutableLiveData("")
     val uv = MutableLiveData("")
-
-    val hourlyWeatherList = ListLiveData<HourlyWeatherModel.RS>()
-    val realTimeTop10 = ListLiveData<RealTimeModel.Top10>()
-    val popularNews = ListLiveData<RealTimeModel.Articles>()
-
-    val loading = MutableLiveData(false)
-
-    var apiCnt = 0
-    val successCnt = MutableLiveData(0)
-
-    val searchLocation = MutableLiveData("")
-
-    val memoList = ListLiveData<MemoModels>()
-    val memoSize = MutableLiveData(0)
 
     val isMoveNav = MutableLiveData("")
 
@@ -94,22 +89,45 @@ class HomeViewModel(
     val isShowNews = MutableLiveData<Boolean>()
     val isShowMemo = MutableLiveData<Boolean>()
 
+
+    val searchLocation = MutableLiveData("")
+
+    val loading = MutableLiveData(false)
+
+    var apiCnt = 0
+    val successCnt = MutableLiveData(0)
+
+    val memoSize = MutableLiveData(0)
+
+
+
     init {
-        callApiList()
+        preferencesCheck()
+    }
 
-        isShowWeather.value = sharedPreferences.getString(mContext, WEATHER).toBoolean()
-        isShowHourly.value = sharedPreferences.getString(mContext, Constant._HOURLY).toBoolean()
-        isShowRealTime.value = sharedPreferences.getString(mContext, Constant.REAL_TIME).toBoolean()
-        isShowNews.value = sharedPreferences.getString(mContext, Constant.NEWS).toBoolean()
-        isShowMemo.value = sharedPreferences.getString(mContext, Constant.MEMO).toBoolean()
-
+    private fun preferencesCheck(){
+        sharedPreferences.run {
+            if(getString(mContext, WEATHER) == "") {
+                setString(mContext, WEATHER, "true")
+                setString(mContext, _HOURLY,"true")
+                setString(mContext, REAL_TIME,"true")
+                setString(mContext, NEWS,"true")
+                setString(mContext, MEMO,"true")
+            }
+            isShowWeather.value = getString(mContext, WEATHER).toBoolean()
+            isShowHourly.value = getString(mContext, _HOURLY).toBoolean()
+            isShowRealTime.value = getString(mContext, REAL_TIME).toBoolean()
+            isShowNews.value = getString(mContext, NEWS).toBoolean()
+            isShowMemo.value = getString(mContext, MEMO).toBoolean()
+        }
     }
 
     fun callApiList(){
         apiCnt = 2
-//        addWeather()
+        successCnt.value = 0
         realtime()
         memo()
+        weather()
 
         //TODO 날씨
         //TODO 뉴스 - ㅇ
@@ -125,8 +143,7 @@ class HomeViewModel(
         viewModelScope.async {
             try {
                 val list = arrayListOf<MemoModels>()
-                launch(newSingleThreadContext(Constant.MEMO)) {
-                    //TODO 메모 개수가 3개보다 적으면, 그 숫자만큼 last 값으로 해줘야 함
+                launch(newSingleThreadContext(MEMO)) {
                     val data = db.memoDao().selectMemo3()
                     val size = if(data.isEmpty()) 0 else data.size - 1
                     data.forEachIndexed { index, memoModel ->
@@ -144,21 +161,16 @@ class HomeViewModel(
 
     private fun realtime() {
         loading.value = true
-        // 시그널 실시간 검색어
         // api : https://api.signal.bz/news/realtime
         // 사이트 : https://www.signal.bz/
 
         viewModelScope.launch {
             try {
                 (callApi(api.realtime()) as RealTimeModel.RS).run {
-
                     realTimeTop10.value = this.top10
                     setId(realTimeTop10.value!!)
-
                     popularNews.value = this.articles
                     setId(popularNews.value!!)
-
-                    Log.d(TAG,"realtime : ${this}")
 
                     successCnt.value = successCnt.value!! + 1
                 }
@@ -169,8 +181,14 @@ class HomeViewModel(
         }
     }
 
-    fun addWeather() {
+    private fun weather() {
         loading.value = true
+
+        if (searchLocation.value == ""){
+            successCnt.value = successCnt.value!! + 1
+            return
+        }
+
 //        https://ssl.pstatic.net/sstatic/keypage/outside/scui/weather_new_new/img/weather_svg/icon_flat_wt41.svg
 
         viewModelScope.async {
@@ -184,7 +202,7 @@ class HomeViewModel(
                 setNowWeather(doc!!)
 
                 // 시간별 정보 모든 데이터
-                val hour_data = doc!!.select(HOURLY)
+                val hour_data = doc!!.select(HOURLY) // 나중에 지워야 함,, run이나 apply 활용
 
                 // 시간별 날씨 디테일(날짜, 온도, 상태, 이미지)
                 hourlyWeatherList.value = addHourlyWeather(
@@ -196,20 +214,28 @@ class HomeViewModel(
 
                 //// 위까지 함
 
-
-                // 시간별 강수 디테일(닐짜, 강수량, 확률)
-                val hour_rain_time = hour_data[1].select(HOURLY_PRECIPITATION_TIME)
-                val hour_rain_num = hour_data[1].select(HOURLY_PRECIPITATION_NUM)
-                val hour_rain_per = hour_data[1].select(HOURLY_PRECIPITATION_PERCENT)
+//                 시간별 강수 디테일(닐짜, 강수량, 확률)
+                hourlyRainList.value = addHourlyWeather(
+                    doc!!.select(HOURLY)[1].select(HOURLY_PRECIPITATION_TIME),
+                    doc!!.select(HOURLY)[1].select(HOURLY_PRECIPITATION_NUM),
+                    doc!!.select(HOURLY)[1].select(HOURLY_PRECIPITATION_PERCENT),
+                    null
+                )
 
                 // 시간별 바람 디테일(날짜, 풍속, 방향)
-                val hour_wind_time = hour_data[2].select(HOURLY_WIND_TIME)
-                val hour_wind_num = hour_data[2].select(HOURLY_WIND_NUM)
-                val hour_wind_way = hour_data[2].select(HOURLY_WIND_DIRECTION)
+                hourlyWindList.value = addHourlyWeather(
+                    doc!!.select(HOURLY)[2].select(HOURLY_WIND_TIME),
+                    doc!!.select(HOURLY)[2].select(HOURLY_WIND_NUM),
+                    doc!!.select(HOURLY)[2].select(HOURLY_WIND_DIRECTION),
+                    null
+                )
 
                 // 시간별 습도 디테일(날짜, 습도)
-                val hour_hum_time = hour_data[3].select(HOURLY_HUMIDITY_TIME)
-                val hour_hum_num = hour_data[3].select(HOURLY_HUMIDITY_NUM)
+                hourlyHumList.value = addHourlyWeather(
+                    doc!!.select(HOURLY)[3].select(HOURLY_HUMIDITY_TIME),
+                    doc!!.select(HOURLY)[3].select(HOURLY_HUMIDITY_NUM),
+                    null, null
+                )
 
                 // 주간 예보
                 val week = doc!!.select(WEEK_FORECAST)
@@ -230,20 +256,6 @@ class HomeViewModel(
                 // 주간 예보 디테일 - 최고기온
                 val week_high_temp = week[0].select(WEEK_HIGHEST)
 
-                Log.d(
-                    TAG,
-                    "시간반 강수 : ${hour_rain_time[0].text()} ${hour_rain_num[0].text()}  ${hour_rain_per[0].text()}   size:${hour_rain_time.size} / ${hour_rain_num.size} / ${hour_rain_per.size}"
-                )
-                Log.d(
-                    TAG,
-                    "시간별 바람 : ${hour_wind_time[0].text()} ${hour_wind_num[0].text()}  ${hour_wind_way[0].text()}   size:${hour_wind_time.size} / ${hour_wind_num.size} / ${hour_wind_way.size}"
-                )
-                Log.d(
-                    TAG,
-                    "시간별 습도 : ${hour_hum_time[0].text()} ${hour_hum_num[0].text()}   size:${hour_hum_time.size} / ${hour_hum_num.size}"
-                )
-
-//                        Log.d("lys","주간예보 : ${week[0]}")
 
                 Log.d(
                     TAG,
@@ -263,23 +275,20 @@ class HomeViewModel(
 
     // 현재 날씨
     private fun setNowWeather(doc: Document) {
-        // 검새어 (ex - 서울날씨, 부산날씨
-        location.value = doc.select(WEATHER_LOCATION_NM)[0].text()
-
-        // 날씨 이미지
-        imagePath.value = setImagePath(doc.select(WEATHER_IMG)[0].className())
-
-        // 현재 온도
-        temperature.value = doc.select(TEMPERATURE)[0].text().replace("온도", "온도 : ")
-
-        // 현재 날씨
-        weather.value = "|  ${doc.select(NOW_WEATHER)[0].text()}"
-
-        // 어제보다 높거나 낮은 정도
-        compare.value = "어제보다 ${doc.select(COMPARE_WEATHER)[0].text()}"
-
-        // 현재 강수, 습도, 바람 (ex - 강수확률 0% 습도 25% 바람(북서풍) 2m/s
-        weatherDetail.value = doc.select(SUMMARY_LIST)[0].text().replace("%", "% | ")
+        nowWeather.value = NowWeatherModel.Weather(
+            // 검새어 (ex - 서울날씨, 부산날씨
+            location = doc.select(WEATHER_LOCATION_NM)[0].text(),
+            // 날씨 이미지
+            imagePath = setImagePath(doc.select(WEATHER_IMG)[0].className()),
+            // 현재 온도
+            temperature =doc.select(TEMPERATURE)[0].text().replace("온도", "온도 : "),
+            // 현재 날씨
+            weather = "|  ${doc.select(NOW_WEATHER)[0].text()}",
+            // 어제보다 높거나 낮은 정도
+            compare = "어제보다 ${doc.select(COMPARE_WEATHER)[0].text()}",
+            // 현재 강수, 습도, 바람 (ex - 강수확률 0% 습도 25% 바람(북서풍) 2m/s
+            weatherDetail = doc.select(SUMMARY_LIST)[0].text().replace("%", "% | ")
+        )
 
         // 미세먼지, 초미세먼지, 자외선, 일몰
         for(i in 0..3){
@@ -296,19 +305,19 @@ class HomeViewModel(
     private fun addHourlyWeather(
         time: Elements,
         num: Elements,
-        weather: Elements,
-        url: Elements
-    ): ArrayList<HourlyWeatherModel.RS> {
-        val hourly = arrayListOf<HourlyWeatherModel.RS>()
+        weather: Elements?,
+        url: Elements?
+    ): ArrayList<HourlyWeatherModel.Weather> {
+        val hourly = arrayListOf<HourlyWeatherModel.Weather>()
         time.forEachIndexed { index, element ->
             hourly.add(
-                HourlyWeatherModel.RS(
+                HourlyWeatherModel.Weather(
                     index,
                     0,
                     element.text(),
-                    num[index].text(),
-                    if (weather.size > index) weather[index].text() else "",
-                    if (url.size > index) setImagePath(url[index].className()) else ""
+                    if(num.size > index) num[index].text() else "",
+                    if(weather == null || weather.size <= index) "" else weather[index].text(),
+                    if(url == null || url.size <= index) "" else setImagePath(url[index].className())
                 )
             )
         }
@@ -323,9 +332,5 @@ class HomeViewModel(
 
     fun onClick(type: String){
         isMoveNav.value = type
-//        when(type){
-//            Constant.MEMO -> isMoveNav.value = MEMO
-//        }
-        Toast.makeText(mContext,"click : $type",Toast.LENGTH_SHORT).show()
     }
 }

@@ -33,7 +33,8 @@
         tools:layout="@layout/fragment_home"
         android:id="@+id/homeFragment"
         android:name="com.yun.simpledaily.ui.home.HomeFragment"
-        android:label="홈" />
+        android:label="홈" >
+    </fragment>
 
     <fragment
         tools:layout="@layout/fragment_calendar"
@@ -71,6 +72,13 @@
         android:id="@+id/boardSettingFragment"
         android:name="com.yun.simpledaily.ui.board.BoardSettingFragment"
         android:label="BoardSettingFragment" />
+    <fragment
+        tools:layout="@layout/fragment_hourly_weather"
+        android:id="@+id/hourlyWeatherFragment"
+        android:name="com.yun.simpledaily.ui.hourly.HourlyWeatherFragment"
+        android:label="시간별" />
+
+
 
 
 </navigation>

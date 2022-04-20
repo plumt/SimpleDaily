@@ -34,7 +34,7 @@ class BoardSettingFragment
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        sharedViewModel.hideBottomView()
         binding.apply {
             rvBoard.run {
                 adapter = object : BaseRecyclerAdapter.Create<BoardModel.Board, ItemBoardBinding>(

@@ -24,6 +24,7 @@ class MainViewModel(
     val isBottomVisible = MutableLiveData(true)
 
     val searchLocation = MutableLiveData("")
+    val moveLocationSettingScreen = MutableLiveData(false)
 
     init {
 
@@ -31,12 +32,6 @@ class MainViewModel(
             getString(mContext,SHARED_LOCATION_KEY)?.run {
                 searchLocation.value = this
             }
-
-            if(getString(mContext, WEATHER) == "") setString(mContext, WEATHER,"true")
-            if(getString(mContext, _HOURLY) == "") setString(mContext, _HOURLY,"true")
-            if(getString(mContext, REAL_TIME) == "") setString(mContext, REAL_TIME,"true")
-            if(getString(mContext, NEWS) == "") setString(mContext, NEWS,"true")
-            if(getString(mContext, MEMO) == "") setString(mContext, MEMO,"true")
         }
 
     }

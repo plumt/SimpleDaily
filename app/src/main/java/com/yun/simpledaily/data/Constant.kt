@@ -51,6 +51,7 @@ object Constant {
     val CALENDAR = "일정"
     val _MEMO = "메모"
     val SETTING = "설정"
+    val HOURLY_WEATHER = "시간별"
 
     val DAILY_BOARED_SETTING = "데일리 보드 설정하기"
     val LOCATION_SETTING = "지역 설정하기"
@@ -74,6 +75,10 @@ object Constant {
     val MEMO_LIST_SCREEN = 1
     val MEMO_DETAIL_SCREEN = 2
     val MEMO_GO_LIST_SCREEN = 4
+
+    val RAIN = "강수"
+    val WIND = "바람"
+    val HUM = "습도"
 
 
 

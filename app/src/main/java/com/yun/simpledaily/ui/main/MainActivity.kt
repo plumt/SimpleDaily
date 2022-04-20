@@ -10,6 +10,7 @@ import androidx.navigation.Navigation
 import com.yun.simpledaily.R
 import com.yun.simpledaily.data.Constant.CALENDAR
 import com.yun.simpledaily.data.Constant.HOME
+import com.yun.simpledaily.data.Constant.HOURLY_WEATHER
 import com.yun.simpledaily.data.Constant.MEMO_GO_LIST_SCREEN
 import com.yun.simpledaily.data.Constant.MEMO_LIST_SCREEN
 import com.yun.simpledaily.data.Constant._MEMO
@@ -71,20 +72,26 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        if (navController.currentDestination?.label == HOME ||
-            navController.currentDestination?.label == CALENDAR ||
-            navController.currentDestination?.label == SETTING) {
-            showExitPopup()
-        } else if(navController.currentDestination?.label ==_MEMO){
-            if(mainViewModel.memoScreen.value == MEMO_LIST_SCREEN){
+        navController.currentDestination?.let { nav ->
+            if (nav.label == HOME ||
+                nav.label == CALENDAR ||
+                nav.label == SETTING
+            ) {
                 showExitPopup()
-            } else{
-                mainViewModel.memoScreen.value = MEMO_GO_LIST_SCREEN
+            } else if (nav.label == _MEMO) {
+                if (mainViewModel.memoScreen.value == MEMO_LIST_SCREEN) {
+                    showExitPopup()
+                } else {
+                    mainViewModel.memoScreen.value = MEMO_GO_LIST_SCREEN
+                }
+            } else if (nav.label == HOURLY_WEATHER) {
+                navController.navigate(R.id.action_global_homeFragment)
+            } else {
+                super.onBackPressed()
             }
-        }
-        else{
-            super.onBackPressed()
-        }
+        } ?: super.onBackPressed()
+
+
     }
 
     private fun showExitPopup() {
