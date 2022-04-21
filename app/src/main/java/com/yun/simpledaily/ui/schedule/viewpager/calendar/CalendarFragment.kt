@@ -1,4 +1,4 @@
-package com.yun.simpledaily.ui.calendar
+package com.yun.simpledaily.ui.schedule.viewpager.calendar
 
 import android.os.Bundle
 import android.view.View

@@ -37,9 +37,9 @@
     </fragment>
 
     <fragment
-        tools:layout="@layout/fragment_calendar"
+        tools:layout="@layout/fragment_schedule"
         android:id="@+id/calendarFragment"
-        android:name="com.yun.simpledaily.ui.calendar.CalendarFragment"
+        android:name="com.yun.simpledaily.ui.schedule.ScheduleFragment"
         android:label="일정" />
 
     <fragment

@@ -48,7 +48,7 @@ object Constant {
     val WORST = 4
 
     val HOME = "홈"
-    val CALENDAR = "일정"
+    val SCHEDULE = "일정"
     val _MEMO = "메모"
     val SETTING = "설정"
     val HOURLY_WEATHER = "시간별"
@@ -79,6 +79,9 @@ object Constant {
     val RAIN = "강수"
     val WIND = "바람"
     val HUM = "습도"
+
+    val CAL = "달력"
+    val LIST = "목록"
 
 
 

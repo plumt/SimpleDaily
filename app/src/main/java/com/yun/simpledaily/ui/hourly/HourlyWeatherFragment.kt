@@ -16,9 +16,6 @@ import com.yun.simpledaily.data.Constant.WIND
 import com.yun.simpledaily.data.model.HourlyWeatherModel
 import com.yun.simpledaily.databinding.FragmentHourlyWeatherBinding
 import com.yun.simpledaily.databinding.ItemHourlyRainBinding
-import com.yun.simpledaily.ui.hourly.viewpager.hum.HourlyHumFragment
-import com.yun.simpledaily.ui.hourly.viewpager.rain.HourlyRainFragment
-import com.yun.simpledaily.ui.hourly.viewpager.wind.HourlyWindFragment
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class HourlyWeatherFragment
@@ -49,32 +46,6 @@ class HourlyWeatherFragment
 
         viewModel.apply {
 
-            binding.apply {
-                vpHourlyWeather.run {
-                    isUserInputEnabled = true
-                    adapter = object : FragmentStateAdapter(this@HourlyWeatherFragment) {
-                        override fun getItemCount(): Int = 3
-                        override fun createFragment(position: Int): Fragment {
-                            return when (position) {
-                                0 -> HourlyRainFragment()
-                                1 -> HourlyWindFragment()
-                                2 -> HourlyHumFragment()
-                                else -> Fragment()
-                            }
-                        }
-                    }
-                    getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
-                }
-
-                TabLayoutMediator(tablayout, vpHourlyWeather) { tab, position ->
-                    tab.text = when (position) {
-                        0 -> RAIN
-                        1 -> WIND
-                        2 -> HUM
-                        else -> ""
-                    }
-                }.attach()
-            }
         }
     }
 }

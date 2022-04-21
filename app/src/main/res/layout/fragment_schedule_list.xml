@@ -2,8 +2,8 @@
 <layout>
     <data>
         <variable
-            name="calendar"
-            type="com.yun.simpledaily.ui.schedule.viewpager.calendar.CalendarViewModel" />
+            name="scheduleList"
+            type="com.yun.simpledaily.ui.schedule.viewpager.list.ScheduleListViewModel" />
     </data>
 
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -13,10 +13,9 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="calendar fragment"
+        android:text="schduleList fragment"
         android:gravity="center"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-
 </layout>
