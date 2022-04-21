@@ -36,7 +36,7 @@ val viewModelModule = module {
     }
 
     viewModel {
-        SettingViewModel(get())
+        SettingViewModel(get(), get())
     }
 
     viewModel {

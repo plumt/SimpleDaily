@@ -14,9 +14,9 @@ import com.yun.simpledaily.databinding.DialogOneButtonBinding
 class OneButtonPopup {
     lateinit var customDialogListener: CustomDialogListener
 
-    fun showPopup(context: Context, title: String, contents: String){
+    fun showPopup(context: Context, title: String, contents: String, cancelable: Boolean = false){
         AlertDialog.Builder(context).run {
-            setCancelable(false)
+            setCancelable(cancelable)
             val view = View.inflate(context, R.layout.dialog_one_button, null)
             val binding = DialogOneButtonBinding.bind(view)
             binding.setVariable(BR.title, title)

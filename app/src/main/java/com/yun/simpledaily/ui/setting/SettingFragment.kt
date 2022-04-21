@@ -10,9 +10,12 @@ import com.yun.simpledaily.base.BaseRecyclerAdapter
 import com.yun.simpledaily.data.Constant
 import com.yun.simpledaily.data.Constant.DAILY_BOARED_SETTING
 import com.yun.simpledaily.data.Constant.LOCATION_SETTING
+import com.yun.simpledaily.data.Constant.RESET
 import com.yun.simpledaily.data.model.SettingModel
 import com.yun.simpledaily.databinding.FragmentSettingBinding
 import com.yun.simpledaily.databinding.ItemSettingBinding
+import com.yun.simpledaily.ui.popup.OneButtonPopup
+import com.yun.simpledaily.ui.popup.TwoButtonPopup
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class SettingFragment
@@ -36,6 +39,16 @@ class SettingFragment
             }
         }
 
+        viewModel.apply {
+
+            isReset.observe(viewLifecycleOwner){
+                if(it){
+                    isReset.value = false
+                    showOnePopup()
+                }
+            }
+        }
+
         binding.apply {
 
             rvSetting.run {
@@ -48,13 +61,47 @@ class SettingFragment
                         when(item.title){
                             DAILY_BOARED_SETTING -> navigate(R.id.action_settingFragment_to_boardSettingFragment)
                             LOCATION_SETTING -> navigate(R.id.action_settingFragment_to_locationFragment)
+                            RESET -> showResetPopup()
                         }
                     }
                 }
             }
-
         }
+    }
 
+    private fun showResetPopup() {
+        TwoButtonPopup().apply {
+            showPopup(
+                requireContext(),
+                requireContext().getString(R.string.notice),
+                requireContext().getString(R.string.reset),
+                requireContext().getString(R.string.cancel),
+                requireContext().getString(R.string.btn_reset)
+            )
+            setDialogListener(object : TwoButtonPopup.CustomDialogListener {
+                override fun onResultClicked(result: Boolean) {
+                    if (result) {
+                        sharedViewModel.searchLocation.value = ""
+                        viewModel.clearAppData()
+                    }
+                }
+            })
+        }
+    }
+
+    private fun showOnePopup() {
+        OneButtonPopup().apply {
+            showPopup(
+                requireContext(),
+                requireContext().getString(R.string.notice),
+                requireContext().getString(R.string.toast_reset),
+                true
+            )
+            setDialogListener(object : OneButtonPopup.CustomDialogListener {
+                override fun onResultClicked(result: Boolean) {
+                }
+            })
+        }
     }
 
     override fun onResume() {

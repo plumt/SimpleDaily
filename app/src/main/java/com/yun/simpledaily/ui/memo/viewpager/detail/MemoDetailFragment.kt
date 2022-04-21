@@ -114,13 +114,11 @@ BaseBindingFragment<FragmentMemoDetailBinding, MemoDetailViewModel>(MemoDetailVi
             showPopup(
                 requireContext(),
                 requireContext().getString(R.string.notice),
-                requireContext().getString(R.string.save_question)
+                requireContext().getString(R.string.save_question),
+                true
             )
             setDialogListener(object : OneButtonPopup.CustomDialogListener {
                 override fun onResultClicked(result: Boolean) {
-                    if (result) {
-
-                    }
                 }
             })
         }

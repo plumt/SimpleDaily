@@ -55,6 +55,7 @@ object Constant {
 
     val DAILY_BOARED_SETTING = "데일리 보드 설정하기"
     val LOCATION_SETTING = "지역 설정하기"
+    val RESET = "초기화"
 
     val ALL_LOCATION = "*00000000"
     val SECOND_LOCATION = "*000000"
