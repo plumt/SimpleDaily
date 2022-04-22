@@ -3,6 +3,8 @@ package com.yun.simpledaily.util
 import android.content.Context
 import android.content.SharedPreferences
 import android.net.Uri
+import android.util.Log
+import android.view.View
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
@@ -11,6 +13,7 @@ import com.yun.simpledaily.R
 import com.yun.simpledaily.data.Constant.BAD
 import com.yun.simpledaily.data.Constant.GOOD
 import com.yun.simpledaily.data.Constant.NOMAL
+import com.yun.simpledaily.data.Constant.TAG
 import com.yun.simpledaily.data.Constant.WORST
 
 object PreferenceManager {
@@ -56,10 +59,25 @@ object PreferenceManager {
 
 object Util {
 
-    fun percentToValue(str: String) : Int =
-        if(str == "" || str.replace("%","").toFloat() < 33) 1
-        else if(str.replace("%","").toFloat() < 66) 2
-        else 3
+    fun rotationWind(str: String) : Int =
+        when(str.replace("풍","")){
+            "북" -> 180
+            "서" -> 90
+            "동" -> 270
+            "북동" -> 225
+            "북서" -> 135
+            "남동" -> 315
+            "남서" -> 45
+            else -> 0 // 남풍
+        }
+
+    @BindingAdapter("android:layout_heights")
+    @JvmStatic
+    fun View.setLayoutHeights(height: String) {
+        val layoutParams = this.layoutParams
+        layoutParams.height = if(height != "") height.replace("%","").toInt() else 0
+        this.layoutParams = layoutParams
+    }
 
     fun newsRank(rank: Int?): String {
         return if (rank == null) ""
@@ -73,6 +91,8 @@ object Util {
             else -> 1
         }
     }
+
+    fun oddNumber(num: Int) : Int = num % 2
 
     fun dustCheck(str: String?): Int {
         return if (str == null) 0

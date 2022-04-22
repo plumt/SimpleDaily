@@ -46,7 +46,7 @@
             android:id="@+id/my_template"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="20dp"
             app:gnt_template_type="@layout/gnt_medium_template_view"
             app:layout_constraintTop_toBottomOf="@id/tv_title" />
 
@@ -63,7 +63,7 @@
             android:id="@+id/tv_contents"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="20dp"
             android:gravity="center"
             android:text="@{contents}"
             android:textColor="@color/black"
@@ -94,7 +94,7 @@
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_marginStart="5dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="20dp"
             android:backgroundTint="@color/color_FBA53B"
             android:insetBottom="0dp"
             android:stateListAnimator="@null"

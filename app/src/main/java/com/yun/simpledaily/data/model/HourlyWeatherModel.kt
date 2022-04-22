@@ -13,6 +13,7 @@ class HourlyWeatherModel {
         val time: String,
         val num: String,
         val wea: String,
-        val url: String
+        val url: String,
+        val subTitle: String = ""
     ) : Item(), Parcelable
 }

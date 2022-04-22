@@ -19,4 +19,5 @@ class HourlyWeatherViewModel(
     val title = MutableLiveData<String>().apply {
         value = mContext.getString(R.string.hourly_more_txt)
     }
+
 }

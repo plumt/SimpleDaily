@@ -3,84 +3,153 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <import type="com.yun.simpledaily.util.Util" />
+
+        <variable
+            name="hourlyRainItemListener"
+            type="com.yun.simpledaily.base.BaseRecyclerAdapter.OnItemClickListener" />
 
         <variable
             name="itemHourlyRain"
             type="com.yun.simpledaily.data.model.HourlyWeatherModel.Weather" />
-
-        <variable
-            name="hourlyRainListener"
-            type="com.yun.simpledaily.base.BaseRecyclerAdapter.OnItemClickListener" />
     </data>
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:background="@color/white"
-        android:orientation="vertical">
+        android:padding="15dp">
+        <!--        android:background="@{Util.INSTANCE.oddNumber(itemHourlyRain.id) == 0 ? @color/white : @color/color_f4f4f4}"-->
+
+        <LinearLayout
+            android:id="@+id/linearlayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/tv_hourly_rain"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:includeFontPadding="false"
+                android:text="@{itemHourlyRain.num}"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_hourly_rain_sub_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="1dp"
+                android:includeFontPadding="false"
+                android:text="@{itemHourlyRain.subTitle}"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                android:visibility="@{itemHourlyRain.num.equals(``) ? View.INVISIBLE : View.VISIBLE}" />
+        </LinearLayout>
+
 
         <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="59dp"
-            android:backgroundTint="@color/white"
-            android:clickable="false"
-            app:cardCornerRadius="0dp"
-            app:cardElevation="0dp">
+            android:id="@+id/cv_percent_back"
+            android:layout_width="30dp"
+            android:layout_height="1dp"
+            android:layout_heights="@{`100%`}"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="@color/gnt_test_background_color"
+            android:visibility="@{itemHourlyRain.subTitle.equals(`m/s`) || itemHourlyRain.num.equals(``) ? View.INVISIBLE : View.VISIBLE}"
+            app:cardCornerRadius="50dp"
+            app:cardElevation="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearlayout">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <View
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:background="@color/color_f4f4f4" />
 
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/gl_start"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintGuide_percent="0.05" />
-
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/gl_end"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintGuide_percent="0.95" />
-
-                <TextView
-                    android:id="@+id/tv_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:text="@{itemHourlyRain.time}"
-                    app:layout_constraintStart_toStartOf="@id/gl_start" />
-
-                <TextView
-                    android:id="@+id/tv_num"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="10dp"
-                    android:gravity="center_vertical"
-                    android:text="@{itemHourlyRain.num}"
-                    app:layout_constraintStart_toEndOf="@id/tv_time" />
-
-                <TextView
-                    android:id="@+id/tv_weather"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="10dp"
-                    android:gravity="center_vertical"
-                    android:text="@{itemHourlyRain.wea}"
-                    android:textColor="@{Util.INSTANCE.percentToValue(itemHourlyRain.wea) == 1 ? @color/black : Util.INSTANCE.percentToValue(itemHourlyRain.wea) == 2 ? @color/gray : @color/color_FBA53B}"
-                    app:layout_constraintStart_toEndOf="@id/tv_num" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <View
-            android:layout_width="match_parent"
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cv_percent"
+            android:layout_width="30dp"
             android:layout_height="1dp"
-            android:background="@color/color_f4f4f4"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            android:layout_heights="@{`100%`}"
+            android:backgroundTint="@color/color_00FFFFFF"
+            android:visibility="@{itemHourlyRain.subTitle.equals(`m/s`) || itemHourlyRain.num.equals(``) ? View.INVISIBLE : View.VISIBLE}"
+            app:cardCornerRadius="50dp"
+            app:cardElevation="0dp"
+            app:layout_constraintBottom_toBottomOf="@id/cv_percent_back"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
 
-    </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_gravity="bottom"
+                android:layout_heights="@{itemHourlyRain.subTitle.equals(`mm`) ? itemHourlyRain.wea : itemHourlyRain.subTitle.equals(`%`) ? itemHourlyRain.num : ``}"
+                android:background="@color/color_297EFF" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="0dp"
+            android:rotation="@{Util.INSTANCE.rotationWind(itemHourlyRain.wea)}"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_baseline_navigation_24"
+            android:visibility="@{itemHourlyRain.subTitle.equals(`m/s`) &amp;&amp; !itemHourlyRain.num.equals(``) ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="@id/cv_percent_back"
+            app:layout_constraintEnd_toEndOf="@id/cv_percent_back"
+            app:layout_constraintStart_toStartOf="@id/cv_percent_back"
+            app:layout_constraintTop_toTopOf="@id/cv_percent_back" />
+
+        <TextView
+            android:id="@+id/tv_info"
+            android:layout_marginTop="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:text="@{itemHourlyRain.subTitle.equals(`m/s`) ? `풍향` : itemHourlyRain.subTitle.equals(`mm`) ? `확률` : `습도`}"
+            android:textColor="@color/color_cccccc"
+            android:textSize="8sp"
+            android:visibility="@{itemHourlyRain.num.equals(``) ? View.INVISIBLE : View.VISIBLE}"
+            app:layout_constraintEnd_toEndOf="@id/cv_percent_back"
+            app:layout_constraintStart_toStartOf="@id/cv_percent_back"
+            app:layout_constraintTop_toBottomOf="@id/cv_percent_back" />
+
+        <TextView
+            android:id="@+id/tv_hourly_percent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:includeFontPadding="true"
+            android:text="@{itemHourlyRain.wea}"
+            android:textColor="@color/black"
+            android:textSize="13sp"
+            android:visibility="@{itemHourlyRain.subTitle.equals(`%`) ? View.GONE : View.VISIBLE}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_info" />
+
+        <TextView
+            android:id="@+id/tv_hourly_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:includeFontPadding="false"
+            android:text="@{itemHourlyRain.time}"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_hourly_percent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>

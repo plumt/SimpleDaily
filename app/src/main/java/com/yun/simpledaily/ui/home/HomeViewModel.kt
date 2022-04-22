@@ -219,7 +219,8 @@ class HomeViewModel(
                     doc!!.select(HOURLY)[1].select(HOURLY_PRECIPITATION_TIME),
                     doc!!.select(HOURLY)[1].select(HOURLY_PRECIPITATION_NUM),
                     doc!!.select(HOURLY)[1].select(HOURLY_PRECIPITATION_PERCENT),
-                    null
+                    null,
+                    "mm"
                 )
 
                 // 시간별 바람 디테일(날짜, 풍속, 방향)
@@ -227,14 +228,15 @@ class HomeViewModel(
                     doc!!.select(HOURLY)[2].select(HOURLY_WIND_TIME),
                     doc!!.select(HOURLY)[2].select(HOURLY_WIND_NUM),
                     doc!!.select(HOURLY)[2].select(HOURLY_WIND_DIRECTION),
-                    null
+                    null,
+                    "m/s"
                 )
 
                 // 시간별 습도 디테일(날짜, 습도)
                 hourlyHumList.value = addHourlyWeather(
                     doc!!.select(HOURLY)[3].select(HOURLY_HUMIDITY_TIME),
                     doc!!.select(HOURLY)[3].select(HOURLY_HUMIDITY_NUM),
-                    null, null
+                    null, null,"%"
                 )
 
                 // 주간 예보
@@ -306,7 +308,8 @@ class HomeViewModel(
         time: Elements,
         num: Elements,
         weather: Elements?,
-        url: Elements?
+        url: Elements?,
+        subTitle: String = ""
     ): ArrayList<HourlyWeatherModel.Weather> {
         val hourly = arrayListOf<HourlyWeatherModel.Weather>()
         time.forEachIndexed { index, element ->
@@ -317,7 +320,8 @@ class HomeViewModel(
                     element.text(),
                     if(num.size > index) num[index].text() else "",
                     if(weather == null || weather.size <= index) "" else weather[index].text(),
-                    if(url == null || url.size <= index) "" else setImagePath(url[index].className())
+                    if(url == null || url.size <= index) "" else setImagePath(url[index].className()),
+                    subTitle
                 )
             )
         }

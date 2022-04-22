@@ -18,6 +18,9 @@
 
     <string name="now_weather">현재 날씨</string>
     <string name="hourly_weather">시간별 날씨</string>
+    <string name="hourly_rain">시간별 강수</string>
+    <string name="hourly_wind">시간별 바람</string>
+    <string name="hourly_hum">시간별 습도</string>
     <string name="hourly_more_txt">시간별 강수  |  바람  |  습도 확인하기</string>
     <string name="week_more_txt">주간예보 확인하기</string>
     <string name="hourly">hourly</string>
@@ -59,7 +62,7 @@
 
     <string name="delete_question">메모를 삭제하시겠습니까?</string>
     <string name="back_question">저장되지 않은 메모가 있습니다.\n뒤로 이동하시겠습니까?</string>
-    <string name="save_question">제목과 본문 내용이 공백입니다.</string>
+    <string name="save_question">제목 및 본문 내용이 공백입니다.</string>
 
     <string name="all_memo">메모 모두 보기</string>
     <string name="no_location_setting">지역 설정하기</string>
