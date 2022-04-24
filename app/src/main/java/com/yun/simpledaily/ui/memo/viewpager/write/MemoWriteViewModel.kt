@@ -22,6 +22,7 @@ class MemoWriteViewModel(
 
     val etTitle = MutableLiveData("")
     val etMemo = MutableLiveData("")
+    val isWriteSuccess = MutableLiveData(false)
 
     fun insertMemo() {
         viewModelScope.async {
@@ -33,6 +34,7 @@ class MemoWriteViewModel(
                             memo = etMemo.value!!
                         ))
                 }.join()
+                isWriteSuccess.value = true
                 clearMemo()
                 Toast.makeText(mContext, mContext.getString(R.string.toast_save), Toast.LENGTH_SHORT).show()
             } catch (e: Exception) {

@@ -21,6 +21,7 @@ import com.yun.simpledaily.data.model.MemoModels
 import com.yun.simpledaily.data.model.RealTimeModel
 import com.yun.simpledaily.databinding.*
 import com.yun.simpledaily.ui.main.MainActivity
+import com.yun.simpledaily.ui.popup.OneButtonPopup
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class HomeFragment
@@ -44,6 +45,10 @@ class HomeFragment
         }
 
         viewModel.apply {
+
+            isError.observe(viewLifecycleOwner){
+                if(it) showErrorPopup()
+            }
 
             isMoveNav.observe(viewLifecycleOwner) {
                 when (it) {
@@ -137,6 +142,21 @@ class HomeFragment
                     }
                 }
             }
+        }
+    }
+    private fun showErrorPopup() {
+        OneButtonPopup().apply {
+            showPopup(
+                requireContext(),
+                requireContext().getString(R.string.notice),
+                requireContext().getString(R.string.internet_error),
+                showAd = false
+            )
+            setDialogListener(object : OneButtonPopup.CustomDialogListener {
+                override fun onResultClicked(result: Boolean) {
+                    (activity as MainActivity).finish()
+                }
+            })
         }
     }
 }

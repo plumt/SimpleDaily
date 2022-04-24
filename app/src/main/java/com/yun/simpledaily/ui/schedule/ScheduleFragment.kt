@@ -2,6 +2,7 @@ package com.yun.simpledaily.ui.schedule
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.adapter.FragmentStateAdapter
@@ -30,6 +31,11 @@ class ScheduleFragment
         viewModel.apply {
 
             binding.apply {
+
+                imgAddSchedule.setOnClickListener {
+                    Toast.makeText(requireContext(),"스케줄 추가",Toast.LENGTH_SHORT).show()
+                }
+
                 vpSchedule.run {
                     isUserInputEnabled = true
                     adapter = object : FragmentStateAdapter(this@ScheduleFragment) {

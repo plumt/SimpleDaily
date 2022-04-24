@@ -99,6 +99,8 @@ class HomeViewModel(
 
     val memoSize = MutableLiveData(0)
 
+    val isError = MutableLiveData(false)
+
 
 
     init {
@@ -175,8 +177,10 @@ class HomeViewModel(
                     successCnt.value = successCnt.value!! + 1
                 }
             } catch (e: Exception) {
-                successCnt.value = successCnt.value!! + 1
-                Log.e(TAG, "${e.printStackTrace()}")
+                if(!isError.value!!){
+                    isError.value = true
+                }
+                Log.e(TAG, "realtime - ${e.printStackTrace()}")
             }
         }
     }
@@ -267,10 +271,10 @@ class HomeViewModel(
                 successCnt.value = successCnt.value!! + 1
 
             } catch (e: Exception) {
-                successCnt.value = successCnt.value!! + 1
-
-                e.printStackTrace()
-                Log.e("lys", "error : ${e.message}")
+                if(!isError.value!!){
+                    isError.value = true
+                }
+                Log.e("lys", "weather : ${e.message}")
             }
         }
     }

@@ -2,6 +2,7 @@ package com.yun.simpledaily.ui.memo.viewpager.detail
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import com.yun.simpledaily.R
 import com.yun.simpledaily.BR

@@ -51,6 +51,7 @@
     <string name="memo_update">수정</string>
     <string name="memo_delete">삭제</string>
     <string name="memo_write">작성</string>
+    <string name="memo_copy">복사</string>
     <string name="memo_back">이전</string>
     <string name="memo_save">저장</string>
     <string name="btn_reset">초기화</string>
@@ -59,10 +60,13 @@
     <string name="toast_delete">삭제하였습니다.</string>
     <string name="toast_update">수정하였습니다.</string>
     <string name="toast_reset">초기화하였습니다.</string>
+    <string name="toast_copy">복사하였습니다.</string>
 
     <string name="delete_question">메모를 삭제하시겠습니까?</string>
     <string name="back_question">저장되지 않은 메모가 있습니다.\n뒤로 이동하시겠습니까?</string>
     <string name="save_question">제목 및 본문 내용이 공백입니다.</string>
+
+    <string name="internet_error">서버에 연결할 수 없습니다. 잠시 후 다시 시도해 주세요.</string>
 
     <string name="all_memo">메모 모두 보기</string>
     <string name="no_location_setting">지역 설정하기</string>

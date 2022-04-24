@@ -74,6 +74,23 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
+                    android:id="@+id/tv_copy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_marginEnd="15dp"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:includeFontPadding="true"
+                    android:text="@string/memo_copy"
+                    android:textColor="@color/color_FBA53B"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:visibility="@{memo.screen == Constant.INSTANCE.MEMO_DETAIL_SCREEN &amp;&amp; !memo.updateMode ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/tv_update"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
                     android:id="@+id/tv_update"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"

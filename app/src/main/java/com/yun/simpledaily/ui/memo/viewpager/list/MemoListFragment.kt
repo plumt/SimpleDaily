@@ -48,9 +48,7 @@ class MemoListFragment
 
         viewPagerFragment.apply {
             memoList.observe(viewLifecycleOwner){
-                if(it.size > 0){
-                    viewModel.memoList.value = it
-                }
+                viewModel.memoList.value = it
             }
         }
 

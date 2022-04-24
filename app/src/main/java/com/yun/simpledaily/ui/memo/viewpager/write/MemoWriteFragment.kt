@@ -33,6 +33,16 @@ class MemoWriteFragment
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel.apply {
+            isWriteSuccess.observe(viewLifecycleOwner){
+                if(it){
+                    isWriteSuccess.value = false
+                    goMemoListScreen()
+                }
+            }
+        }
+
+
         viewPagerFragment.apply {
 
             sharedViewModel.memoScreen.observe(viewLifecycleOwner){
@@ -52,7 +62,6 @@ class MemoWriteFragment
                     if(viewModel.etMemo.value != "" && viewModel.etTitle.value != ""){
                         viewModel.insertMemo()
                         isSaveButtonClick.value = false
-                        goMemoListScreen()
                     } else{
                         showOnePopup()
                     }

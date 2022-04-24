@@ -20,7 +20,7 @@ import com.yun.simpledaily.databinding.DialogOneButtonBinding
 class OneButtonPopup {
     lateinit var customDialogListener: CustomDialogListener
 
-    fun showPopup(context: Context, title: String, contents: String, cancelable: Boolean = false){
+    fun showPopup(context: Context, title: String, contents: String, cancelable: Boolean = false, showAd: Boolean = true){
         AlertDialog.Builder(context).run {
             setCancelable(cancelable)
             val view = View.inflate(context, R.layout.dialog_one_button, null)
@@ -28,6 +28,9 @@ class OneButtonPopup {
             binding.setVariable(BR.title, title)
             binding.setVariable(BR.contents, contents)
             binding.setVariable(BR.btn_text, context.getString(R.string.result))
+
+            binding.setVariable(BR.ads, showAd)
+
             setView(binding.root)
             val dialog = create()
             dialog.window?.requestFeature(Window.FEATURE_NO_TITLE)
