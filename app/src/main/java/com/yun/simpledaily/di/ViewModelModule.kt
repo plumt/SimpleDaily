@@ -13,6 +13,7 @@ import com.yun.simpledaily.ui.memo.viewpager.write.MemoWriteViewModel
 import com.yun.simpledaily.ui.schedule.viewpager.calendar.CalendarViewModel
 import com.yun.simpledaily.ui.schedule.viewpager.list.ScheduleListViewModel
 import com.yun.simpledaily.ui.setting.SettingViewModel
+import com.yun.simpledaily.ui.week.WeekWeatherViewModel
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -68,6 +69,9 @@ val viewModelModule = module {
     }
     viewModel {
         ScheduleListViewModel(get())
+    }
+    viewModel {
+        WeekWeatherViewModel(get())
     }
 }
 

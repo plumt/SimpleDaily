@@ -42,12 +42,10 @@ import com.yun.simpledaily.data.Constant.WEEK_LOWEST
 import com.yun.simpledaily.data.Constant.WEEK_PRECIPITATION
 import com.yun.simpledaily.data.Constant.WEEK_PRECIPITATION_DETAIL
 import com.yun.simpledaily.data.Constant.WEEK_TIME
+import com.yun.simpledaily.data.Constant.HOURLY_WEATHER_IMG
 import com.yun.simpledaily.data.Constant.WEEK_WEATHER_IMG
 import com.yun.simpledaily.data.Constant._HOURLY
-import com.yun.simpledaily.data.model.HourlyWeatherModel
-import com.yun.simpledaily.data.model.MemoModels
-import com.yun.simpledaily.data.model.NowWeatherModel
-import com.yun.simpledaily.data.model.RealTimeModel
+import com.yun.simpledaily.data.model.*
 import com.yun.simpledaily.data.repository.DB
 import com.yun.simpledaily.data.repository.api.Api
 import com.yun.simpledaily.util.PreferenceManager
@@ -69,7 +67,7 @@ class HomeViewModel(
     val hourlyRainList = ListLiveData<HourlyWeatherModel.Weather>()
     val hourlyWindList = ListLiveData<HourlyWeatherModel.Weather>()
     val hourlyHumList = ListLiveData<HourlyWeatherModel.Weather>()
-    val weekWeatherList = ListLiveData<HourlyWeatherModel.Weather>()
+    val weekWeatherList = ListLiveData<WeekWeatherModel.RS>()
     val realTimeTop10 = ListLiveData<RealTimeModel.Top10>()
     val popularNews = ListLiveData<RealTimeModel.Articles>()
     val memoList = ListLiveData<MemoModels>()
@@ -203,20 +201,15 @@ class HomeViewModel(
                     doc = Jsoup.connect(mContext.getString(R.string.weather_url) + searchLocation.value + SEARCH_WEATHER).get()
                 }.join()
 
-                setNowWeather(doc!!)
-
-                // 시간별 정보 모든 데이터
-                val hour_data = doc!!.select(HOURLY) // 나중에 지워야 함,, run이나 apply 활용
+                addNowWeather(doc!!)
 
                 // 시간별 날씨 디테일(날짜, 온도, 상태, 이미지)
                 hourlyWeatherList.value = addHourlyWeather(
                     doc!!.select(HOURLY)[0].select(HOURLY_WEATHER_TIME),
                     doc!!.select(HOURLY)[0].select(HOURLY_WEATHER_NUM),
                     doc!!.select(HOURLY)[0].select(HOURLY_WEATHER_INFO),
-                    doc!!.select(HOURLY)[0].select(WEEK_WEATHER_IMG)
+                    doc!!.select(HOURLY)[0].select(HOURLY_WEATHER_IMG)
                 )
-
-                //// 위까지 함
 
 //                 시간별 강수 디테일(닐짜, 강수량, 확률)
                 hourlyRainList.value = addHourlyWeather(
@@ -243,31 +236,7 @@ class HomeViewModel(
                     null, null,"%"
                 )
 
-                // 주간 예보
-                val week = doc!!.select(WEEK_FORECAST)
-
-
-                // 주간 예보 디테일 - 요일
-                val week_weekend = week[0].select(WEEK_DOW)
-                // 주간 예보 디테일 - 날짜
-                val week_date = week[0].select(WEEK_TIME)
-                // 주간 예보 디테일 - 오전 강수 확률
-                val week_am_rain =
-                    week[0].select(WEEK_PRECIPITATION)[0].select(WEEK_PRECIPITATION_DETAIL)
-                // 주간 예보 디테일 - 오후 강수 확률
-                val week_pm_rain =
-                    week[0].select(WEEK_PRECIPITATION)[1].select(WEEK_PRECIPITATION_DETAIL)
-                // 주간 예보 디테일 - 최저기온
-                val week_low_temp = week[0].select(WEEK_LOWEST)
-                // 주간 예보 디테일 - 최고기온
-                val week_high_temp = week[0].select(WEEK_HIGHEST)
-
-
-                Log.d(
-                    TAG,
-                    "주간예보 : ${week_weekend.text()} / ${week_date.text()} / ${week_am_rain.text()} / ${week_pm_rain.text()} / ${week_low_temp.text()} / ${week_high_temp.text()}"
-                )
-
+                weekWeatherList.value = addWeekWeather(doc!!.select(WEEK_FORECAST))
                 successCnt.value = successCnt.value!! + 1
 
             } catch (e: Exception) {
@@ -279,8 +248,28 @@ class HomeViewModel(
         }
     }
 
+    // 주간 예보
+    private fun addWeekWeather(week: Elements) : ArrayList<WeekWeatherModel.RS>{
+        val array = arrayListOf<WeekWeatherModel.RS>()
+        week.forEachIndexed { index, element ->
+            array.add(WeekWeatherModel.RS(
+                index,
+                0,
+                week[index].select(WEEK_DOW).text(),
+                week[index].select(WEEK_TIME).text(),
+                week[index].select(WEEK_PRECIPITATION)[0].select(WEEK_PRECIPITATION_DETAIL).text(),
+                week[index].select(WEEK_PRECIPITATION)[1].select(WEEK_PRECIPITATION_DETAIL).text(),
+                week[index].select(WEEK_LOWEST).text().replace("기온",""),
+                week[index].select(WEEK_HIGHEST).text().replace("기온",""),
+                setImagePath(week[index].select(WEEK_WEATHER_IMG)[0].className()),
+                setImagePath(week[index].select(WEEK_WEATHER_IMG)[1].className())
+            ))
+        }
+        return array
+    }
+
     // 현재 날씨
-    private fun setNowWeather(doc: Document) {
+    private fun addNowWeather(doc: Document) {
         nowWeather.value = NowWeatherModel.Weather(
             // 검새어 (ex - 서울날씨, 부산날씨
             location = doc.select(WEATHER_LOCATION_NM)[0].text(),

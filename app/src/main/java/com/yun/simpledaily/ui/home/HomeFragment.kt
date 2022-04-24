@@ -5,6 +5,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yun.simpledaily.R
@@ -15,6 +16,7 @@ import com.yun.simpledaily.data.Constant.MEMO
 import com.yun.simpledaily.data.Constant.NAVER_SEARCH_URL
 import com.yun.simpledaily.data.Constant.TAG
 import com.yun.simpledaily.data.Constant.WEATHER
+import com.yun.simpledaily.data.Constant.WEEK
 import com.yun.simpledaily.data.Constant._HOURLY
 import com.yun.simpledaily.data.model.HourlyWeatherModel
 import com.yun.simpledaily.data.model.MemoModels
@@ -59,6 +61,14 @@ class HomeFragment
                     WEATHER -> {
                         sharedViewModel.moveLocationSettingScreen.value = true
                         (activity as MainActivity).binding.bottomNavView.selectedItemId = R.id.setting
+                    }
+
+                    WEEK -> {
+                        navigate(R.id.weekWeatherFragment,
+                            Bundle().apply {
+                                putParcelableArrayList("week",viewModel.weekWeatherList.value)
+                            }
+                        )
                     }
 
                     _HOURLY -> {

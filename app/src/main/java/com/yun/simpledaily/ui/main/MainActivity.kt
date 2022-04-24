@@ -14,6 +14,7 @@ import com.yun.simpledaily.data.Constant.MEMO_GO_LIST_SCREEN
 import com.yun.simpledaily.data.Constant.MEMO_LIST_SCREEN
 import com.yun.simpledaily.data.Constant._MEMO
 import com.yun.simpledaily.data.Constant.SETTING
+import com.yun.simpledaily.data.Constant.WEEK_WEATHER
 import com.yun.simpledaily.databinding.ActivityMainBinding
 import com.yun.simpledaily.ui.popup.LoadingDialog
 import com.yun.simpledaily.ui.popup.TwoButtonPopup
@@ -81,7 +82,7 @@ class MainActivity : AppCompatActivity() {
                 } else {
                     mainViewModel.memoScreen.value = MEMO_GO_LIST_SCREEN
                 }
-            } else if (nav.label == HOURLY_WEATHER) {
+            } else if (nav.label == HOURLY_WEATHER || nav.label == WEEK_WEATHER) {
                 navController.navigate(R.id.action_global_homeFragment)
             } else {
                 super.onBackPressed()

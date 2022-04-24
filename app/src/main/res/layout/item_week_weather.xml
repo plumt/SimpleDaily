@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="itemWeekWeather"
+            type="com.yun.simpledaily.data.model.WeekWeatherModel.RS" />
+
+        <variable
+            name="weekWeatherListener"
+            type="com.yun.simpledaily.base.BaseRecyclerAdapter.OnItemClickListener" />
+    </data>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@{itemWeekWeather.id % 2 == 0 ? @color/white : @color/color_f4f4f4}">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.05" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.95" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_20"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.2" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_50"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_80"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.8" />
+
+        <TextView
+            android:id="@+id/tv_dow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical|left"
+            android:includeFontPadding="false"
+            android:text="@{itemWeekWeather.dayOfWeek}"
+            app:layout_constraintBottom_toTopOf="@id/tv_date"
+            app:layout_constraintStart_toStartOf="@id/gl_start"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical|left"
+            android:includeFontPadding="false"
+            android:text="@{itemWeekWeather.date}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@id/gl_start"
+            app:layout_constraintTop_toBottomOf="@id/tv_dow" />
+
+        <ImageView
+            android:id="@+id/img_am"
+            setImages="@{itemWeekWeather.amImg}"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/gl_50"
+            app:layout_constraintStart_toEndOf="@id/tv_am_percent_title"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_am_percent_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical|left"
+            android:text="@string/am"
+            app:layout_constraintBottom_toTopOf="@id/tv_am_percent"
+            app:layout_constraintStart_toStartOf="@id/gl_20"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_am_percent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical|left"
+            android:includeFontPadding="false"
+            android:text="@{itemWeekWeather.amPercent}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/tv_am_percent_title"
+            app:layout_constraintStart_toStartOf="@id/tv_am_percent_title"
+            app:layout_constraintTop_toBottomOf="@id/tv_am_percent_title" />
+
+        <ImageView
+            android:id="@+id/img_pm"
+            setImages="@{itemWeekWeather.amImg}"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/gl_80"
+            app:layout_constraintStart_toEndOf="@id/tv_pm_percent_title"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_pm_percent_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical|left"
+            android:text="@string/pm"
+            app:layout_constraintBottom_toTopOf="@id/tv_pm_percent"
+            app:layout_constraintEnd_toStartOf="@id/img_pm"
+            app:layout_constraintStart_toStartOf="@id/gl_50"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_pm_percent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical|left"
+            android:includeFontPadding="false"
+            android:text="@{itemWeekWeather.amPercent}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/tv_pm_percent_title"
+            app:layout_constraintStart_toStartOf="@id/tv_pm_percent_title"
+            app:layout_constraintTop_toBottomOf="@id/tv_pm_percent_title" />
+
+        <TextView
+            android:id="@+id/tv_low_temp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:text="@{itemWeekWeather.lowTemp}"
+            app:layout_constraintBottom_toTopOf="@id/tv_high_temp"
+            app:layout_constraintStart_toStartOf="@id/gl_80"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_high_temp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:text="@{itemWeekWeather.highTemp}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@id/gl_80"
+            app:layout_constraintTop_toBottomOf="@id/tv_low_temp" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

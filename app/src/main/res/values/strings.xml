@@ -56,6 +56,9 @@
     <string name="memo_save">저장</string>
     <string name="btn_reset">초기화</string>
 
+    <string name="am">오전</string>
+    <string name="pm">오후</string>
+
     <string name="toast_save">저장하였습니다.</string>
     <string name="toast_delete">삭제하였습니다.</string>
     <string name="toast_update">수정하였습니다.</string>

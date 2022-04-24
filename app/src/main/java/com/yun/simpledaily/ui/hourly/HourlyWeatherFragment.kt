@@ -37,7 +37,6 @@ class HourlyWeatherFragment
 
         arguments.run {
             this?.getParcelableArrayList<HourlyWeatherModel.Weather>("rain")?.run {
-                Log.d(TAG,"시간별 강수 : $this")
                 viewModel.hourlyRainList.value = this
             }
 

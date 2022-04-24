@@ -36,7 +36,8 @@ object Constant {
     val WEEK_LOWEST = ".cell_temperature .lowest"
     val WEEK_HIGHEST = ".cell_temperature .highest"
     val WEATHER_IMG = ".weather_main i"
-    val WEEK_WEATHER_IMG = ".weather_box .wt_icon"
+    val HOURLY_WEATHER_IMG = ".weather_box .wt_icon"
+    val WEEK_WEATHER_IMG = ".cell_weather .weather_inner i"
 
     val DUST = "미세먼지"
     val UDUST = "초미세먼지"
@@ -52,6 +53,7 @@ object Constant {
     val _MEMO = "메모"
     val SETTING = "설정"
     val HOURLY_WEATHER = "시간별"
+    val WEEK_WEATHER = "주간예보"
 
     val DAILY_BOARED_SETTING = "데일리 보드 설정하기"
     val LOCATION_SETTING = "지역 설정하기"

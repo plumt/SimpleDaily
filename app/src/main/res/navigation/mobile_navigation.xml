@@ -77,8 +77,11 @@
         android:id="@+id/hourlyWeatherFragment"
         android:name="com.yun.simpledaily.ui.hourly.HourlyWeatherFragment"
         android:label="시간별" />
-
-
+    <fragment
+        tools:layout="@layout/fragment_week_weather"
+        android:id="@+id/weekWeatherFragment"
+        android:name="com.yun.simpledaily.ui.week.WeekWeatherFragment"
+        android:label="주간예보" />
 
 
 </navigation>
