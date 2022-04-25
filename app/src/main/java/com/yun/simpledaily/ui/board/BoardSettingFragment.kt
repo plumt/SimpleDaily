@@ -20,9 +20,8 @@ import com.yun.simpledaily.util.PreferenceManager
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class ØBoardSettingFragment
-    :
-    BaseBindingFragment<FragmentBoardSettingBinding, BoardSettingViewModel>(BoardSettingViewModel::class.java) {
+class BoardSettingFragment
+    : BaseBindingFragment<FragmentBoardSettingBinding, BoardSettingViewModel>(BoardSettingViewModel::class.java) {
     override val viewModel: BoardSettingViewModel by viewModel()
     override fun getResourceId(): Int = R.layout.fragment_board_setting
     override fun initData(): Boolean = true

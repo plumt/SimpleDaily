@@ -70,6 +70,7 @@ class HomeViewModel(
     val weekWeatherList = ListLiveData<WeekWeatherModel.RS>()
     val realTimeTop10 = ListLiveData<RealTimeModel.Top10>()
     val popularNews = ListLiveData<RealTimeModel.Articles>()
+    val naverNews = ListLiveData<RealTimeModel.Naver>()
     val memoList = ListLiveData<MemoModels>()
 
 
@@ -167,10 +168,14 @@ class HomeViewModel(
         viewModelScope.launch {
             try {
                 (callApi(api.realtime()) as RealTimeModel.RS).run {
+
                     realTimeTop10.value = this.top10
                     setId(realTimeTop10.value!!)
                     popularNews.value = this.articles
                     setId(popularNews.value!!)
+
+                    naverNews.value = this.naver
+                    setId(naverNews.value!!)
 
                     successCnt.value = successCnt.value!! + 1
                 }
@@ -256,7 +261,7 @@ class HomeViewModel(
                 index,
                 0,
                 week[index].select(WEEK_DOW).text(),
-                week[index].select(WEEK_TIME).text().substring(0,week[index].select(WEEK_TIME).text().lastIndex - 1),
+                week[index].select(WEEK_TIME).text().substring(0,week[index].select(WEEK_TIME).text().lastIndex).replace(".","/"),
                 week[index].select(WEEK_PRECIPITATION)[0].select(WEEK_PRECIPITATION_DETAIL).text(),
                 week[index].select(WEEK_PRECIPITATION)[1].select(WEEK_PRECIPITATION_DETAIL).text(),
                 week[index].select(WEEK_LOWEST).text().replace("기온",""),

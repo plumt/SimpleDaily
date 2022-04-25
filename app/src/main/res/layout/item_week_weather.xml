@@ -33,18 +33,18 @@
             app:layout_constraintGuide_percent="0.95" />
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/gl_25"
+            android:id="@+id/gl_20"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.25" />
+            app:layout_constraintGuide_percent="0.20" />
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/gl_525"
+            android:id="@+id/gl_50"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.525" />
+            app:layout_constraintGuide_percent="0.50" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/gl_80"
@@ -85,7 +85,7 @@
             setImages="@{itemWeekWeather.amImg}"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_marginStart="5dp"
+            android:layout_marginStart="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/tv_am_percent_title"
             app:layout_constraintTop_toTopOf="parent" />
@@ -100,7 +100,7 @@
             android:textColor="@color/color_979797"
             android:textSize="11sp"
             app:layout_constraintBottom_toTopOf="@id/tv_am_percent"
-            app:layout_constraintStart_toStartOf="@id/gl_25"
+            app:layout_constraintStart_toStartOf="@id/gl_20"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
@@ -122,7 +122,7 @@
             setImages="@{itemWeekWeather.amImg}"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_marginStart="5dp"
+            android:layout_marginStart="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/tv_pm_percent_title"
             app:layout_constraintTop_toTopOf="parent" />
@@ -138,7 +138,7 @@
             android:textSize="11sp"
             app:layout_constraintBottom_toTopOf="@id/tv_pm_percent"
             app:layout_constraintEnd_toStartOf="@id/img_pm"
-            app:layout_constraintStart_toStartOf="@id/gl_525"
+            app:layout_constraintStart_toStartOf="@id/gl_50"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView

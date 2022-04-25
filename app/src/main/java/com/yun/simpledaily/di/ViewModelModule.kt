@@ -9,6 +9,7 @@ import com.yun.simpledaily.ui.memo.MemoViewModel
 import com.yun.simpledaily.ui.memo.viewpager.detail.MemoDetailViewModel
 import com.yun.simpledaily.ui.memo.viewpager.list.MemoListViewModel
 import com.yun.simpledaily.ui.memo.viewpager.write.MemoWriteViewModel
+import com.yun.simpledaily.ui.news.NaverNewsViewModel
 import com.yun.simpledaily.ui.schedule.ScheduleViewModel
 import com.yun.simpledaily.ui.schedule.viewpager.calendar.CalendarViewModel
 import com.yun.simpledaily.ui.schedule.viewpager.list.ScheduleListViewModel
@@ -72,6 +73,9 @@ val viewModelModule = module {
     }
     viewModel {
         WeekWeatherViewModel(get())
+    }
+    viewModel {
+        NaverNewsViewModel(get())
     }
 }
 

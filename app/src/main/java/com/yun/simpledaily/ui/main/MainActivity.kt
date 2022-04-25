@@ -1,11 +1,14 @@
 package com.yun.simpledaily.ui.main
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import com.google.android.gms.ads.AdListener
+import com.google.android.gms.ads.LoadAdError
 import com.yun.simpledaily.R
 import com.yun.simpledaily.data.Constant.HOME
 import com.yun.simpledaily.data.Constant.HOURLY_WEATHER
@@ -13,8 +16,10 @@ import com.yun.simpledaily.data.Constant.MEMO_GO_LIST_SCREEN
 import com.yun.simpledaily.data.Constant.MEMO_LIST_SCREEN
 import com.yun.simpledaily.data.Constant.SCHEDULE
 import com.yun.simpledaily.data.Constant.SETTING
+import com.yun.simpledaily.data.Constant.TAG
 import com.yun.simpledaily.data.Constant.WEEK_WEATHER
 import com.yun.simpledaily.data.Constant._MEMO
+import com.yun.simpledaily.data.Constant._NEWS
 import com.yun.simpledaily.databinding.ActivityMainBinding
 import com.yun.simpledaily.ui.popup.LoadingDialog
 import com.yun.simpledaily.ui.popup.TwoButtonPopup
@@ -42,6 +47,24 @@ class MainActivity : AppCompatActivity() {
         binding.main = mainViewModel
 
         navController = Navigation.findNavController(this, R.id.nav_host_fragment)
+
+        binding.frPartyAd.run {
+            setClientId("DAN-9Z6B0mj0mQGSd8bw")
+            setAdListener(object : com.kakao.adfit.ads.AdListener{
+                override fun onAdLoaded() {
+                    // 호출 완료
+                }
+
+                override fun onAdClicked() {
+                    // 광고 클릭시
+                }
+
+                override fun onAdFailed(p0: Int) {
+                    // 호출 실패시
+                }
+            })
+            loadAd()
+        }
 
         binding.bottomNavView.run {
             this.setOnNavigationItemSelectedListener {
@@ -71,22 +94,22 @@ class MainActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         navController.currentDestination?.let { nav ->
-            if (nav.label == HOME ||
-                nav.label == SCHEDULE ||
-                nav.label == SETTING
-            ) {
-                showExitPopup()
-            } else if (nav.label == _MEMO) {
-                if (mainViewModel.memoScreen.value == MEMO_LIST_SCREEN) {
-                    showExitPopup()
-                } else {
-                    mainViewModel.memoScreen.value = MEMO_GO_LIST_SCREEN
+
+            when(nav.label){
+                HOME, SCHEDULE, SETTING -> showExitPopup()
+                _MEMO -> {
+                    if (mainViewModel.memoScreen.value == MEMO_LIST_SCREEN) {
+                        showExitPopup()
+                    } else {
+                        mainViewModel.memoScreen.value = MEMO_GO_LIST_SCREEN
+                    }
                 }
-            } else if (nav.label == HOURLY_WEATHER || nav.label == WEEK_WEATHER) {
-                navController.navigate(R.id.action_global_homeFragment)
-            } else {
-                super.onBackPressed()
+                HOURLY_WEATHER, WEEK_WEATHER, _NEWS -> navController.navigate(R.id.action_global_homeFragment)
+                else -> super.onBackPressed()
             }
+
+
+
         } ?: super.onBackPressed()
 
 
@@ -107,5 +130,20 @@ class MainActivity : AppCompatActivity() {
                 }
             })
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        binding.frPartyAd.pause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        binding.frPartyAd.resume()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        binding.frPartyAd.destroy()
     }
 }

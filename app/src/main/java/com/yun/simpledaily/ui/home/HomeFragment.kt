@@ -11,9 +11,11 @@ import com.yun.simpledaily.base.BaseBindingFragment
 import com.yun.simpledaily.base.BaseRecyclerAdapter
 import com.yun.simpledaily.data.Constant.MEMO
 import com.yun.simpledaily.data.Constant.NAVER_SEARCH_URL
+import com.yun.simpledaily.data.Constant.NEWS
 import com.yun.simpledaily.data.Constant.WEATHER
 import com.yun.simpledaily.data.Constant.WEEK
 import com.yun.simpledaily.data.Constant._HOURLY
+import com.yun.simpledaily.data.Constant._NEWS
 import com.yun.simpledaily.data.model.HourlyWeatherModel
 import com.yun.simpledaily.data.model.MemoModels
 import com.yun.simpledaily.data.model.RealTimeModel
@@ -75,6 +77,13 @@ class HomeFragment
                                 putParcelableArrayList("hum", viewModel.hourlyHumList.value)
                             }
                         )
+                    }
+
+                    NEWS -> {
+                        navigate(R.id.naverNewsFragment,
+                        Bundle().apply {
+                            putParcelableArrayList("news", viewModel.naverNews.value)
+                        })
                     }
                 }
 //                if(it != ""){

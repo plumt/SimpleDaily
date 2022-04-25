@@ -59,6 +59,10 @@
     <string name="am">오전</string>
     <string name="pm">오후</string>
 
+    <string name="update_title">최신 버전 업데이트</string>
+    <string name="update_contents">최신 버전 앱으로 업데이트를 위해 스토어로 이동합니다.</string>
+
+
     <string name="toast_save">저장하였습니다.</string>
     <string name="toast_delete">삭제하였습니다.</string>
     <string name="toast_update">수정하였습니다.</string>
@@ -73,5 +77,12 @@
 
     <string name="all_memo">메모 모두 보기</string>
     <string name="no_location_setting">지역 설정하기</string>
+
+    <string name="store_uri">market://details?id=com.yun.simpledaily</string>
+
+    <string name="internet_title">네트워크 연결</string>
+    <string name="internet_contents">서버 연결에 실패했습니다. 잠시 후 다시 시도해 주세요.</string>
+
+
 
 </resources>

@@ -1,7 +1,9 @@
 package com.yun.simpledaily.data.model
 
+import android.os.Parcelable
 import com.tickaroo.tikxml.annotation.Element
 import com.yun.simpledaily.base.Item
+import kotlinx.android.parcel.Parcelize
 
 class RealTimeModel {
     data class RS(
@@ -36,6 +38,7 @@ class RealTimeModel {
         val desc: String
     ) : Item()
 
+    @Parcelize
     data class Naver(
         override var id: Int,
         override var viewType: Int = 0,
@@ -44,11 +47,12 @@ class RealTimeModel {
         val image: String,
         val press: Press,
         val desc: String
-    ) : Item() {
+    ) : Item(), Parcelable {
+        @Parcelize
         data class Press(
             val name: String,
             val image: String
-        )
+        ) : Parcelable
     }
 
     data class Youtube(

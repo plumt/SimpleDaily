@@ -54,6 +54,8 @@ object Constant {
     val SETTING = "설정"
     val HOURLY_WEATHER = "시간별"
     val WEEK_WEATHER = "주간예보"
+    val _NEWS = "뉴스"
+    val NAVER_NEWS = "언론사별 가장 많이 본 뉴스"
 
     val DAILY_BOARED_SETTING = "데일리 보드 설정하기"
     val LOCATION_SETTING = "지역 설정하기"
@@ -86,6 +88,9 @@ object Constant {
     val CAL = "달력"
     val LIST = "목록"
 
+    val NO_INTERNET = 2
+    val NO_UPDATE = 3
 
+    val REMOTE_KEY_APP_VERSION = "app_version"
 
 }

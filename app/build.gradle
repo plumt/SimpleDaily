@@ -164,8 +164,13 @@ dependencies {
 
     implementation 'com.github.corouteam:GlideToVectorYou:v2.0.0'
 
-    implementation 'com.android.support:design:29.0.0'
+//    implementation 'com.android.support:design:29.0.0'
 
     implementation project(':nativetemplates')
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'androidx.ads:ads-identifier:1.0.0-alpha01'
+    implementation "com.kakao.adfit:ads-base:3.5.2"
+
 
 }

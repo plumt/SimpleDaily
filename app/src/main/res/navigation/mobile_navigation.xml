@@ -82,6 +82,11 @@
         android:id="@+id/weekWeatherFragment"
         android:name="com.yun.simpledaily.ui.week.WeekWeatherFragment"
         android:label="주간예보" />
+    <fragment
+        android:id="@+id/naverNewsFragment"
+        android:name="com.yun.simpledaily.ui.news.NaverNewsFragment"
+        tools:layout="@layout/fragment_naver_news"
+        android:label="뉴스" />
 
 
 </navigation>

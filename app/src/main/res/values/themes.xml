@@ -20,13 +20,13 @@
 
     <style name="SplashTheme" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge">
         <item name="android:windowDisablePreview">true</item>
-        <item name="android:windowBackground">@color/color_ffd100</item>
+        <item name="android:windowBackground">@color/color_FBA53B</item>
         <item name="android:windowIsTranslucent">true</item>​
 
         <item name="android:windowContentOverlay">@null</item>
-        <item name="android:navigationBarColor">@color/color_ffd100</item>
+        <item name="android:navigationBarColor">@color/color_FBA53B</item>
 
-        <item name="android:statusBarColor" tools:targetApi="l">@color/color_ffd100</item>
+        <item name="android:statusBarColor" tools:targetApi="l">@color/color_FBA53B</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowActionBar">false</item>
     </style>
