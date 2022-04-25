@@ -3,7 +3,6 @@ package com.yun.simpledaily.util
 import android.content.Context
 import android.content.SharedPreferences
 import android.net.Uri
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
@@ -13,7 +12,6 @@ import com.yun.simpledaily.R
 import com.yun.simpledaily.data.Constant.BAD
 import com.yun.simpledaily.data.Constant.GOOD
 import com.yun.simpledaily.data.Constant.NOMAL
-import com.yun.simpledaily.data.Constant.TAG
 import com.yun.simpledaily.data.Constant.WORST
 
 object PreferenceManager {

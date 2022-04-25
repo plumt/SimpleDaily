@@ -13,7 +13,6 @@ import com.yun.simpledaily.data.repository.DB
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.newSingleThreadContext
-import java.lang.Exception
 
 class MemoWriteViewModel(
     application: Application,

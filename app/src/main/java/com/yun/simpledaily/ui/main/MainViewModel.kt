@@ -3,15 +3,8 @@ package com.yun.simpledaily.ui.main
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import com.yun.simpledaily.base.BaseViewModel
-import com.yun.simpledaily.data.Constant
-import com.yun.simpledaily.data.Constant.MEMO
 import com.yun.simpledaily.data.Constant.MEMO_LIST_SCREEN
-import com.yun.simpledaily.data.Constant.NEWS
-import com.yun.simpledaily.data.Constant.REAL_TIME
 import com.yun.simpledaily.data.Constant.SHARED_LOCATION_KEY
-import com.yun.simpledaily.data.Constant.WEATHER
-import com.yun.simpledaily.data.Constant._HOURLY
-import com.yun.simpledaily.data.model.MemoModels
 import com.yun.simpledaily.util.PreferenceManager
 
 

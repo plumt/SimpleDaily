@@ -3,9 +3,8 @@ package com.yun.simpledaily.ui.board
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Toast
-import com.yun.simpledaily.R
 import com.yun.simpledaily.BR
+import com.yun.simpledaily.R
 import com.yun.simpledaily.base.BaseBindingFragment
 import com.yun.simpledaily.base.BaseRecyclerAdapter
 import com.yun.simpledaily.data.Constant.MEMO
@@ -21,7 +20,7 @@ import com.yun.simpledaily.util.PreferenceManager
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class BoardSettingFragment
+class ØBoardSettingFragment
     :
     BaseBindingFragment<FragmentBoardSettingBinding, BoardSettingViewModel>(BoardSettingViewModel::class.java) {
     override val viewModel: BoardSettingViewModel by viewModel()

@@ -6,13 +6,7 @@ import com.yun.simpledaily.base.BaseViewModel
 import com.yun.simpledaily.base.ListLiveData
 import com.yun.simpledaily.data.Constant.DAILY_BOARED_SETTING
 import com.yun.simpledaily.data.Constant.LOCATION_SETTING
-import com.yun.simpledaily.data.Constant.MEMO
-import com.yun.simpledaily.data.Constant.NEWS
-import com.yun.simpledaily.data.Constant.REAL_TIME
 import com.yun.simpledaily.data.Constant.RESET
-import com.yun.simpledaily.data.Constant.SHARED_LOCATION_KEY
-import com.yun.simpledaily.data.Constant.WEATHER
-import com.yun.simpledaily.data.Constant._HOURLY
 import com.yun.simpledaily.data.model.SettingModel
 import com.yun.simpledaily.util.PreferenceManager
 import java.io.File

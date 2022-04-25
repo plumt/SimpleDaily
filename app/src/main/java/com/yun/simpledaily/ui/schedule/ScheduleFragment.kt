@@ -7,11 +7,10 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayoutMediator
-import com.yun.simpledaily.R
 import com.yun.simpledaily.BR
+import com.yun.simpledaily.R
 import com.yun.simpledaily.base.BaseBindingFragment
 import com.yun.simpledaily.data.Constant
-import com.yun.simpledaily.data.model.HourlyWeatherModel
 import com.yun.simpledaily.databinding.FragmentScheduleBinding
 import com.yun.simpledaily.ui.schedule.viewpager.calendar.CalendarFragment
 import com.yun.simpledaily.ui.schedule.viewpager.list.ScheduleListFragment

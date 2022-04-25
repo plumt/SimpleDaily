@@ -1,20 +1,20 @@
 package com.yun.simpledaily.ui.main
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.yun.simpledaily.R
-import com.yun.simpledaily.data.Constant.SCHEDULE
 import com.yun.simpledaily.data.Constant.HOME
 import com.yun.simpledaily.data.Constant.HOURLY_WEATHER
 import com.yun.simpledaily.data.Constant.MEMO_GO_LIST_SCREEN
 import com.yun.simpledaily.data.Constant.MEMO_LIST_SCREEN
-import com.yun.simpledaily.data.Constant._MEMO
+import com.yun.simpledaily.data.Constant.SCHEDULE
 import com.yun.simpledaily.data.Constant.SETTING
 import com.yun.simpledaily.data.Constant.WEEK_WEATHER
+import com.yun.simpledaily.data.Constant._MEMO
 import com.yun.simpledaily.databinding.ActivityMainBinding
 import com.yun.simpledaily.ui.popup.LoadingDialog
 import com.yun.simpledaily.ui.popup.TwoButtonPopup

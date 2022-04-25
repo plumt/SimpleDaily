@@ -2,12 +2,10 @@ package com.yun.simpledaily.ui.setting
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
-import com.yun.simpledaily.R
 import com.yun.simpledaily.BR
+import com.yun.simpledaily.R
 import com.yun.simpledaily.base.BaseBindingFragment
 import com.yun.simpledaily.base.BaseRecyclerAdapter
-import com.yun.simpledaily.data.Constant
 import com.yun.simpledaily.data.Constant.DAILY_BOARED_SETTING
 import com.yun.simpledaily.data.Constant.LOCATION_SETTING
 import com.yun.simpledaily.data.Constant.RESET

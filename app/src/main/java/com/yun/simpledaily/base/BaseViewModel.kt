@@ -18,7 +18,6 @@ open class BaseViewModel constructor(application: Application) : AndroidViewMode
     val navigatorFlag = MutableLiveData<Int>()
 
     suspend fun callApi(api: Response<*>): Any? {
-        Log.d(TAG,"callApi")
         var result: Any? = null
         viewModelScope.async {
             async { result = ApiClass(api).callApi() }.join()

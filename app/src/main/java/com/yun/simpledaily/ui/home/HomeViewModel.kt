@@ -16,6 +16,7 @@ import com.yun.simpledaily.data.Constant.HOURLY_HUMIDITY_TIME
 import com.yun.simpledaily.data.Constant.HOURLY_PRECIPITATION_NUM
 import com.yun.simpledaily.data.Constant.HOURLY_PRECIPITATION_PERCENT
 import com.yun.simpledaily.data.Constant.HOURLY_PRECIPITATION_TIME
+import com.yun.simpledaily.data.Constant.HOURLY_WEATHER_IMG
 import com.yun.simpledaily.data.Constant.HOURLY_WEATHER_INFO
 import com.yun.simpledaily.data.Constant.HOURLY_WEATHER_NUM
 import com.yun.simpledaily.data.Constant.HOURLY_WEATHER_TIME
@@ -42,7 +43,6 @@ import com.yun.simpledaily.data.Constant.WEEK_LOWEST
 import com.yun.simpledaily.data.Constant.WEEK_PRECIPITATION
 import com.yun.simpledaily.data.Constant.WEEK_PRECIPITATION_DETAIL
 import com.yun.simpledaily.data.Constant.WEEK_TIME
-import com.yun.simpledaily.data.Constant.HOURLY_WEATHER_IMG
 import com.yun.simpledaily.data.Constant.WEEK_WEATHER_IMG
 import com.yun.simpledaily.data.Constant._HOURLY
 import com.yun.simpledaily.data.model.*
@@ -256,7 +256,7 @@ class HomeViewModel(
                 index,
                 0,
                 week[index].select(WEEK_DOW).text(),
-                week[index].select(WEEK_TIME).text(),
+                week[index].select(WEEK_TIME).text().substring(0,week[index].select(WEEK_TIME).text().lastIndex - 1),
                 week[index].select(WEEK_PRECIPITATION)[0].select(WEEK_PRECIPITATION_DETAIL).text(),
                 week[index].select(WEEK_PRECIPITATION)[1].select(WEEK_PRECIPITATION_DETAIL).text(),
                 week[index].select(WEEK_LOWEST).text().replace("기온",""),

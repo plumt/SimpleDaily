@@ -2,9 +2,7 @@ package com.yun.simpledaily.di
 
 import android.content.Context
 import androidx.room.Room
-import androidx.room.RoomDatabase
 import com.yun.simpledaily.data.repository.DB
-
 import org.koin.dsl.module
 
 val databaseModule = module {

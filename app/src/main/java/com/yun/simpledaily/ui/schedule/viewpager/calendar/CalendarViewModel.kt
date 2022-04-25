@@ -1,7 +1,6 @@
 package com.yun.simpledaily.ui.schedule.viewpager.calendar
 
 import android.app.Application
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.yun.simpledaily.base.BaseViewModel
 import org.joda.time.DateTime

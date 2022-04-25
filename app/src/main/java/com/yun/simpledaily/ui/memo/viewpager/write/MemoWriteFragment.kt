@@ -3,15 +3,13 @@ package com.yun.simpledaily.ui.memo.viewpager.write
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
-import com.yun.simpledaily.R
 import com.yun.simpledaily.BR
+import com.yun.simpledaily.R
 import com.yun.simpledaily.base.BaseBindingFragment
-import com.yun.simpledaily.data.Constant
 import com.yun.simpledaily.data.Constant.MEMO_GO_LIST_SCREEN
 import com.yun.simpledaily.data.Constant.MEMO_LIST_SCREEN
 import com.yun.simpledaily.data.Constant.MEMO_WRITE_SCREEN
 import com.yun.simpledaily.databinding.FragmentMemoWriteBinding
-import com.yun.simpledaily.ui.main.MainActivity
 import com.yun.simpledaily.ui.memo.MemoViewModel
 import com.yun.simpledaily.ui.popup.OneButtonPopup
 import com.yun.simpledaily.ui.popup.TwoButtonPopup

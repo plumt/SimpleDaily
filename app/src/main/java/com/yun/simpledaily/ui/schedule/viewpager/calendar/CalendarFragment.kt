@@ -3,8 +3,8 @@ package com.yun.simpledaily.ui.schedule.viewpager.calendar
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import com.yun.simpledaily.R
 import com.yun.simpledaily.BR
+import com.yun.simpledaily.R
 import com.yun.simpledaily.base.BaseBindingFragment
 import com.yun.simpledaily.custom.CalendarUtils
 import com.yun.simpledaily.custom.CalendarUtils.Companion.getFormatString

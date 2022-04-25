@@ -27,6 +27,7 @@
         <entry key="app/src/main/res/layout/fragment_schedule.xml" value="0.15471311475409835" />
         <entry key="app/src/main/res/layout/fragment_schedule_list.xml" value="0.15471311475409835" />
         <entry key="app/src/main/res/layout/fragment_setting.xml" value="0.13645833333333332" />
+        <entry key="app/src/main/res/layout/fragment_week_weather.xml" value="0.10234375" />
         <entry key="app/src/main/res/layout/item_board.xml" value="0.335" />
         <entry key="app/src/main/res/layout/item_hourly_hum.xml" value="0.1" />
         <entry key="app/src/main/res/layout/item_hourly_rain.xml" value="0.45" />
@@ -37,6 +38,7 @@
         <entry key="app/src/main/res/layout/item_popular_news.xml" value="0.13645833333333332" />
         <entry key="app/src/main/res/layout/item_realtime_top10.xml" value="0.13645833333333332" />
         <entry key="app/src/main/res/layout/item_setting.xml" value="0.19610507246376813" />
+        <entry key="app/src/main/res/layout/item_week_weather.xml" value="0.10234375" />
         <entry key="app/src/main/res/layout/view_calendar.xml" value="0.10234375" />
         <entry key="app/src/main/res/layout/view_now_weather.xml" value="0.13697916666666668" />
         <entry key="app/src/main/res/layout/view_week.xml" value="0.10234375" />

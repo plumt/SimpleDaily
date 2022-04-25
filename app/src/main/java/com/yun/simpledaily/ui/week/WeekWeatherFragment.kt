@@ -1,14 +1,11 @@
 package com.yun.simpledaily.ui.week
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import com.yun.simpledaily.R
 import com.yun.simpledaily.BR
+import com.yun.simpledaily.R
 import com.yun.simpledaily.base.BaseBindingFragment
 import com.yun.simpledaily.base.BaseRecyclerAdapter
-import com.yun.simpledaily.data.Constant
-import com.yun.simpledaily.data.model.HourlyWeatherModel
 import com.yun.simpledaily.data.model.WeekWeatherModel
 import com.yun.simpledaily.databinding.FragmentWeekWeatherBinding
 import com.yun.simpledaily.databinding.ItemWeekWeatherBinding
@@ -30,7 +27,6 @@ class WeekWeatherFragment
         arguments.run {
             this?.getParcelableArrayList<WeekWeatherModel.RS>("week")?.run {
                 viewModel.weekWeatherList.value = this
-                Log.d(Constant.TAG, "주간 예보 : $this")
             }
         }
 

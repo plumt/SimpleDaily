@@ -8,11 +8,10 @@ import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.yun.simpledaily.R
 import com.yun.simpledaily.BR
+import com.yun.simpledaily.R
 import com.yun.simpledaily.base.BaseBindingFragment
 import com.yun.simpledaily.data.Constant.MEMO_DETAIL_SCREEN
-import com.yun.simpledaily.data.Constant.MEMO_GO_LIST_SCREEN
 import com.yun.simpledaily.data.Constant.MEMO_LIST_SCREEN
 import com.yun.simpledaily.data.Constant.MEMO_WRITE_SCREEN
 import com.yun.simpledaily.databinding.FragmentMemoBinding

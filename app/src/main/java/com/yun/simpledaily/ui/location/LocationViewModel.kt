@@ -1,23 +1,18 @@
 package com.yun.simpledaily.ui.location
 
 import android.app.Application
-import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.yun.simpledaily.base.BaseViewModel
 import com.yun.simpledaily.base.ListLiveData
-import com.yun.simpledaily.data.Constant
 import com.yun.simpledaily.data.Constant.ALL_LOCATION
 import com.yun.simpledaily.data.Constant.FIRST_SCREEN
-import com.yun.simpledaily.data.Constant.SECOND_SCREEN
 import com.yun.simpledaily.data.Constant.STEP_1
 import com.yun.simpledaily.data.Constant.TAG
-import com.yun.simpledaily.data.Constant.THIRD_SCREEN
 import com.yun.simpledaily.data.model.LocationModel
 import com.yun.simpledaily.data.repository.api.Api
 import kotlinx.coroutines.launch
-import java.net.URLDecoder
 
 class LocationViewModel(
     application: Application,

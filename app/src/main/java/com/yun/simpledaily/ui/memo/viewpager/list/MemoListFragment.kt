@@ -2,13 +2,11 @@ package com.yun.simpledaily.ui.memo.viewpager.list
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.viewModels
-import com.yun.simpledaily.R
 import com.yun.simpledaily.BR
+import com.yun.simpledaily.R
 import com.yun.simpledaily.base.BaseBindingFragment
 import com.yun.simpledaily.base.BaseRecyclerAdapter
-import com.yun.simpledaily.data.Constant
 import com.yun.simpledaily.data.Constant.MEMO_DETAIL_SCREEN
 import com.yun.simpledaily.data.model.MemoModels
 import com.yun.simpledaily.databinding.FragmentMemoListBinding
