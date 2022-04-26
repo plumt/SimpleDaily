@@ -66,7 +66,7 @@ val viewModelModule = module {
     }
 
     viewModel {
-        CalendarViewModel(get())
+        CalendarViewModel(get(), get())
     }
     viewModel {
         ScheduleListViewModel(get())
