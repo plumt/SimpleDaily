@@ -30,8 +30,7 @@
         <com.kakao.adfit.ads.ba.BannerAdView
             android:id="@+id/fr_party_ad"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintDimensionRatio="320:50"
+            android:layout_height="wrap_content"
             app:layout_constraintBottom_toTopOf="@id/bottom_nav_view"
             />
 

@@ -97,7 +97,9 @@ class CalendarView @JvmOverloads constructor(
             ) {
                 listener?.onClick(it)
             })
-
+            if (index < eventDate?.size?: -1 && it == eventDate?.get(index)) {
+                index++
+            }
         }
         invalidate()
     }

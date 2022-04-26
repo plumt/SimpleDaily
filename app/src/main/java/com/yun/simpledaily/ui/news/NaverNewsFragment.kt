@@ -1,5 +1,7 @@
 package com.yun.simpledaily.ui.news
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -30,13 +32,8 @@ class NaverNewsFragment
 
         arguments.run {
             this?.getParcelableArrayList<RealTimeModel.Naver>("news")?.run {
-                Log.d(TAG,"news : $this")
                 viewModel.naverNewsList.value = this
             }
-        }
-
-        viewModel.naverNewsList.observe(viewLifecycleOwner){
-            Log.d(TAG,"news : $it")
         }
 
         binding.apply {
@@ -47,7 +44,7 @@ class NaverNewsFragment
                     bindingListener = BR.newsListener
                 ){
                     override fun onItemClick(item: RealTimeModel.Naver, view: View) {
-                        Toast.makeText(requireContext(),item.link,Toast.LENGTH_SHORT).show()
+                        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(item.link)))
                     }
                 }
             }

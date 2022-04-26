@@ -37,16 +37,22 @@ class CalendarFragment
         setCalendar()
     }
 
+    private fun addSchedule(){
+
+    }
+
     private fun setCalendar(value: Int = 0){
         binding.cvCalendar.let {
+            val dateTime = arrayListOf<DateTime>()
+            dateTime.add(DateTime.parse("2022-04-22"))
+            dateTime.add(DateTime.parse("2022-04-26"))
             viewModel.run {
-
                 if(selectDate.value == ""){
                     it.initCalendar(
                         DateTime(nowDate),
                         CalendarUtils.getMonthList(DateTime(nowDate)),
                         DateTime.now(),
-                        eventDate = arrayListOf<DateTime>()
+                        eventDate = dateTime
                     )
                 } else{
                     it.current!!.plusMonths(value).run {
@@ -54,13 +60,11 @@ class CalendarFragment
                             this,
                             CalendarUtils.getMonthList(this),
                             DateTime.parse(selectDate.value),
-                            eventDate = arrayListOf<DateTime>()
+                            eventDate = dateTime
                         )
                     }
                 }
-
             }
         }
     }
-
 }

@@ -66,12 +66,12 @@ class DayItemView @JvmOverloads constructor(
 
             currentPaint.apply {
                 style = Paint.Style.STROKE
-                color = Color.parseColor("#8b878d")
+                color = Color.parseColor("#FBA53B")
             }
 
             eventPaint.apply {
                 style = Paint.Style.FILL
-                color = Color.RED
+                color = Color.parseColor("#FBA53B")
             }
 
 
@@ -86,12 +86,12 @@ class DayItemView @JvmOverloads constructor(
             val half = height.toFloat() / 2
             val margin = (width - height) / 2
             if (select) {
-                canvas.drawCircle(half + margin, half, half/1.5f, selectPaint)
+                canvas.drawCircle(half + margin, half, half/1.7f, selectPaint)
             } else if (current) {
-                canvas.drawCircle(half + margin, half, half/1.5f, currentPaint)
+                canvas.drawCircle(half + margin, half, half/1.7f, currentPaint)
             }
             if(event){
-                canvas.drawCircle(half + margin, half*0.5f, half/12f, eventPaint)
+                canvas.drawCircle(half + margin, half*1.8f, half/12f, eventPaint)
             }
         }
 
