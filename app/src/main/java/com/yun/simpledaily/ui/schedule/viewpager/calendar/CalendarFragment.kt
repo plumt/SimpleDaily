@@ -44,8 +44,8 @@ class CalendarFragment
     private fun setCalendar(value: Int = 0){
         binding.cvCalendar.let {
             val dateTime = arrayListOf<DateTime>()
-//            dateTime.add(DateTime.parse("2022-04-22"))
-//            dateTime.add(DateTime.parse("2022-04-26"))
+            dateTime.add(DateTime.parse("2022-04-22"))
+            dateTime.add(DateTime.parse("2022-04-26"))
             viewModel.run {
                 if(selectDate.value == ""){
                     it.initCalendar(
