@@ -32,7 +32,7 @@ class ScheduleFragment
             binding.apply {
 
                 imgAddSchedule.setOnClickListener {
-                    Toast.makeText(requireContext(),"스케줄 추가",Toast.LENGTH_SHORT).show()
+                    viewModel.addScheduleEvent.value = true
                 }
 
                 vpSchedule.run {
