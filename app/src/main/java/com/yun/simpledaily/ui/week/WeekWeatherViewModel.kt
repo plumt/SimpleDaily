@@ -7,8 +7,6 @@ import com.yun.simpledaily.data.model.WeekWeatherModel
 
 class WeekWeatherViewModel(
     application: Application
-) : BaseViewModel(application){
-
+) : BaseViewModel(application) {
     val weekWeatherList = ListLiveData<WeekWeatherModel.RS>()
-
 }

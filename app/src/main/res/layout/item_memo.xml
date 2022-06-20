@@ -48,7 +48,6 @@
                     android:orientation="vertical"
                     app:layout_constraintGuide_percent="0.95" />
 
-
                 <TextView
                     android:id="@+id/tv_title"
                     android:layout_width="0dp"
@@ -95,10 +94,10 @@
         </com.google.android.material.card.MaterialCardView>
 
         <View
-            android:visibility="@{itemMemo.id == itemMemo.last ? View.INVISIBLE : View.VISIBLE}"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/color_f4f4f4" />
+            android:background="@color/color_f4f4f4"
+            android:visibility="@{itemMemo.id == itemMemo.last ? View.INVISIBLE : View.VISIBLE}" />
 
     </LinearLayout>
 </layout>

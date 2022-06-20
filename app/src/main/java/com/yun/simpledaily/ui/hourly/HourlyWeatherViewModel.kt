@@ -9,15 +9,11 @@ import com.yun.simpledaily.data.model.HourlyWeatherModel
 
 class HourlyWeatherViewModel(
     application: Application
-) : BaseViewModel(application){
+) : BaseViewModel(application) {
 
     val hourlyRainList = ListLiveData<HourlyWeatherModel.Weather>()
     val hourlyWindList = ListLiveData<HourlyWeatherModel.Weather>()
     val hourlyHumList = ListLiveData<HourlyWeatherModel.Weather>()
 
-
-    val title = MutableLiveData<String>().apply {
-        value = mContext.getString(R.string.hourly_more_txt)
-    }
-
+    val title = MutableLiveData<String>(mContext.getString(R.string.hourly_more_txt))
 }

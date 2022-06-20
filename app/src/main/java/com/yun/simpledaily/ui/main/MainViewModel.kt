@@ -15,30 +15,24 @@ class MainViewModel(
 
     val isLoading = MutableLiveData(false)
     val isBottomVisible = MutableLiveData(true)
-
     val searchLocation = MutableLiveData("")
     val moveLocationSettingScreen = MutableLiveData(false)
+    val memoScreen = MutableLiveData(MEMO_LIST_SCREEN)
+    val selectMemoId = MutableLiveData<Long>(-1)
 
     init {
-
         sharedPreferences.run {
-            getString(mContext,SHARED_LOCATION_KEY)?.run {
+            getString(mContext, SHARED_LOCATION_KEY)?.run {
                 searchLocation.value = this
             }
         }
-
     }
 
-    val memoScreen = MutableLiveData(MEMO_LIST_SCREEN)
-
-    val selectMemoId = MutableLiveData<Long>(-1)
-
-
-    fun hideBottomView(){
+    fun hideBottomView() {
         isBottomVisible.value = false
     }
 
-    fun showBottomView(){
+    fun showBottomView() {
         isBottomVisible.value = true
     }
 }

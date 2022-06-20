@@ -1,18 +1,19 @@
 <resources>
     <string name="app_name">SimpleDaily</string>
 
-<!--    <string name="admob_app_id"></string>-->
-<!--    <string name="admob_native_id"></string>-->
-<!--    <string name="admob_front_id"></string>-->
-<!--    <string name="admob_banner_id"></string>-->
+    <!--    <string name="admob_app_id"></string>-->
+    <!--    <string name="admob_native_id"></string>-->
+    <!--    <string name="admob_front_id"></string>-->
+    <!--    <string name="admob_banner_id"></string>-->
 
     <string name="admob_app_test_id">ca-app-pub-3940256099942544~3347511713</string>
     <string name="admob_native_test_id">ca-app-pub-3940256099942544/2247696110</string>
-<!--    <string name="admob_front_test_id">ca-app-pub-7669498576619816/8560478693</string>-->
-<!--    <string name="admob_banner_test_id">ca-app-pub-3940256099942544/6300978111</string>-->
+    <!--    <string name="admob_front_test_id">ca-app-pub-7669498576619816/8560478693</string>-->
+    <!--    <string name="admob_banner_test_id">ca-app-pub-3940256099942544/6300978111</string>-->
 
     <string name="signal_url">https://api.signal.bz</string>
     <string name="weather_url">https://search.naver.com/search.naver?where=nexearch&amp;sm=top_hty&amp;fbm=1&amp;ie=utf8&amp;query=</string>
+    <string name="exchange_url">https://search.naver.com/search.naver?sm=tab_hty.top&amp;where=nexearch&amp;query=%ED%99%98%EC%9C%A8&amp;oquery=%ED%99%98%EC%9C%A8&amp;tqi=hqwrplprvhGssOgKA3ossssstUV-161138</string>
     <string name="weather_img_url">https://ssl.pstatic.net/sstatic/keypage/outside/scui/weather_new_new/img/weather_svg/</string>
     <string name="ADDRESS_URL">https://grpc-proxy-server-mkvo6j4wsq-du.a.run.app</string>
 
@@ -27,6 +28,7 @@
     <string name="week">week</string>
     <string name="news">news</string>
     <string name="memo">memo</string>
+    <string name="schedule">schedule</string>
     <string name="weather">weather</string>
 
     <string name="realtime_top10">실시간 인기 검색어</string>
@@ -35,6 +37,11 @@
 
     <string name="currently_memo">최근 등록한 메모</string>
     <string name="no_insert_memo">등록된 메모가 없습니다.</string>
+
+    <string name="currently_schedule">오늘 일정</string>
+    <string name="no_insert_schedule">오늘 일정이 없습니다.</string>
+
+    <string name="today_exchange">환율</string>
 
     <string name="loading_text">데이터를 불러오는 중입니다.</string>
 
@@ -76,13 +83,13 @@
     <string name="internet_error">서버에 연결할 수 없습니다. 잠시 후 다시 시도해 주세요.</string>
 
     <string name="all_memo">메모 모두 보기</string>
+    <string name="all_schedule">달력 이동</string>
     <string name="no_location_setting">지역 설정하기</string>
 
     <string name="store_uri">market://details?id=com.yun.simpledaily</string>
 
     <string name="internet_title">네트워크 연결</string>
     <string name="internet_contents">서버 연결에 실패했습니다. 잠시 후 다시 시도해 주세요.</string>
-
 
 
 </resources>

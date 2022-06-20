@@ -1,25 +1,21 @@
 package com.yun.simpledaily.ui.main
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import com.google.android.gms.ads.AdListener
-import com.google.android.gms.ads.LoadAdError
 import com.yun.simpledaily.R
 import com.yun.simpledaily.data.Constant.HOME
 import com.yun.simpledaily.data.Constant.HOURLY_WEATHER
 import com.yun.simpledaily.data.Constant.MEMO_GO_LIST_SCREEN
 import com.yun.simpledaily.data.Constant.MEMO_LIST_SCREEN
-import com.yun.simpledaily.data.Constant.SCHEDULE
 import com.yun.simpledaily.data.Constant.SETTING
-import com.yun.simpledaily.data.Constant.TAG
 import com.yun.simpledaily.data.Constant.WEEK_WEATHER
 import com.yun.simpledaily.data.Constant._MEMO
 import com.yun.simpledaily.data.Constant._NEWS
+import com.yun.simpledaily.data.Constant._SCHEDULE
 import com.yun.simpledaily.databinding.ActivityMainBinding
 import com.yun.simpledaily.ui.popup.LoadingDialog
 import com.yun.simpledaily.ui.popup.TwoButtonPopup
@@ -50,7 +46,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.frPartyAd.run {
             setClientId("DAN-9Z6B0mj0mQGSd8bw")
-            setAdListener(object : com.kakao.adfit.ads.AdListener{
+            setAdListener(object : com.kakao.adfit.ads.AdListener {
                 override fun onAdLoaded() {
                     // 호출 완료
                 }
@@ -71,7 +67,7 @@ class MainActivity : AppCompatActivity() {
                 if (navController.currentDestination?.label != it.title) {
                     when (it.title) {
                         HOME -> navController.navigate(R.id.action_global_homeFragment)
-                        SCHEDULE -> navController.navigate(R.id.action_global_calendarFragment)
+                        _SCHEDULE -> navController.navigate(R.id.action_global_calendarFragment)
                         _MEMO -> navController.navigate(R.id.action_global_memoFragment)
                         SETTING -> navController.navigate(R.id.action_global_settingFragment)
                     }
@@ -83,36 +79,28 @@ class MainActivity : AppCompatActivity() {
         dialog = LoadingDialog(this)
 
         mainViewModel.isLoading.observe(this) {
-            if (it) {
-                dialog.show()
-            } else {
-                dialog.dismiss()
-            }
+            if (it) dialog.show()
+            else dialog.dismiss()
         }
-
     }
 
     override fun onBackPressed() {
         navController.currentDestination?.let { nav ->
 
-            when(nav.label){
-                HOME, SCHEDULE, SETTING -> showExitPopup()
+            when (nav.label) {
+
+                HOME, _SCHEDULE, SETTING -> showExitPopup()
+
                 _MEMO -> {
-                    if (mainViewModel.memoScreen.value == MEMO_LIST_SCREEN) {
-                        showExitPopup()
-                    } else {
-                        mainViewModel.memoScreen.value = MEMO_GO_LIST_SCREEN
-                    }
+                    if (mainViewModel.memoScreen.value == MEMO_LIST_SCREEN) showExitPopup()
+                    else mainViewModel.memoScreen.value = MEMO_GO_LIST_SCREEN
                 }
+
                 HOURLY_WEATHER, WEEK_WEATHER, _NEWS -> navController.navigate(R.id.action_global_homeFragment)
+
                 else -> super.onBackPressed()
             }
-
-
-
         } ?: super.onBackPressed()
-
-
     }
 
     private fun showExitPopup() {
@@ -124,9 +112,7 @@ class MainActivity : AppCompatActivity() {
             )
             setDialogListener(object : TwoButtonPopup.CustomDialogListener {
                 override fun onResultClicked(result: Boolean) {
-                    if (result) {
-                        finish()
-                    }
+                    if (result) finish()
                 }
             })
         }

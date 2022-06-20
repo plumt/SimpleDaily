@@ -7,9 +7,12 @@ import androidx.lifecycle.viewModelScope
 import com.yun.simpledaily.R
 import com.yun.simpledaily.base.BaseViewModel
 import com.yun.simpledaily.base.ListLiveData
+import com.yun.simpledaily.custom.CalendarUtils.Companion.getFormatString
 import com.yun.simpledaily.data.Constant.COMPARE_WEATHER
 import com.yun.simpledaily.data.Constant.DUST
 import com.yun.simpledaily.data.Constant.DUST_UV
+import com.yun.simpledaily.data.Constant.EXCHAGE_LIST
+import com.yun.simpledaily.data.Constant.EXCHANGE
 import com.yun.simpledaily.data.Constant.HOURLY
 import com.yun.simpledaily.data.Constant.HOURLY_HUMIDITY_NUM
 import com.yun.simpledaily.data.Constant.HOURLY_HUMIDITY_TIME
@@ -23,10 +26,12 @@ import com.yun.simpledaily.data.Constant.HOURLY_WEATHER_TIME
 import com.yun.simpledaily.data.Constant.HOURLY_WIND_DIRECTION
 import com.yun.simpledaily.data.Constant.HOURLY_WIND_NUM
 import com.yun.simpledaily.data.Constant.HOURLY_WIND_TIME
+import com.yun.simpledaily.data.Constant.JAPAN
 import com.yun.simpledaily.data.Constant.MEMO
 import com.yun.simpledaily.data.Constant.NEWS
 import com.yun.simpledaily.data.Constant.NOW_WEATHER
 import com.yun.simpledaily.data.Constant.REAL_TIME
+import com.yun.simpledaily.data.Constant.SCHEDULE
 import com.yun.simpledaily.data.Constant.SEARCH_WEATHER
 import com.yun.simpledaily.data.Constant.SUMMARY_LIST
 import com.yun.simpledaily.data.Constant.TAG
@@ -52,9 +57,11 @@ import com.yun.simpledaily.util.PreferenceManager
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.newSingleThreadContext
+import org.joda.time.DateTime
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.select.Elements
+import java.util.regex.Pattern
 
 class HomeViewModel(
     application: Application,
@@ -72,7 +79,8 @@ class HomeViewModel(
     val popularNews = ListLiveData<RealTimeModel.Articles>()
     val naverNews = ListLiveData<RealTimeModel.Naver>()
     val memoList = ListLiveData<MemoModels>()
-
+    val scheduleEventList = ListLiveData<CalendarModels>()
+    val exchangeList = ListLiveData<ExchangeModel>()
 
     val nowWeather = MutableLiveData<NowWeatherModel.Weather>()
 
@@ -87,80 +95,134 @@ class HomeViewModel(
     val isShowRealTime = MutableLiveData<Boolean>()
     val isShowNews = MutableLiveData<Boolean>()
     val isShowMemo = MutableLiveData<Boolean>()
+    val isShowSchedule = MutableLiveData<Boolean>()
+    val isShowExchange = MutableLiveData<Boolean>()
 
 
     val searchLocation = MutableLiveData("")
 
     val loading = MutableLiveData(false)
 
-    var apiCnt = 0
-    val successCnt = MutableLiveData(0)
-
     val memoSize = MutableLiveData(0)
+    val scheduleSize = MutableLiveData(0)
 
     val isError = MutableLiveData(false)
-
-
 
     init {
         preferencesCheck()
     }
 
-    private fun preferencesCheck(){
+    private fun preferencesCheck() {
         sharedPreferences.run {
-            if(getString(mContext, WEATHER) == "") {
+            if (getString(mContext, WEATHER) == "") {
                 setString(mContext, WEATHER, "true")
-                setString(mContext, _HOURLY,"true")
-                setString(mContext, REAL_TIME,"true")
-                setString(mContext, NEWS,"true")
-                setString(mContext, MEMO,"true")
+                setString(mContext, _HOURLY, "true")
+                setString(mContext, REAL_TIME, "true")
+                setString(mContext, NEWS, "true")
+                setString(mContext, MEMO, "true")
+                setString(mContext, SCHEDULE, "true")
+                setString(mContext, EXCHANGE, "true")
             }
             isShowWeather.value = getString(mContext, WEATHER).toBoolean()
             isShowHourly.value = getString(mContext, _HOURLY).toBoolean()
             isShowRealTime.value = getString(mContext, REAL_TIME).toBoolean()
             isShowNews.value = getString(mContext, NEWS).toBoolean()
             isShowMemo.value = getString(mContext, MEMO).toBoolean()
+            isShowSchedule.value = getString(mContext, SCHEDULE).toBoolean()
+            isShowExchange.value = getString(mContext, EXCHANGE).toBoolean()
         }
     }
 
-    fun callApiList(){
-        apiCnt = 2
-        successCnt.value = 0
-        realtime()
-        memo()
-        weather()
-
-        //TODO 날씨
-        //TODO 뉴스 - ㅇ
-        //TODO 인터넷 원하는 링크 바로가기 기능도 추가
-        //TODO 캘린더로 일정 관리 기능 추가
-        //TODO 메모 기능 추가 - ㅇ
-        //TODO 코로나 확진자수 필요한지
-        //TODO 원하는 종목 주가 https://finance.daum.net/domestic/search?q=메지온
-        //TODO 환율 정보
+    fun callApiList() {
+        schedule()
+//        exchange()
+        //TODO 날씨 - 완료
+        //TODO 뉴스 - 완료
+        //TODO 인터넷 원하는 링크 바로가기 기능도 추가 - 예정
+        //TODO 캘린더로 일정 관리 기능 추가 - 완료
+        //TODO 메모 기능 추가 - 완료
+        //TODO 코로나 확진자수 필요한지 - 필요없음
+        //TODO 원하는 종목 주가 https://finance.daum.net/domestic/search?q=메지온 - 예정
+        //TODO 환율 정보 - 완료
     }
 
-    private fun memo(){
+    private fun schedule() {
+        if (checkedShowBoard(SCHEDULE)) {
+            memo()
+            return
+        }
+        viewModelScope.async {
+            try {
+                val nowDate =
+                    DateTime(DateTime().withTimeAtStartOfDay().millis).getFormatString("yyyyMMdd")
+                        .toLong()
+                val list = arrayListOf<CalendarModels>()
+                launch(newSingleThreadContext(SCHEDULE)) {
+                    val data = db.calendarDao().selectEvent(nowDate)
+                    data.forEachIndexed { index, calendarModel ->
+                        list.add(
+                            CalendarModels(
+                                index,
+                                0,
+                                dateConvert(calendarModel.date.toString()),
+                                calendarModel.event
+                            )
+                        )
+                    }
+                }.join()
+                if(list.size > 0) {
+                    list[list.lastIndex].last = true
+                    scheduleEventList.value = list
+                }
+                scheduleSize.value = scheduleEventList.value!!.size
+                memo()
+            } catch (e: java.lang.Exception) {
+                error()
+                e.printStackTrace()
+            }
+        }
+    }
+
+    private fun memo() {
+        if (checkedShowBoard(MEMO)) {
+            realtime()
+            return
+        }
         viewModelScope.async {
             try {
                 val list = arrayListOf<MemoModels>()
                 launch(newSingleThreadContext(MEMO)) {
                     val data = db.memoDao().selectMemo3()
-                    val size = if(data.isEmpty()) 0 else data.size - 1
+                    val size = if (data.isEmpty()) 0 else data.size - 1
                     data.forEachIndexed { index, memoModel ->
-                        list.add(MemoModels(index,0, memoModel.id, memoModel.title, memoModel.memo, true, size))
+                        list.add(
+                            MemoModels(
+                                index,
+                                0,
+                                memoModel.id,
+                                memoModel.title,
+                                memoModel.memo,
+                                true,
+                                size
+                            )
+                        )
                     }
                 }.join()
                 memoList.value = list
                 memoSize.value = memoList.sizes()
-            } catch (e: java.lang.Exception){
-                Log.e(TAG,"${e.message}")
+                realtime()
+            } catch (e: java.lang.Exception) {
+                error()
                 e.printStackTrace()
             }
         }
     }
 
     private fun realtime() {
+        if (checkedShowBoard(REAL_TIME) && checkedShowBoard(NEWS)) {
+            weather()
+            return
+        }
         loading.value = true
         // api : https://api.signal.bz/news/realtime
         // 사이트 : https://www.signal.bz/
@@ -168,34 +230,78 @@ class HomeViewModel(
         viewModelScope.launch {
             try {
                 (callApi(api.realtime()) as RealTimeModel.RS).run {
-
                     realTimeTop10.value = this.top10
                     setId(realTimeTop10.value!!)
                     popularNews.value = this.articles
                     setId(popularNews.value!!)
-
                     naverNews.value = this.naver
                     setId(naverNews.value!!)
-
-                    successCnt.value = successCnt.value!! + 1
+                    weather()
                 }
             } catch (e: Exception) {
-                if(!isError.value!!){
-                    isError.value = true
+                error()
+                e.printStackTrace()
+            }
+        }
+    }
+
+    // 환율
+    private fun exchange(){
+        if (checkedShowBoard(EXCHANGE)) {
+            loading.value = false
+            return
+        }
+        viewModelScope.async {
+            try {
+                val arrayList = arrayListOf<ExchangeModel>()
+                arrayList.add(ExchangeModel(0,0,"통화명","","매매기준율","전일대비","등락률"))
+                var doc: Document? = null
+                launch(newSingleThreadContext(EXCHANGE)){
+                    doc = Jsoup.connect(mContext.getString(R.string.exchange_url)).get()
+                }.join()
+
+                val regExp = Regex("[^0-9|.]")
+                doc!!.body().select(EXCHAGE_LIST).forEachIndexed { index, element ->
+                    val list = arrayListOf<String>()
+                    element.text().split(" ").forEach { data ->
+                        list.add(data)
+                    }
+                    if (list[0] == JAPAN) {
+                        list[4] = list[4].replace(regExp, "")
+                        list[1] = list[1] + list[2]
+                        list.removeAt(2)
+                    } else list[3] = list[3].replace(regExp, "")
+
+                    arrayList.add(
+                        ExchangeModel(
+                            index + 1,
+                            0,
+                            list[0],
+                            list[1],
+                            list[2],
+                            list[3],
+                            list[4]
+                        )
+                    )
                 }
-                Log.e(TAG, "realtime - ${e.printStackTrace()}")
+                exchangeList.value = arrayList
+                Log.d("lys","exchangeList.value : ${exchangeList.value}")
+                loading.value = false
+            } catch (e: java.lang.Exception){
+                error()
+                Log.e("lys","error : ${e.message}")
+                e.printStackTrace()
             }
         }
     }
 
     private fun weather() {
-        loading.value = true
-
-        if (searchLocation.value == ""){
-            successCnt.value = successCnt.value!! + 1
+        if ((checkedShowBoard(WEATHER) && checkedShowBoard(_HOURLY)) || searchLocation.value == "") {
+            exchange()
             return
         }
 
+        loading.value = true
 //        https://ssl.pstatic.net/sstatic/keypage/outside/scui/weather_new_new/img/weather_svg/icon_flat_wt41.svg
 
         viewModelScope.async {
@@ -203,7 +309,9 @@ class HomeViewModel(
                 var doc: Document? = null
                 launch(newSingleThreadContext(WEATHER)) {
                     // 전체 데이터
-                    doc = Jsoup.connect(mContext.getString(R.string.weather_url) + searchLocation.value + SEARCH_WEATHER).get()
+                    doc =
+                        Jsoup.connect(mContext.getString(R.string.weather_url) + searchLocation.value + SEARCH_WEATHER)
+                            .get()
                 }.join()
 
                 addNowWeather(doc!!)
@@ -238,37 +346,40 @@ class HomeViewModel(
                 hourlyHumList.value = addHourlyWeather(
                     doc!!.select(HOURLY)[3].select(HOURLY_HUMIDITY_TIME),
                     doc!!.select(HOURLY)[3].select(HOURLY_HUMIDITY_NUM),
-                    null, null,"%"
+                    null, null, "%"
                 )
 
                 weekWeatherList.value = addWeekWeather(doc!!.select(WEEK_FORECAST))
-                successCnt.value = successCnt.value!! + 1
-
+                exchange()
             } catch (e: Exception) {
-                if(!isError.value!!){
-                    isError.value = true
-                }
-                Log.e("lys", "weather : ${e.message}")
+                error()
+                e.printStackTrace()
             }
         }
     }
 
     // 주간 예보
-    private fun addWeekWeather(week: Elements) : ArrayList<WeekWeatherModel.RS>{
+    private fun addWeekWeather(week: Elements): ArrayList<WeekWeatherModel.RS> {
         val array = arrayListOf<WeekWeatherModel.RS>()
         week.forEachIndexed { index, element ->
-            array.add(WeekWeatherModel.RS(
-                index,
-                0,
-                week[index].select(WEEK_DOW).text(),
-                week[index].select(WEEK_TIME).text().substring(0,week[index].select(WEEK_TIME).text().lastIndex).replace(".","/"),
-                week[index].select(WEEK_PRECIPITATION)[0].select(WEEK_PRECIPITATION_DETAIL).text(),
-                week[index].select(WEEK_PRECIPITATION)[1].select(WEEK_PRECIPITATION_DETAIL).text(),
-                week[index].select(WEEK_LOWEST).text().replace("기온",""),
-                week[index].select(WEEK_HIGHEST).text().replace("기온",""),
-                setImagePath(week[index].select(WEEK_WEATHER_IMG)[0].className()),
-                setImagePath(week[index].select(WEEK_WEATHER_IMG)[1].className())
-            ))
+            array.add(
+                WeekWeatherModel.RS(
+                    index,
+                    0,
+                    week[index].select(WEEK_DOW).text(),
+                    week[index].select(WEEK_TIME).text()
+                        .substring(0, week[index].select(WEEK_TIME).text().lastIndex)
+                        .replace(".", "/"),
+                    week[index].select(WEEK_PRECIPITATION)[0].select(WEEK_PRECIPITATION_DETAIL)
+                        .text(),
+                    week[index].select(WEEK_PRECIPITATION)[1].select(WEEK_PRECIPITATION_DETAIL)
+                        .text(),
+                    week[index].select(WEEK_LOWEST).text().replace("기온", ""),
+                    week[index].select(WEEK_HIGHEST).text().replace("기온", ""),
+                    setImagePath(week[index].select(WEEK_WEATHER_IMG)[0].className()),
+                    setImagePath(week[index].select(WEEK_WEATHER_IMG)[1].className())
+                )
+            )
         }
         return array
     }
@@ -281,7 +392,7 @@ class HomeViewModel(
             // 날씨 이미지
             imagePath = setImagePath(doc.select(WEATHER_IMG)[0].className()),
             // 현재 온도
-            temperature =doc.select(TEMPERATURE)[0].text().replace("온도", "온도 : "),
+            temperature = doc.select(TEMPERATURE)[0].text().replace("온도", "온도 : "),
             // 현재 날씨
             weather = "|  ${doc.select(NOW_WEATHER)[0].text()}",
             // 어제보다 높거나 낮은 정도
@@ -291,9 +402,9 @@ class HomeViewModel(
         )
 
         // 미세먼지, 초미세먼지, 자외선, 일몰
-        for(i in 0..3){
+        for (i in 0..3) {
             val str = doc.select(DUST_UV)[i].text()
-            when{
+            when {
                 str.contains(UDUST) -> uDust.value = str
                 str.contains(DUST) -> dust.value = str
                 str.contains(UV) -> uv.value = str
@@ -316,14 +427,28 @@ class HomeViewModel(
                     index,
                     0,
                     element.text(),
-                    if(num.size > index) num[index].text() else "",
-                    if(weather == null || weather.size <= index) "" else weather[index].text(),
-                    if(url == null || url.size <= index) "" else setImagePath(url[index].className()),
+                    if (num.size > index) num[index].text() else "",
+                    if (weather == null || weather.size <= index || weather[index].text() == "-") "" else weather[index].text(),
+                    if (url == null || url.size <= index) "" else setImagePath(url[index].className()),
                     subTitle
                 )
             )
         }
         return hourly
+    }
+
+    private fun checkedShowBoard(type: String) =
+        sharedPreferences.getString(mContext, type) == "false"
+
+    private fun error() {
+        if (!isError.value!!) {
+            isError.value = true
+            loading.value = false
+        }
+    }
+
+    private fun dateConvert(date: String): String {
+        return "${date.substring(0, 4)}-${date.substring(4, 6)}-${date.substring(6, 8)}"
     }
 
     // 이미지 url
@@ -332,7 +457,7 @@ class HomeViewModel(
             url.replace("wt_", "").replace("ico_", "flat_").replace(" ", "_")
         }.svg"
 
-    fun onClick(type: String){
+    fun onClick(type: String) {
         isMoveNav.value = type
     }
 }

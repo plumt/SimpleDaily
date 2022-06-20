@@ -22,9 +22,9 @@
             android:layout_width="match_parent"
             android:layout_height="59dp"
             android:backgroundTint="@color/white"
-            app:cardCornerRadius="0dp"
             android:clickable="true"
             android:onClick="@{(v) -> settingListener.onItemClick(itemSetting, v)}"
+            app:cardCornerRadius="0dp"
             app:cardElevation="0dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -44,7 +44,6 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     app:layout_constraintGuide_percent="0.95" />
-
 
                 <TextView
                     android:layout_width="wrap_content"

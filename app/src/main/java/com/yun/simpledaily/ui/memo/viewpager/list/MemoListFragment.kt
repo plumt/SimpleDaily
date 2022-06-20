@@ -15,11 +15,12 @@ import com.yun.simpledaily.ui.memo.MemoViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class MemoListFragment
-    : BaseBindingFragment<FragmentMemoListBinding, MemoListViewModel>(MemoListViewModel::class.java){
+    :
+    BaseBindingFragment<FragmentMemoListBinding, MemoListViewModel>(MemoListViewModel::class.java) {
     override val viewModel: MemoListViewModel by viewModel()
     override fun getResourceId(): Int = R.layout.fragment_memo_list
     override fun initData(): Boolean = true
-    override fun onBackEvent() { }
+    override fun onBackEvent() {}
     override fun setVariable(): Int = BR.memoList
 
     val viewPagerFragment: MemoViewModel by viewModels(
@@ -45,10 +46,9 @@ class MemoListFragment
         }
 
         viewPagerFragment.apply {
-            memoList.observe(viewLifecycleOwner){
+            memoList.observe(viewLifecycleOwner) {
                 viewModel.memoList.value = it
             }
         }
-
     }
 }

@@ -16,14 +16,14 @@ import com.yun.simpledaily.ui.popup.TwoButtonPopup
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class MemoDetailFragment :
-BaseBindingFragment<FragmentMemoDetailBinding, MemoDetailViewModel>(MemoDetailViewModel::class.java){
+    BaseBindingFragment<FragmentMemoDetailBinding, MemoDetailViewModel>(MemoDetailViewModel::class.java) {
     override val viewModel: MemoDetailViewModel by viewModel()
     override fun getResourceId(): Int = R.layout.fragment_memo_detail
     override fun initData(): Boolean = true
-    override fun onBackEvent() { }
+    override fun onBackEvent() {}
     override fun setVariable(): Int = BR.memoDetail
 
-    val viewPagerFragment: MemoViewModel by viewModels(
+    private val viewPagerFragment: MemoViewModel by viewModels(
         ownerProducer = { requireParentFragment() }
     )
 
@@ -32,65 +32,59 @@ BaseBindingFragment<FragmentMemoDetailBinding, MemoDetailViewModel>(MemoDetailVi
 
         viewPagerFragment.apply {
 
-            sharedViewModel.memoScreen.observe(viewLifecycleOwner){
-                if(it == MEMO_GO_LIST_SCREEN && screen.value == MEMO_DETAIL_SCREEN){
-                    moveCheck()
-                }
+            sharedViewModel.memoScreen.observe(viewLifecycleOwner) {
+                if (it == MEMO_GO_LIST_SCREEN && screen.value == MEMO_DETAIL_SCREEN) moveCheck()
             }
 
-            isBackButtonCLick.observe(viewLifecycleOwner){
-                if(screen.value == MEMO_DETAIL_SCREEN && it){
-                    moveCheck()
-                }
+            isBackButtonCLick.observe(viewLifecycleOwner) {
+                if (screen.value == MEMO_DETAIL_SCREEN && it) moveCheck()
             }
 
-            isSaveButtonClick.observe(viewLifecycleOwner){
-                if(screen.value == MEMO_DETAIL_SCREEN && it){
-                    if(viewModel.etTitle.value != "" && viewModel.etMemo.value != "") {
+            isSaveButtonClick.observe(viewLifecycleOwner) {
+                if (screen.value == MEMO_DETAIL_SCREEN && it) {
+                    if (viewModel.etTitle.value != "" && viewModel.etMemo.value != "") {
                         viewModel.updateMemo()
                         isSaveButtonClick.value = false
                         updateMode.value = false
-                    } else{
-                        showOnePopup()
-                    }
+                    } else showOnePopup()
                 }
             }
 
-            isDeleteButtonClick.observe(viewLifecycleOwner){
-                if(it){
+            isDeleteButtonClick.observe(viewLifecycleOwner) {
+                if (it) {
                     viewModel.deleteMemo(screen)
                     isDeleteButtonClick.value = false
                     updateMode.value = false
                 }
             }
 
-            selectMemo.observe(viewLifecycleOwner){
+            selectMemo.observe(viewLifecycleOwner) {
                 viewModel.selectMemo.value = it
                 viewModel.etMemo.value = it.memo
                 viewModel.etTitle.value = it.title
             }
 
-            updateMode.observe(viewLifecycleOwner){
+            updateMode.observe(viewLifecycleOwner) {
                 viewModel.updateMode.value = it
             }
         }
     }
 
-    private fun moveCheck(){
-        if(viewModel.etMemo.value == viewModel.selectMemo.value!!.memo &&
-            viewModel.etTitle.value == viewModel.selectMemo.value!!.title){
-            goMemoListScreen()
-        } else{
-            showTwoPopup()
+    private fun moveCheck() {
+        viewModel.run {
+            if (etMemo.value == selectMemo.value!!.memo &&
+                etTitle.value == selectMemo.value!!.title
+            ) goMemoListScreen()
+            else showTwoPopup()
         }
     }
 
-    private fun goMemoListScreen(){
+    private fun goMemoListScreen() {
         viewPagerFragment.screen.value = MEMO_LIST_SCREEN
         viewPagerFragment.updateMode.value = false
     }
 
-    private fun showTwoPopup(){
+    private fun showTwoPopup() {
         TwoButtonPopup().apply {
             showPopup(
                 requireContext(),
@@ -100,9 +94,7 @@ BaseBindingFragment<FragmentMemoDetailBinding, MemoDetailViewModel>(MemoDetailVi
             )
             setDialogListener(object : TwoButtonPopup.CustomDialogListener {
                 override fun onResultClicked(result: Boolean) {
-                    if (result) {
-                        goMemoListScreen()
-                    }
+                    if (result) goMemoListScreen()
                 }
             })
         }
@@ -117,8 +109,7 @@ BaseBindingFragment<FragmentMemoDetailBinding, MemoDetailViewModel>(MemoDetailVi
                 true
             )
             setDialogListener(object : OneButtonPopup.CustomDialogListener {
-                override fun onResultClicked(result: Boolean) {
-                }
+                override fun onResultClicked(result: Boolean) {}
             })
         }
     }

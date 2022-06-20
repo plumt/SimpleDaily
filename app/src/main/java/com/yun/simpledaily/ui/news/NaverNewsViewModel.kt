@@ -7,7 +7,6 @@ import com.yun.simpledaily.data.model.RealTimeModel
 
 class NaverNewsViewModel(
     application: Application
-) : BaseViewModel(application){
-
+) : BaseViewModel(application) {
     val naverNewsList = ListLiveData<RealTimeModel.Naver>()
 }

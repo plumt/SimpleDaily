@@ -12,13 +12,11 @@ import com.yun.simpledaily.base.BaseRecyclerAdapter
 import com.yun.simpledaily.data.Constant.MEMO
 import com.yun.simpledaily.data.Constant.NAVER_SEARCH_URL
 import com.yun.simpledaily.data.Constant.NEWS
+import com.yun.simpledaily.data.Constant.SCHEDULE
 import com.yun.simpledaily.data.Constant.WEATHER
 import com.yun.simpledaily.data.Constant.WEEK
 import com.yun.simpledaily.data.Constant._HOURLY
-import com.yun.simpledaily.data.Constant._NEWS
-import com.yun.simpledaily.data.model.HourlyWeatherModel
-import com.yun.simpledaily.data.model.MemoModels
-import com.yun.simpledaily.data.model.RealTimeModel
+import com.yun.simpledaily.data.model.*
 import com.yun.simpledaily.databinding.*
 import com.yun.simpledaily.ui.main.MainActivity
 import com.yun.simpledaily.ui.popup.OneButtonPopup
@@ -35,36 +33,42 @@ class HomeFragment
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        sharedViewModel.apply {
+        sharedViewModel.run {
             showBottomView()
-
             searchLocation.observe(viewLifecycleOwner) {
                 viewModel.searchLocation.value = it
                 viewModel.callApiList()
             }
         }
 
-        viewModel.apply {
+        viewModel.run {
 
-            isError.observe(viewLifecycleOwner){
-                if(it) showErrorPopup()
+            isError.observe(viewLifecycleOwner) {
+                if (it) showErrorPopup()
             }
 
             isMoveNav.observe(viewLifecycleOwner) {
                 when (it) {
+
+                    // 일정 화면 이동
+                    SCHEDULE -> (activity as MainActivity).binding.bottomNavView.selectedItemId =
+                        R.id.calendar
+
                     // 메모 화면 이동
-                    MEMO -> (activity as MainActivity).binding.bottomNavView.selectedItemId = R.id.memo
+                    MEMO -> (activity as MainActivity).binding.bottomNavView.selectedItemId =
+                        R.id.memo
 
                     // 지역 선택 화면 이동
                     WEATHER -> {
                         sharedViewModel.moveLocationSettingScreen.value = true
-                        (activity as MainActivity).binding.bottomNavView.selectedItemId = R.id.setting
+                        (activity as MainActivity).binding.bottomNavView.selectedItemId =
+                            R.id.setting
                     }
 
                     WEEK -> {
                         navigate(R.id.weekWeatherFragment,
                             Bundle().apply {
-                                putParcelableArrayList("week",viewModel.weekWeatherList.value)
+                                putParcelableArrayList("week", viewModel.weekWeatherList.value)
                             }
                         )
                     }
@@ -81,29 +85,39 @@ class HomeFragment
 
                     NEWS -> {
                         navigate(R.id.naverNewsFragment,
-                        Bundle().apply {
-                            putParcelableArrayList("news", viewModel.naverNews.value)
-                        })
+                            Bundle().apply {
+                                putParcelableArrayList("news", viewModel.naverNews.value)
+                            })
                     }
                 }
-//                if(it != ""){
-//                    isMoveNav.value = ""
-//                }
             }
 
             loading.observe(viewLifecycleOwner) {
                 sharedViewModel.isLoading.value = it
             }
-
-            successCnt.observe(viewLifecycleOwner) {
-                if (it == apiCnt) {
-                    loading.value = false
-                    successCnt.value = 0
-                }
-            }
         }
 
-        binding.apply {
+        binding.run {
+
+            rvExchange.run {
+                adapter = object : BaseRecyclerAdapter.Create<ExchangeModel, ItemExchangeBinding>(
+                    R.layout.item_exchange,
+                    bindingVariableId = BR.itemExchange,
+                    bindingListener = BR.exchangeItemListener
+                ){
+                    override fun onItemClick(item: ExchangeModel, view: View) {}
+                }
+            }
+
+            rvSchedule.run {
+                adapter = object : BaseRecyclerAdapter.Create<CalendarModels, ItemCalendarBinding>(
+                    R.layout.item_calendar,
+                    bindingVariableId = BR.itemCalendar,
+                    bindingListener = BR.calendarItemListener
+                ) {
+                    override fun onItemClick(item: CalendarModels, view: View) {}
+                }
+            }
 
             rvMemo.run {
                 adapter = object : BaseRecyclerAdapter.Create<MemoModels, ItemMemoBinding>(
@@ -126,9 +140,7 @@ class HomeFragment
                         bindingVariableId = BR.itemHourlyWeather,
                         bindingListener = BR.hourlyWeatherItemListener
                     ) {
-                    override fun onItemClick(item: HourlyWeatherModel.Weather, view: View) {
-
-                    }
+                    override fun onItemClick(item: HourlyWeatherModel.Weather, view: View) {}
                 }
             }
 
@@ -140,7 +152,12 @@ class HomeFragment
                         bindingListener = BR.realTimeTop10ItemListener
                     ) {
                     override fun onItemClick(item: RealTimeModel.Top10, view: View) {
-                        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(NAVER_SEARCH_URL + item.keyword)))
+                        startActivity(
+                            Intent(
+                                Intent.ACTION_VIEW,
+                                Uri.parse(NAVER_SEARCH_URL + item.keyword)
+                            )
+                        )
                     }
                 }
             }
@@ -159,6 +176,7 @@ class HomeFragment
             }
         }
     }
+
     private fun showErrorPopup() {
         OneButtonPopup().apply {
             showPopup(
@@ -169,6 +187,7 @@ class HomeFragment
             )
             setDialogListener(object : OneButtonPopup.CustomDialogListener {
                 override fun onResultClicked(result: Boolean) {
+                    sharedViewModel.isLoading.value = false
                     (activity as MainActivity).finish()
                 }
             })

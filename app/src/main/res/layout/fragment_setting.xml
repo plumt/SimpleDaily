@@ -47,6 +47,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="20dp"
+                    android:includeFontPadding="false"
                     android:shadowColor="#33000000"
                     android:shadowDx="3.0"
                     android:shadowDy="3.0"
@@ -54,7 +55,6 @@
                     android:text="@{Constant.INSTANCE.SETTING}"
                     android:textColor="@color/color_FBA53B"
                     android:textSize="16sp"
-                    android:includeFontPadding="false"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="@id/gl_start"
@@ -69,9 +69,9 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:overScrollMode="never"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/cv_setting_title"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_setting" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

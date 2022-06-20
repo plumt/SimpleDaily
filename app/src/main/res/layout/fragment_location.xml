@@ -12,11 +12,9 @@
         <import type="com.yun.simpledaily.data.Constant" />
     </data>
 
-
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cv_location_title"
@@ -50,10 +48,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="20dp"
+                    android:includeFontPadding="false"
                     android:shadowColor="#33000000"
                     android:shadowDx="3.0"
                     android:shadowDy="3.0"
-                    android:includeFontPadding="false"
                     android:shadowRadius="1.0"
                     android:text="@{Constant.INSTANCE.LOCATION_SETTING + `   (` + location.subTitle + `)`}"
                     android:textColor="@color/color_FBA53B"
@@ -75,7 +73,6 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
-
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_location"

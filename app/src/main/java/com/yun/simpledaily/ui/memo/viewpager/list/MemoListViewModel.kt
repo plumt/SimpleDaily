@@ -8,7 +8,5 @@ import com.yun.simpledaily.data.model.MemoModels
 class MemoListViewModel(
     application: Application
 ) : BaseViewModel(application){
-
     val memoList = ListLiveData<MemoModels>()
-
 }

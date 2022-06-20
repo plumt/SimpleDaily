@@ -2,9 +2,11 @@ package com.yun.simpledaily.util
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.graphics.Typeface
 import android.net.Uri
 import android.view.View
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.github.twocoffeesoneteam.glidetovectoryou.GlideToVectorYou
@@ -57,8 +59,8 @@ object PreferenceManager {
 
 object Util {
 
-    fun rotationWind(str: String) : Int =
-        when(str.replace("풍","")){
+    fun rotationWind(str: String): Int =
+        when (str.replace("풍", "")) {
             "북" -> 180
             "서" -> 90
             "동" -> 270
@@ -73,7 +75,7 @@ object Util {
     @JvmStatic
     fun View.setLayoutHeights(height: String) {
         val layoutParams = this.layoutParams
-        layoutParams.height = if(height != "") height.replace("%","").toInt() else 0
+        layoutParams.height = if (height != "") height.replace("%", "").toInt() else 0
         this.layoutParams = layoutParams
     }
 
@@ -90,7 +92,7 @@ object Util {
         }
     }
 
-    fun oddNumber(num: Int) : Int = num % 2
+    fun oddNumber(num: Int): Int = num % 2
 
     fun dustCheck(str: String?): Int {
         return if (str == null) 0
@@ -114,6 +116,12 @@ object Util {
         }
     }
 
+    @BindingAdapter("isBold")
+    @JvmStatic
+    fun TextView.isBold(isBold: Boolean){
+        if(isBold) setTypeface(null,Typeface.BOLD)
+        else setTypeface(null,Typeface.NORMAL)
+    }
 
     @BindingAdapter("setImages")
     @JvmStatic
@@ -138,26 +146,4 @@ object Util {
                 .into(this)
         }
     }
-
-//    @BindingAdapter("setAds")
-//    @JvmStatic
-//    fun TemplateView.setAds(id: Int?) {
-//        val adLoader = AdLoader.Builder(context, context.getString(R.string.admob_native_test_id))
-//            .forNativeAd { ad: NativeAd ->
-//                // Show the ad.
-//                this.setNativeAd(ad)
-//            }
-//            .withAdListener(object : AdListener() {
-//                override fun onAdFailedToLoad(adError: LoadAdError) {
-//                    // Handle the failure by logging, altering the UI, and so on.
-//                }
-//            })
-//            .withNativeAdOptions(
-//                NativeAdOptions.Builder()
-//                    // Methods in the NativeAdOptions.Builder class can be
-//                    // used here to specify individual options settings.
-//                    .build()
-//            )
-//            .build()
-//    }
 }

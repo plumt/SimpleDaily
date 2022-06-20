@@ -7,9 +7,11 @@ import com.yun.simpledaily.BR
 import com.yun.simpledaily.R
 import com.yun.simpledaily.base.BaseBindingFragment
 import com.yun.simpledaily.base.BaseRecyclerAdapter
+import com.yun.simpledaily.data.Constant.EXCHANGE
 import com.yun.simpledaily.data.Constant.MEMO
 import com.yun.simpledaily.data.Constant.NEWS
 import com.yun.simpledaily.data.Constant.REAL_TIME
+import com.yun.simpledaily.data.Constant.SCHEDULE
 import com.yun.simpledaily.data.Constant.TAG
 import com.yun.simpledaily.data.Constant.WEATHER
 import com.yun.simpledaily.data.Constant._HOURLY
@@ -21,7 +23,8 @@ import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class BoardSettingFragment
-    : BaseBindingFragment<FragmentBoardSettingBinding, BoardSettingViewModel>(BoardSettingViewModel::class.java) {
+    :
+    BaseBindingFragment<FragmentBoardSettingBinding, BoardSettingViewModel>(BoardSettingViewModel::class.java) {
     override val viewModel: BoardSettingViewModel by viewModel()
     override fun getResourceId(): Int = R.layout.fragment_board_setting
     override fun initData(): Boolean = true
@@ -44,13 +47,15 @@ class BoardSettingFragment
                         viewModel.boardList.value!![item.id].use = !item.use
                         notifyItemChanged(item.id)
                         requireContext().run {
-                            Log.d(TAG,item.title + "  " + getString(R.string.now_weather))
+                            Log.d(TAG, item.title + "  " + getString(R.string.now_weather))
                             when (item.title) {
-                                getString(R.string.now_weather) -> setSharedPreferences(WEATHER,item.use)
-                                getString(R.string.hourly_weather) -> setSharedPreferences(_HOURLY,item.use)
-                                getString(R.string.realtime_top10) -> setSharedPreferences(REAL_TIME,item.use)
-                                getString(R.string.realtime_popular_news) -> setSharedPreferences(NEWS,item.use)
-                                getString(R.string.currently_memo) -> setSharedPreferences(MEMO,item.use)
+                                getString(R.string.now_weather) -> addData(WEATHER, item.use)
+                                getString(R.string.hourly_weather) -> addData(_HOURLY, item.use)
+                                getString(R.string.realtime_top10) -> addData(REAL_TIME, item.use)
+                                getString(R.string.realtime_popular_news) -> addData(NEWS, item.use)
+                                getString(R.string.currently_schedule) -> addData(SCHEDULE, item.use)
+                                getString(R.string.currently_memo) -> addData(MEMO, item.use)
+                                getString(R.string.today_exchange) -> addData(EXCHANGE, item.use)
                             }
                         }
                     }
@@ -58,7 +63,8 @@ class BoardSettingFragment
             }
         }
     }
-    private fun setSharedPreferences(key: String, value: Boolean) {
-        sharedPreferences.setString(requireContext(), key,value.toString())
+
+    private fun addData(key: String, value: Boolean) {
+        sharedPreferences.setString(requireContext(), key, value.toString())
     }
 }

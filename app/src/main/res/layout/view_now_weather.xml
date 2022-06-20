@@ -4,6 +4,7 @@
     <data>
 
         <import type="com.yun.simpledaily.data.Constant" />
+
         <import type="com.yun.simpledaily.util.Util" />
 
         <variable

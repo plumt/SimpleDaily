@@ -1,11 +1,12 @@
 package com.yun.simpledaily.ui.schedule
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.yun.simpledaily.BR
 import com.yun.simpledaily.R
@@ -17,19 +18,20 @@ import com.yun.simpledaily.ui.schedule.viewpager.list.ScheduleListFragment
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class ScheduleFragment
-    : BaseBindingFragment<FragmentScheduleBinding, ScheduleViewModel>(ScheduleViewModel::class.java){
+    :
+    BaseBindingFragment<FragmentScheduleBinding, ScheduleViewModel>(ScheduleViewModel::class.java) {
     override val viewModel: ScheduleViewModel by viewModel()
     override fun getResourceId(): Int = R.layout.fragment_schedule
     override fun initData(): Boolean = true
-    override fun onBackEvent() { }
+    override fun onBackEvent() {}
     override fun setVariable(): Int = BR.schedule
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.apply {
+        viewModel.run {
 
-            binding.apply {
+            binding.run {
 
                 imgAddSchedule.setOnClickListener {
                     viewModel.addScheduleEvent.value = true
@@ -49,6 +51,24 @@ class ScheduleFragment
                     }
                     getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
                 }
+
+                tablayout.setOnClickListener {
+                    screenPosition.value = tablayout.selectedTabPosition
+                }
+
+                tablayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+                    override fun onTabReselected(tab: TabLayout.Tab?) {
+
+                    }
+
+                    override fun onTabSelected(tab: TabLayout.Tab?) {
+                        screenPosition.value = tab?.position ?: -1
+                    }
+
+                    override fun onTabUnselected(tab: TabLayout.Tab?) {
+
+                    }
+                })
 
                 TabLayoutMediator(tablayout, vpSchedule) { tab, position ->
                     tab.text = when (position) {

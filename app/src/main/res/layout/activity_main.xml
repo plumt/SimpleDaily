@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
+
     <data>
 
         <import type="android.view.View" />
@@ -8,13 +9,13 @@
             name="main"
             type="com.yun.simpledaily.ui.main.MainViewModel" />
     </data>
-    <androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:background="@color/white"
         android:layout_height="match_parent"
+        android:background="@color/white"
         tools:context=".ui.main.MainActivity">
 
         <fragment
@@ -22,30 +23,27 @@
             android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/fr_party_ad"
             app:defaultNavHost="true"
+            app:layout_constraintBottom_toTopOf="@id/fr_party_ad"
+            app:layout_constraintTop_toTopOf="parent"
             app:navGraph="@navigation/mobile_navigation" />
 
         <com.kakao.adfit.ads.ba.BannerAdView
             android:id="@+id/fr_party_ad"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@id/bottom_nav_view"
-            />
-
+            app:layout_constraintBottom_toTopOf="@id/bottom_nav_view" />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:visibility="@{main.isBottomVisible() ? View.VISIBLE : View.GONE}"
+            android:id="@+id/bottom_nav_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/bottom_nav_view"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:menu="@menu/bottom_navigation_menu"
-            app:itemBackground="@color/white"
             android:background="@color/white"
-            />
+            android:visibility="@{main.isBottomVisible() ? View.VISIBLE : View.GONE}"
+            app:itemBackground="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:menu="@menu/bottom_navigation_menu" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

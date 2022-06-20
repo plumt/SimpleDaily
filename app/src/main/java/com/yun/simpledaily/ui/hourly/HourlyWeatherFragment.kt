@@ -1,6 +1,7 @@
 package com.yun.simpledaily.ui.hourly
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import com.yun.simpledaily.BR
 import com.yun.simpledaily.R
@@ -51,38 +52,31 @@ class HourlyWeatherFragment
                         bindingVariableId = BR.itemHourlyRain,
                         bindingListener = BR.hourlyRainItemListener
                     ) {
-                    override fun onItemClick(item: HourlyWeatherModel.Weather, view: View) {
-
-                    }
+                    override fun onItemClick(item: HourlyWeatherModel.Weather, view: View) {}
                 }
             }
 
             rvHourlyWind.run {
                 adapter = object :
-                BaseRecyclerAdapter.Create<HourlyWeatherModel.Weather, ItemHourlyRainBinding>(
-                    R.layout.item_hourly_rain,
-                    bindingVariableId = BR.itemHourlyRain,
-                    bindingListener = BR.hourlyRainItemListener
-                ){
-                    override fun onItemClick(item: HourlyWeatherModel.Weather, view: View) {
-
-                    }
+                    BaseRecyclerAdapter.Create<HourlyWeatherModel.Weather, ItemHourlyRainBinding>(
+                        R.layout.item_hourly_rain,
+                        bindingVariableId = BR.itemHourlyRain,
+                        bindingListener = BR.hourlyRainItemListener
+                    ) {
+                    override fun onItemClick(item: HourlyWeatherModel.Weather, view: View) {}
                 }
             }
 
             rvHourlyHum.run {
                 adapter = object :
-                BaseRecyclerAdapter.Create<HourlyWeatherModel.Weather, ItemHourlyRainBinding>(
-                    R.layout.item_hourly_rain,
-                    bindingVariableId = BR.itemHourlyRain,
-                    bindingListener = BR.hourlyRainItemListener
-                ){
-                    override fun onItemClick(item: HourlyWeatherModel.Weather, view: View) {
-
-                    }
+                    BaseRecyclerAdapter.Create<HourlyWeatherModel.Weather, ItemHourlyRainBinding>(
+                        R.layout.item_hourly_rain,
+                        bindingVariableId = BR.itemHourlyRain,
+                        bindingListener = BR.hourlyRainItemListener
+                    ) {
+                    override fun onItemClick(item: HourlyWeatherModel.Weather, view: View) {}
                 }
             }
-
         }
     }
 }

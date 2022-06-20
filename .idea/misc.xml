@@ -10,11 +10,14 @@
         <entry key="app/src/main/res/drawable/ic_write_icon.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/tab_selector.xml" value="0.1415" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_splash.xml" value="0.1564207650273224" />
+        <entry key="app/src/main/res/layout/dialog_edit_text.xml" value="0.165" />
+        <entry key="app/src/main/res/layout/dialog_loading.xml" value="0.1564207650273224" />
         <entry key="app/src/main/res/layout/dialog_one_button.xml" value="0.1" />
         <entry key="app/src/main/res/layout/dialog_two_button.xml" value="0.1671875" />
         <entry key="app/src/main/res/layout/fragment_board_setting.xml" value="0.19610507246376813" />
-        <entry key="app/src/main/res/layout/fragment_calendar.xml" value="0.13645833333333332" />
-        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.14048257372654155" />
+        <entry key="app/src/main/res/layout/fragment_calendar.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_hourly_hum.xml" value="0.25237592397043296" />
         <entry key="app/src/main/res/layout/fragment_hourly_rain.xml" value="0.20516304347826086" />
         <entry key="app/src/main/res/layout/fragment_hourly_weather.xml" value="0.13645833333333332" />
@@ -24,22 +27,28 @@
         <entry key="app/src/main/res/layout/fragment_memo_detail.xml" value="0.12291666666666666" />
         <entry key="app/src/main/res/layout/fragment_memo_list.xml" value="0.12291666666666666" />
         <entry key="app/src/main/res/layout/fragment_memo_write.xml" value="0.13645833333333332" />
+        <entry key="app/src/main/res/layout/fragment_naver_news.xml" value="0.1564207650273224" />
         <entry key="app/src/main/res/layout/fragment_schedule.xml" value="0.15471311475409835" />
         <entry key="app/src/main/res/layout/fragment_schedule_list.xml" value="0.15471311475409835" />
         <entry key="app/src/main/res/layout/fragment_setting.xml" value="0.13645833333333332" />
         <entry key="app/src/main/res/layout/fragment_week_weather.xml" value="0.10234375" />
         <entry key="app/src/main/res/layout/item_board.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/item_calendar.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/item_exchange.xml" value="0.1" />
         <entry key="app/src/main/res/layout/item_hourly_hum.xml" value="0.1" />
         <entry key="app/src/main/res/layout/item_hourly_rain.xml" value="0.45" />
         <entry key="app/src/main/res/layout/item_hourly_weather.xml" value="0.13645833333333332" />
         <entry key="app/src/main/res/layout/item_hourly_wind.xml" value="0.1" />
         <entry key="app/src/main/res/layout/item_location.xml" value="0.19610507246376813" />
         <entry key="app/src/main/res/layout/item_memo.xml" value="0.13645833333333332" />
+        <entry key="app/src/main/res/layout/item_news.xml" value="0.1" />
         <entry key="app/src/main/res/layout/item_popular_news.xml" value="0.13645833333333332" />
         <entry key="app/src/main/res/layout/item_realtime_top10.xml" value="0.13645833333333332" />
         <entry key="app/src/main/res/layout/item_setting.xml" value="0.19610507246376813" />
         <entry key="app/src/main/res/layout/item_week_weather.xml" value="0.10234375" />
         <entry key="app/src/main/res/layout/view_calendar.xml" value="0.10234375" />
+        <entry key="app/src/main/res/layout/view_indicator.xml" value="0.1564207650273224" />
+        <entry key="app/src/main/res/layout/view_more.xml" value="0.1564207650273224" />
         <entry key="app/src/main/res/layout/view_now_weather.xml" value="0.13697916666666668" />
         <entry key="app/src/main/res/layout/view_week.xml" value="0.10234375" />
         <entry key="app/src/main/res/menu/bottom_navigation_menu.xml" value="0.28229166666666666" />

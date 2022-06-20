@@ -20,7 +20,13 @@ import com.yun.simpledaily.databinding.DialogOneButtonBinding
 class OneButtonPopup {
     lateinit var customDialogListener: CustomDialogListener
 
-    fun showPopup(context: Context, title: String, contents: String, cancelable: Boolean = false, showAd: Boolean = true){
+    fun showPopup(
+        context: Context,
+        title: String,
+        contents: String,
+        cancelable: Boolean = false,
+        showAd: Boolean = true
+    ) {
         AlertDialog.Builder(context).run {
             setCancelable(cancelable)
             val view = View.inflate(context, R.layout.dialog_one_button, null)
@@ -50,7 +56,7 @@ class OneButtonPopup {
         }.show()
     }
 
-    private fun setAds(context: Context, templateView: TemplateView){
+    private fun setAds(context: Context, templateView: TemplateView) {
         val adLoader = AdLoader.Builder(context, context.getString(R.string.admob_native_test_id))
             .forNativeAd { ad: NativeAd ->
                 // Show the ad.
@@ -70,11 +76,11 @@ class OneButtonPopup {
             .build()
     }
 
-    interface CustomDialogListener{
+    interface CustomDialogListener {
         fun onResultClicked(result: Boolean)
     }
 
-    fun setDialogListener(customDialogListener: CustomDialogListener){
+    fun setDialogListener(customDialogListener: CustomDialogListener) {
         this.customDialogListener = customDialogListener
     }
 }

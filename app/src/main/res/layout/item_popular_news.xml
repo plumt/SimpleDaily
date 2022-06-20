@@ -4,6 +4,7 @@
     <data>
 
         <import type="com.yun.simpledaily.util.Util" />
+
         <import type="android.view.View" />
 
         <variable
@@ -26,14 +27,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clickable="true"
+            android:onClick="@{(v)->popularNewsListener.onItemClick(itemPopularNews, v)}"
             app:cardCornerRadius="0dp"
-            app:cardElevation="0dp"
-            android:onClick="@{(v)->popularNewsListener.onItemClick(itemPopularNews, v)}">
+            app:cardElevation="0dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/cv_thumbnail"
@@ -65,9 +65,9 @@
                     android:textColor="@color/color_FBA53B"
                     android:textSize="11sp"
                     android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@id/tv_title"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/cv_thumbnail"
-                    app:layout_constraintBottom_toTopOf="@id/tv_title"
                     app:layout_constraintTop_toTopOf="@id/cv_thumbnail" />
 
                 <TextView
@@ -82,9 +82,9 @@
                     android:textColor="@color/black"
                     android:textSize="12sp"
                     android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@id/tv_desc"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/cv_thumbnail"
-                    app:layout_constraintBottom_toTopOf="@id/tv_desc"
                     app:layout_constraintTop_toBottomOf="@id/tv_rank" />
 
                 <TextView
@@ -108,12 +108,11 @@
         </com.google.android.material.card.MaterialCardView>
 
         <View
-            app:layout_constraintTop_toBottomOf="@id/cv"
-            android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="1dp"
+            android:layout_marginTop="10dp"
             android:background="@color/color_f4f4f4"
             android:visibility="@{itemPopularNews.id >= 9 ? View.GONE : View.VISIBLE}"
-            />
+            app:layout_constraintTop_toBottomOf="@id/cv" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

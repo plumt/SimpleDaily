@@ -1,7 +1,6 @@
 package com.yun.simpledaily.ui.memo.viewpager.write
 
 import android.app.Application
-import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -31,19 +30,23 @@ class MemoWriteViewModel(
                         MemoModel(
                             title = etTitle.value!!,
                             memo = etMemo.value!!
-                        ))
+                        )
+                    )
                 }.join()
                 isWriteSuccess.value = true
                 clearMemo()
-                Toast.makeText(mContext, mContext.getString(R.string.toast_save), Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    mContext,
+                    mContext.getString(R.string.toast_save),
+                    Toast.LENGTH_SHORT
+                ).show()
             } catch (e: Exception) {
-                Log.e(Constant.TAG, "${e.message}")
                 e.printStackTrace()
             }
         }
     }
 
-    fun clearMemo(){
+    fun clearMemo() {
         etTitle.value = ""
         etMemo.value = ""
     }

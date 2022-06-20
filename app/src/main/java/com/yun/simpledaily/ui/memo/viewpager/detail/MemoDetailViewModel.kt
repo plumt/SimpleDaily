@@ -1,7 +1,6 @@
 package com.yun.simpledaily.ui.memo.viewpager.detail
 
 import android.app.Application
-import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -18,17 +17,14 @@ import kotlinx.coroutines.newSingleThreadContext
 class MemoDetailViewModel(
     application: Application,
     private val db: DB
-) : BaseViewModel(application){
+) : BaseViewModel(application) {
 
     val selectMemo = MutableLiveData<MemoModels>()
-
     val updateMode = MutableLiveData(false)
-
-
     val etTitle = MutableLiveData("")
     val etMemo = MutableLiveData("")
 
-    fun updateMemo(){
+    fun updateMemo() {
         selectMemo.value!!.apply {
             memo = etMemo.value!!
             title = etTitle.value!!
@@ -36,26 +32,38 @@ class MemoDetailViewModel(
         viewModelScope.async {
             try {
                 launch(newSingleThreadContext(Constant.MEMO)) {
-                    db.memoDao().updateMemo(MemoModel(selectMemo.value!!.id_,selectMemo.value!!.title,selectMemo.value!!.memo))
+                    db.memoDao().updateMemo(
+                        MemoModel(
+                            selectMemo.value!!.id_,
+                            selectMemo.value!!.title,
+                            selectMemo.value!!.memo
+                        )
+                    )
                 }.join()
-                Toast.makeText(mContext,mContext.getText(R.string.toast_update),Toast.LENGTH_SHORT).show()
-            } catch (e: Exception){
-                Log.e(Constant.TAG,"${e.message}")
+                Toast.makeText(
+                    mContext,
+                    mContext.getText(R.string.toast_update),
+                    Toast.LENGTH_SHORT
+                ).show()
+            } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
     }
 
-    fun deleteMemo(screen: MutableLiveData<Int>){
+    fun deleteMemo(screen: MutableLiveData<Int>) {
         viewModelScope.async {
-            try{
-                launch(newSingleThreadContext(Constant.MEMO)){
+            try {
+                launch(newSingleThreadContext(Constant.MEMO)) {
                     db.memoDao().deleteMemo(selectMemo.value!!.id_)
                 }.join()
-                Toast.makeText(mContext,mContext.getString(R.string.toast_delete),Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    mContext,
+                    mContext.getString(R.string.toast_delete),
+                    Toast.LENGTH_SHORT
+                ).show()
                 screen.value = Constant.MEMO_LIST_SCREEN
-            } catch (e: Exception){
-                Log.e(Constant.TAG,"${e.message}")
+            } catch (e: Exception) {
                 e.printStackTrace()
             }
         }

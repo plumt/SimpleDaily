@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="itemExchange"
+            type="com.yun.simpledaily.data.model.ExchangeModel" />
+
+        <variable
+            name="exchangeItemListener"
+            type="com.yun.simpledaily.base.BaseRecyclerAdapter.OnItemClickListener" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:background="@{itemExchange.id % 2 == 0 &amp;&amp; itemExchange.id > 0 ? @color/color_f4f4f4 : @color/white}"
+        android:layout_height="40dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@id/v_line"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/tv_country"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:autoSizeStepGranularity="1dp"
+                android:autoSizeTextType="uniform"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:maxLines="1"
+                android:text="@{itemExchange.title()}"
+                app:isBold="@{itemExchange.id == 0}" />
+
+            <TextView
+                android:id="@+id/tv_money"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:autoSizeStepGranularity="1dp"
+                android:autoSizeTextType="uniform"
+                android:textColor="@color/black"
+                android:gravity="center"
+                android:maxLines="1"
+                android:text="@{itemExchange.money}"
+                app:isBold="@{itemExchange.id == 0}" />
+
+            <TextView
+                android:id="@+id/tv_before"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:autoSizeStepGranularity="1dp"
+                android:autoSizeTextType="uniform"
+                android:gravity="center"
+                android:maxLines="1"
+                android:text="@{itemExchange.before}"
+                android:textColor="@{itemExchange.id == 0 ? @color/black : itemExchange.color() ? @color/color_FB3B3B : @color/color_297EFF}"
+                app:isBold="@{itemExchange.id == 0}" />
+
+            <TextView
+                android:id="@+id/tv_fluctuate"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:autoSizeStepGranularity="1dp"
+                android:autoSizeTextType="uniform"
+                android:gravity="center"
+                android:maxLines="1"
+                android:text="@{itemExchange.fluctuate}"
+                android:textColor="@{itemExchange.id == 0 ? @color/black : itemExchange.color() ? @color/color_FB3B3B : @color/color_297EFF}"
+                app:isBold="@{itemExchange.id == 0}" />
+
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/v_line"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/color_f4f4f4"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

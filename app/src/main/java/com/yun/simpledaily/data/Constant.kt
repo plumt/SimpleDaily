@@ -9,7 +9,10 @@ object Constant {
     val _HOURLY = "hourly"
     val NEWS = "news"
     val REAL_TIME = "realtime"
+    val SCHEDULE = "schedule"
+    val EXCHANGE = "exchage"
 
+    val EXCHAGE_LIST = ".rate_table_info tbody tr"
     val WEATHER_LOCATION_NM = ".title_area._area_panel .title"
     val TEMPERATURE = ".temperature_text"
     val NOW_WEATHER = ".weather_main"
@@ -42,6 +45,7 @@ object Constant {
     val DUST = "미세먼지"
     val UDUST = "초미세먼지"
     val UV = "자외선"
+    val JAPAN = "일본"
 
     val GOOD = 1
     val NOMAL = 2
@@ -49,7 +53,7 @@ object Constant {
     val WORST = 4
 
     val HOME = "홈"
-    val SCHEDULE = "일정"
+    val _SCHEDULE = "일정"
     val _MEMO = "메모"
     val SETTING = "설정"
     val HOURLY_WEATHER = "시간별"

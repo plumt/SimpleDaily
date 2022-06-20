@@ -19,7 +19,7 @@ import com.yun.simpledaily.data.Constant.TAG
 import com.yun.simpledaily.ui.main.MainActivity
 import com.yun.simpledaily.ui.popup.OneButtonPopup
 
-class SplashActivity : AppCompatActivity(){
+class SplashActivity : AppCompatActivity() {
 
     private lateinit var remoteConfig: FirebaseRemoteConfig
 
@@ -39,7 +39,10 @@ class SplashActivity : AppCompatActivity(){
             .addOnCompleteListener {
                 if (it.isSuccessful) {
                     val server_app_version = appVersion.split('.')
-                    val device_app_version = this.packageManager.getPackageInfo(this.packageName, 0).versionName.split('.')
+                    val device_app_version =
+                        this.packageManager.getPackageInfo(this.packageName, 0).versionName.split(
+                            '.'
+                        )
                     if (appVersion == "") {
                         // 서버에서 값 못가져옴
                         fetchAppVersion()
@@ -86,9 +89,7 @@ class SplashActivity : AppCompatActivity(){
             setDialogListener(object : OneButtonPopup.CustomDialogListener {
                 override fun onResultClicked(result: Boolean) {
                     when (flag) {
-                        NO_INTERNET -> {
-                            finish()
-                        }
+                        NO_INTERNET -> finish()
                         NO_UPDATE -> {
                             val intent = Intent(Intent.ACTION_VIEW)
                             intent.data =
@@ -106,7 +107,5 @@ class SplashActivity : AppCompatActivity(){
         fetchAppVersion()
     }
 
-    override fun onBackPressed() {
-
-    }
+    override fun onBackPressed() {}
 }

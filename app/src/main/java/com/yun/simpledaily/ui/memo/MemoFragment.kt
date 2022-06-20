@@ -32,14 +32,7 @@ class MemoFragment
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        sharedViewModel.selectMemoId.observe(viewLifecycleOwner){
-//            if(it != -1L){
-//                viewModel.homeSelectMemoId.value = it
-//                sharedViewModel.selectMemoId.value = -1
-//            }
-//        }
-
-        binding.apply {
+        binding.run {
 
             imgAddMemo.setOnClickListener {
                 viewModel.screen.value = MEMO_WRITE_SCREEN
@@ -79,44 +72,44 @@ class MemoFragment
                         }
                     }
                 }
-                setCurrentItem(1,false)
+                setCurrentItem(1, false)
             }
-
-
         }
 
-        viewModel.apply {
-            screen.observe(viewLifecycleOwner) {
+        viewModel.run {
 
-                when(it){
+            screen.observe(viewLifecycleOwner) {
+                when (it) {
                     MEMO_LIST_SCREEN -> {
-                        sharedViewModel.memoScreen.value = it
-                        binding.vpMemo.setCurrentItem(it, true)
-                        viewModel.selectMemoList(sharedViewModel.selectMemoId.value!!)
-                        if(sharedViewModel.selectMemoId.value != -1L){
-                            sharedViewModel.selectMemoId.value = -1
+                        sharedViewModel.run {
+                            memoScreen.value = it
+                            binding.vpMemo.setCurrentItem(it, true)
+                            viewModel.selectMemoList(selectMemoId.value!!)
+                            if (selectMemoId.value != -1L) selectMemoId.value = -1
                         }
                     }
                     MEMO_DETAIL_SCREEN, MEMO_WRITE_SCREEN -> {
                         sharedViewModel.memoScreen.value = it
                         binding.vpMemo.setCurrentItem(it, true)
                     }
-
                 }
             }
-
-
         }
     }
 
-    private fun copyMemo(){
-        val clipboardManager = requireContext().getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+    private fun copyMemo() {
+        val clipboardManager =
+            requireContext().getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
         val clipData = ClipData.newPlainText("memo", viewModel.selectMemo.value!!.memo)
         clipboardManager.setPrimaryClip(clipData)
-        Toast.makeText(requireContext(),requireContext().getText(R.string.toast_copy),Toast.LENGTH_SHORT).show()
+        Toast.makeText(
+            requireContext(),
+            requireContext().getText(R.string.toast_copy),
+            Toast.LENGTH_SHORT
+        ).show()
     }
 
-    private fun showPopup(){
+    private fun showPopup() {
         TwoButtonPopup().apply {
             showPopup(
                 requireContext(),

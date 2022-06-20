@@ -21,7 +21,6 @@
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:padding="15dp">
-        <!--        android:background="@{Util.INSTANCE.oddNumber(itemHourlyRain.id) == 0 ? @color/white : @color/color_f4f4f4}"-->
 
         <LinearLayout
             android:id="@+id/linearlayout"
@@ -53,7 +52,6 @@
                 android:textSize="12sp"
                 android:visibility="@{itemHourlyRain.num.equals(``) ? View.INVISIBLE : View.VISIBLE}" />
         </LinearLayout>
-
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cv_percent_back"
@@ -111,9 +109,9 @@
 
         <TextView
             android:id="@+id/tv_info"
-            android:layout_marginTop="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:includeFontPadding="false"
             android:text="@{itemHourlyRain.subTitle.equals(`m/s`) ? `풍향` : itemHourlyRain.subTitle.equals(`mm`) ? `확률` : `습도`}"
             android:textColor="@color/color_cccccc"

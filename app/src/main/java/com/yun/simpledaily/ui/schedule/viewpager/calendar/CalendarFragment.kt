@@ -16,20 +16,22 @@ import com.yun.simpledaily.data.Constant.TAG
 import com.yun.simpledaily.data.model.CalendarModels
 import com.yun.simpledaily.databinding.FragmentCalendarBinding
 import com.yun.simpledaily.databinding.ItemCalendarBinding
-import com.yun.simpledaily.ui.memo.MemoViewModel
+import com.yun.simpledaily.ui.popup.EditTextPopup
+import com.yun.simpledaily.ui.popup.OneButtonPopup
 import com.yun.simpledaily.ui.schedule.ScheduleViewModel
 import org.joda.time.DateTime
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class CalendarFragment
-    : BaseBindingFragment<FragmentCalendarBinding, CalendarViewModel>(CalendarViewModel::class.java){
+    :
+    BaseBindingFragment<FragmentCalendarBinding, CalendarViewModel>(CalendarViewModel::class.java) {
     override val viewModel: CalendarViewModel by viewModel()
     override fun getResourceId(): Int = R.layout.fragment_calendar
     override fun initData(): Boolean = true
-    override fun onBackEvent() { }
+    override fun onBackEvent() {}
     override fun setVariable(): Int = BR.calendar
 
-    val viewPagerFragment: ScheduleViewModel by viewModels(
+    private val viewPagerFragment: ScheduleViewModel by viewModels(
         ownerProducer = { requireParentFragment() }
     )
 
@@ -38,38 +40,48 @@ class CalendarFragment
 
         viewModel.apply {
 
-            isMonthEventSelectSuccess.observe(viewLifecycleOwner){
-                if(it){
+            isMonthEventSelectSuccess.observe(viewLifecycleOwner) {
+                if (it) {
                     isMonthEventSelectSuccess.value = false
                     selectEventCheck(selectDate.value == "")
                     setCalendar()
                 }
             }
 
-            selectDate.observe(viewLifecycleOwner){
+            selectDate.observe(viewLifecycleOwner) {
                 selectEventCheck(it == "")
             }
 
-
+            calTitle.observe(viewLifecycleOwner) {
+                viewPagerFragment.selectDate.value = it
+            }
         }
 
-        viewPagerFragment.apply {
-            addScheduleEvent.observe(viewLifecycleOwner){
-                if(it){
+        viewPagerFragment.run {
+            addScheduleEvent.observe(viewLifecycleOwner) {
+                if (it) {
                     addScheduleEvent.value = false
                     addSchedule()
                 }
             }
         }
 
-        binding.apply {
+        binding.run {
+
+            btnNext.setOnClickListener {
+                setCalendar(1)
+            }
+
+            btnPre.setOnClickListener {
+                setCalendar(-1)
+            }
+
             cvCalendar.listener = object : CalendarView.OnCalendarListener {
                 override fun onClick(dateTime: DateTime) {
-                    Log.d(TAG,"$dateTime")
+                    Log.d(TAG, "$dateTime")
                     viewModel.selectDate.value = dateTime.getFormatString("yyyy-MM-dd")
                     viewModel.calTitle.value = dateTime.getFormatString("yyyy년 MM월")
                     setCalendar()
-
                 }
             }
 
@@ -78,46 +90,74 @@ class CalendarFragment
                     R.layout.item_calendar,
                     bindingVariableId = BR.itemCalendar,
                     bindingListener = BR.calendarItemListener
-                ){
+                ) {
                     override fun onItemClick(item: CalendarModels, view: View) {
-                        Toast.makeText(requireContext(),item.event,Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), item.event, Toast.LENGTH_SHORT).show()
                     }
                 }
             }
         }
     }
 
-    fun selectEventCheck(bool: Boolean){
+    private fun selectEventCheck(bool: Boolean) {
         viewModel.run {
-            if(bool){
-                selectEvent(DateTime(nowDate).getFormatString("yyyyMMdd").toLong())
-            } else{
-                selectEvent(DateTime.parse(selectDate.value).getFormatString("yyyyMMdd").toLong())
-            }
+            if (bool) selectEvent(DateTime(nowDate).getFormatString("yyyyMMdd").toLong())
+            else selectEvent(DateTime.parse(selectDate.value).getFormatString("yyyyMMdd").toLong())
         }
     }
 
-    private fun addSchedule(){
-        Log.d(TAG,"addSchedule")
-        viewModel.insertEvent("test01")
+    private fun addSchedule() {
+        Log.d(TAG, "addSchedule")
+        EditTextPopup().apply {
+            showPopup(
+                requireContext(),
+                "일정",
+                "일정을 입력해 주세요"
+            )
+            setDialogListener(object : EditTextPopup.CustomDialogListener {
+                override fun onResultClicked(result: Boolean, memo: String) {
+                    if (result && memo != "") {
+                        viewModel.insertEvent(memo)
+                    }
+                }
+            })
+        }
     }
 
-    private fun setCalendar(value: Int = 0){
+    // TODO 커스텀 스피너 추가해서 삭제, 수정 기능 추가해야 함
+
+    private fun showOnePopup() {
+        OneButtonPopup().apply {
+            showPopup(
+                requireContext(),
+                requireContext().getString(R.string.notice),
+                requireContext().getString(R.string.toast_reset),
+                true
+            )
+            setDialogListener(object : OneButtonPopup.CustomDialogListener {
+                override fun onResultClicked(result: Boolean) {}
+            })
+        }
+    }
+
+    private fun setCalendar(value: Int = 0) {
         binding.cvCalendar.let {
             val dateTime = arrayListOf<DateTime>()
             viewModel.eventMonthList.value!!.forEachIndexed { index, calendarModels ->
-                if(index > 0 &&  viewModel.eventMonthList.value!![index - 1].date != viewModel.eventMonthList.value!![index].date || index == 0){
+                if (index > 0 && viewModel.eventMonthList.value!![index - 1].date != viewModel.eventMonthList.value!![index].date || index == 0) {
                     dateTime.add(DateTime.parse(calendarModels.date))
                 }
             }
             viewModel.run {
-                if(selectDate.value == ""){
+                if (selectDate.value == "") {
                     it.initCalendar(
                         DateTime(nowDate),
                         CalendarUtils.getMonthList(DateTime(nowDate)),
                         DateTime.now(),
                         eventDate = dateTime
                     )
+                    selectDate.value = DateTime(nowDate).getFormatString("yyyy-MM-dd")
+                    calTitle.value = DateTime(nowDate).getFormatString("yyyy년 MM월")
                 } else {
                     it.current!!.plusMonths(value).run {
                         it.initCalendar(
@@ -127,6 +167,7 @@ class CalendarFragment
                             eventDate = dateTime
                         )
                     }
+                    calTitle.value = DateTime(it.current).getFormatString("yyyy년 MM월")
                 }
             }
         }

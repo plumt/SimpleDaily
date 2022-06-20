@@ -47,10 +47,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="20dp"
+                    android:includeFontPadding="false"
                     android:shadowColor="#33000000"
                     android:shadowDx="3.0"
                     android:shadowDy="3.0"
-                    android:includeFontPadding="false"
                     android:shadowRadius="1.0"
                     android:text="@{Constant.INSTANCE.DAILY_BOARED_SETTING}"
                     android:textColor="@color/color_FBA53B"
@@ -63,7 +63,6 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
 
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_board"
             replaceAll="@{boardSetting.boardList}"
@@ -74,7 +73,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/cv_location_title"
             tools:listitem="@layout/item_board" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

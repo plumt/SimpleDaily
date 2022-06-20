@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
     <data>
+
         <variable
             name="weekWeather"
             type="com.yun.simpledaily.ui.week.WeekWeatherViewModel" />
@@ -59,6 +61,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="20dp"
+                    android:includeFontPadding="false"
                     android:shadowColor="#33000000"
                     android:shadowDx="3.0"
                     android:shadowDy="3.0"
@@ -66,7 +69,6 @@
                     android:text="@{Constant.INSTANCE.WEEK_WEATHER}"
                     android:textColor="@color/color_FBA53B"
                     android:textSize="16sp"
-                    android:includeFontPadding="false"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="@id/gl_start"
@@ -81,9 +83,9 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:overScrollMode="never"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/cv_week_weather_title"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_week_weather" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

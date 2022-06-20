@@ -20,7 +20,13 @@ import com.yun.simpledaily.databinding.DialogTwoButtonBinding
 class TwoButtonPopup {
     lateinit var customDialogListener: CustomDialogListener
 
-    fun showPopup(context: Context, title: String, contents: String, firstBtn: String = context.getString(R.string.cancel), secondBtn: String = context.getString(R.string.exit)){
+    fun showPopup(
+        context: Context,
+        title: String,
+        contents: String,
+        firstBtn: String = context.getString(R.string.cancel),
+        secondBtn: String = context.getString(R.string.exit)
+    ) {
         AlertDialog.Builder(context).run {
             setCancelable(true)
             val view = View.inflate(context, R.layout.dialog_two_button, null)
@@ -39,7 +45,6 @@ class TwoButtonPopup {
 
             setAds(context, view.findViewById(R.id.my_template))
 
-
             // 종료 버튼
             view.findViewById<MaterialButton>(R.id.btn_two).setOnClickListener {
                 customDialogListener.onResultClicked(true)
@@ -54,7 +59,7 @@ class TwoButtonPopup {
         }.show()
     }
 
-    private fun setAds(context: Context, templateView: TemplateView){
+    private fun setAds(context: Context, templateView: TemplateView) {
         val adLoader = AdLoader.Builder(context, context.getString(R.string.admob_native_test_id))
             .forNativeAd { ad: NativeAd ->
                 // Show the ad.
@@ -74,11 +79,11 @@ class TwoButtonPopup {
             .build()
     }
 
-    interface CustomDialogListener{
+    interface CustomDialogListener {
         fun onResultClicked(result: Boolean)
     }
 
-    fun setDialogListener(customDialogListener: CustomDialogListener){
+    fun setDialogListener(customDialogListener: CustomDialogListener) {
         this.customDialogListener = customDialogListener
     }
 }

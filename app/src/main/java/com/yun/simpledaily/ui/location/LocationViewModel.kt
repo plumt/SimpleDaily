@@ -17,14 +17,11 @@ import kotlinx.coroutines.launch
 class LocationViewModel(
     application: Application,
     private val api: Api
-) : BaseViewModel(application){
+) : BaseViewModel(application) {
 
-    val LocationList = ListLiveData<LocationModel.Items>()
-
+    val locationList = ListLiveData<LocationModel.Items>()
     val loading = MutableLiveData(false)
-
     val screen = MutableLiveData(FIRST_SCREEN)
-
     val subTitle = MutableLiveData(STEP_1)
 
 //    https://juso.dev/docs/about/
@@ -41,23 +38,19 @@ class LocationViewModel(
         viewModelScope.launch {
             try {
                 (callApi(
-                    api.allAddress(pattern,ignore)
+                    api.allAddress(pattern, ignore)
                 ) as LocationModel.RS).run {
                     Log.d(TAG, "result : ${this.regcodes}")
                     this.regcodes?.run {
-                        if (pattern != ALL_LOCATION && !ignore) {
-                            this.removeAt(0)
-                        }
-                        LocationList.value = setId(this, 0)
+                        if (pattern != ALL_LOCATION && !ignore) removeAt(0)
+                        locationList.value = setId(this, 0)
                     }
                     loading.value = false
                 }
             } catch (e: Throwable) {
-                Log.e(TAG, "error : ${e.message}")
-//                errorType.value = INTERNET_ERROR
+                e.printStackTrace()
                 loading.value = false
             }
         }
     }
-
 }

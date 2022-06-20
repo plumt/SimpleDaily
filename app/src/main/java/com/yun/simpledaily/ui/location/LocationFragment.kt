@@ -36,14 +36,13 @@ class LocationFragment
         super.onViewCreated(view, savedInstanceState)
         sharedViewModel.hideBottomView()
 
-        viewModel.apply {
+        viewModel.run {
             loading.observe(viewLifecycleOwner) {
                 sharedViewModel.isLoading.value = it
             }
         }
 
-        binding.apply {
-
+        binding.run {
 
             rvLocation.run {
                 adapter =
@@ -54,6 +53,7 @@ class LocationFragment
                     ) {
                         override fun onItemClick(item: LocationModel.Items, view: View) {
                             when (viewModel.screen.value) {
+
                                 FIRST_SCREEN -> {
                                     viewModel.callAddressApi(
                                         item.code.substring(
@@ -64,11 +64,13 @@ class LocationFragment
                                     viewModel.screen.value = SECOND_SCREEN
                                     viewModel.subTitle.value = STEP_2
                                 }
+
                                 SECOND_SCREEN -> {
                                     viewModel.callAddressApi(item.code.substring(0, 4) + "*", true)
                                     viewModel.screen.value = THIRD_SCREEN
                                     viewModel.subTitle.value = STEP_3
                                 }
+
                                 THIRD_SCREEN -> {
                                     sharedPreferences.setString(
                                         requireContext(),
@@ -97,9 +99,7 @@ class LocationFragment
             )
             setDialogListener(object : OneButtonPopup.CustomDialogListener {
                 override fun onResultClicked(result: Boolean) {
-                    if (result) {
-                        activity.navController.navigate(R.id.action_global_settingFragment)
-                    }
+                    if (result) activity.navController.navigate(R.id.action_global_settingFragment)
                 }
             })
         }

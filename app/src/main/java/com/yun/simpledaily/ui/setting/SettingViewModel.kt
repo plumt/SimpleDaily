@@ -18,7 +18,6 @@ class SettingViewModel(
 
     val settingList = ListLiveData<SettingModel.Setting>()
     val title = arrayListOf(DAILY_BOARED_SETTING, LOCATION_SETTING, RESET)
-
     val isReset = MutableLiveData(false)
 
     init {

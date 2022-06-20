@@ -69,7 +69,7 @@ val viewModelModule = module {
         CalendarViewModel(get(), get())
     }
     viewModel {
-        ScheduleListViewModel(get())
+        ScheduleListViewModel(get(), get())
     }
     viewModel {
         WeekWeatherViewModel(get())

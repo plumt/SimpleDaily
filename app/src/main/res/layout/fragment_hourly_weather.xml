@@ -91,7 +91,6 @@
                     android:orientation="vertical"
                     app:layout_constraintGuide_percent="0.95" />
 
-
                 <TextView
                     android:id="@+id/tv_hourly_rain"
                     android:layout_width="wrap_content"
@@ -106,8 +105,7 @@
                     android:textSize="12sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="@id/_gl_start"
-                    app:layout_constraintTop_toTopOf="parent"
-                    />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/cv_hourly_rain"
@@ -216,7 +214,6 @@
                         tools:listitem="@layout/item_hourly_rain" />
                 </com.google.android.material.card.MaterialCardView>
 
-
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="20dp"
@@ -224,9 +221,7 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-
         </androidx.core.widget.NestedScrollView>
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

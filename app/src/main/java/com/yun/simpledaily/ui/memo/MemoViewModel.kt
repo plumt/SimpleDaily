@@ -19,37 +19,39 @@ import kotlinx.coroutines.newSingleThreadContext
 class MemoViewModel(
     application: Application,
     private val db: DB
-) : BaseViewModel(application){
+) : BaseViewModel(application) {
 
     val memoList = ListLiveData<MemoModels>()
     val screen = MutableLiveData(MEMO_LIST_SCREEN)
     val selectMemo = MutableLiveData<MemoModels>()
-
     val updateMode = MutableLiveData(false)
-
     val isSaveButtonClick = MutableLiveData(false)
     val isDeleteButtonClick = MutableLiveData(false)
     val isBackButtonCLick = MutableLiveData(false)
 
-    fun selectMemoList(selectId: Long){
+    fun selectMemoList(selectId: Long) {
         viewModelScope.async {
             try {
                 val list = arrayListOf<MemoModels>()
                 launch(newSingleThreadContext(MEMO)) {
                     val data = db.memoDao().selectMemo()
                     data.forEachIndexed { index, memoModel ->
-                        list.add(MemoModels(index,0, memoModel.id, memoModel.title, memoModel.memo, last = data.size - 1))
-                        if(memoModel.id == selectId){
-                            selectMemo.postValue(list[index])
-                        }
+                        list.add(
+                            MemoModels(
+                                index,
+                                0,
+                                memoModel.id,
+                                memoModel.title,
+                                memoModel.memo,
+                                last = data.size - 1
+                            )
+                        )
+                        if (memoModel.id == selectId) selectMemo.postValue(list[index])
                     }
                 }.join()
                 memoList.value = list
-                if(selectId != -1L){
-                    screen.value = MEMO_DETAIL_SCREEN
-                }
-            } catch (e: Exception){
-                Log.e(TAG,"${e.message}")
+                if (selectId != -1L) screen.value = MEMO_DETAIL_SCREEN
+            } catch (e: Exception) {
                 e.printStackTrace()
             }
         }

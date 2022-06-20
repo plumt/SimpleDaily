@@ -10,9 +10,6 @@ class LoadingDialog
 constructor(context: Context) : Dialog(context) {
     init {
         setCanceledOnTouchOutside(false)
-//        window?.apply {
-//            addFlags(WindowManager.LayoutParams.TYPE_PHONE)
-//        }
         window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         setContentView(R.layout.dialog_loading)
         setCancelable(false)

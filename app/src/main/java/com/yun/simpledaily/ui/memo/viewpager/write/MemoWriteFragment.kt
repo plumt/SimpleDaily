@@ -24,7 +24,7 @@ class MemoWriteFragment
     override fun onBackEvent() {}
     override fun setVariable(): Int = BR.memoWrite
 
-    val viewPagerFragment: MemoViewModel by viewModels(
+    private val viewPagerFragment: MemoViewModel by viewModels(
         ownerProducer = { requireParentFragment() }
     )
 
@@ -32,54 +32,45 @@ class MemoWriteFragment
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.apply {
-            isWriteSuccess.observe(viewLifecycleOwner){
-                if(it){
+            isWriteSuccess.observe(viewLifecycleOwner) {
+                if (it) {
                     isWriteSuccess.value = false
                     goMemoListScreen()
                 }
             }
         }
 
-
         viewPagerFragment.apply {
 
-            sharedViewModel.memoScreen.observe(viewLifecycleOwner){
-                if(it == MEMO_GO_LIST_SCREEN && screen.value == MEMO_WRITE_SCREEN){
-                    moveCheck()
-                }
+            sharedViewModel.memoScreen.observe(viewLifecycleOwner) {
+                if (it == MEMO_GO_LIST_SCREEN && screen.value == MEMO_WRITE_SCREEN) moveCheck()
             }
 
             isBackButtonCLick.observe(viewLifecycleOwner) {
-                if (screen.value == MEMO_WRITE_SCREEN && it) {
-                    moveCheck()
-                }
+                if (screen.value == MEMO_WRITE_SCREEN && it) moveCheck()
             }
 
             isSaveButtonClick.observe(viewLifecycleOwner) {
                 if (screen.value == MEMO_WRITE_SCREEN && it) {
-                    if(viewModel.etMemo.value != "" && viewModel.etTitle.value != ""){
+                    if (viewModel.etMemo.value != "" && viewModel.etTitle.value != "") {
                         viewModel.insertMemo()
                         isSaveButtonClick.value = false
-                    } else{
-                        showOnePopup()
-                    }
+                    } else showOnePopup()
                 }
             }
         }
     }
 
-    private fun goMemoListScreen(){
+    private fun goMemoListScreen() {
         viewPagerFragment.screen.value = MEMO_LIST_SCREEN
         viewPagerFragment.updateMode.value = false
     }
 
-    private fun moveCheck(){
+    private fun moveCheck() {
         if (viewModel.etTitle.value == "" && viewModel.etMemo.value == "") {
             viewPagerFragment.screen.value = MEMO_LIST_SCREEN
             viewPagerFragment.updateMode.value = false
-        } else {
-            showTwoPopup()
-        }
+        } else showTwoPopup()
     }
 
     private fun showTwoPopup() {
@@ -110,8 +101,7 @@ class MemoWriteFragment
                 true
             )
             setDialogListener(object : OneButtonPopup.CustomDialogListener {
-                override fun onResultClicked(result: Boolean) {
-                }
+                override fun onResultClicked(result: Boolean) {}
             })
         }
     }

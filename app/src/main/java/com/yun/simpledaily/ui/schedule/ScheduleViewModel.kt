@@ -6,8 +6,8 @@ import com.yun.simpledaily.base.BaseViewModel
 
 class ScheduleViewModel(
     application: Application
-) : BaseViewModel(application){
-
+) : BaseViewModel(application) {
     val addScheduleEvent = MutableLiveData(false)
-
+    val screenPosition = MutableLiveData(0)
+    val selectDate = MutableLiveData("")
 }

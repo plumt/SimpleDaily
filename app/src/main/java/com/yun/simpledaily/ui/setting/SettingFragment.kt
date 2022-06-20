@@ -17,52 +17,52 @@ import com.yun.simpledaily.ui.popup.TwoButtonPopup
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class SettingFragment
-    : BaseBindingFragment<FragmentSettingBinding, SettingViewModel>(SettingViewModel::class.java){
+    : BaseBindingFragment<FragmentSettingBinding, SettingViewModel>(SettingViewModel::class.java) {
     override val viewModel: SettingViewModel by viewModel()
     override fun getResourceId(): Int = R.layout.fragment_setting
     override fun initData(): Boolean = true
-    override fun onBackEvent() { }
+    override fun onBackEvent() {}
     override fun setVariable(): Int = BR.setting
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-        sharedViewModel.apply {
-            moveLocationSettingScreen.observe(viewLifecycleOwner){
-                if(it){
+        sharedViewModel.run {
+            moveLocationSettingScreen.observe(viewLifecycleOwner) {
+                if (it) {
                     moveLocationSettingScreen.value = false
                     navigate(R.id.action_settingFragment_to_locationFragment)
                 }
             }
         }
 
-        viewModel.apply {
+        viewModel.run {
 
-            isReset.observe(viewLifecycleOwner){
-                if(it){
+            isReset.observe(viewLifecycleOwner) {
+                if (it) {
                     isReset.value = false
                     showOnePopup()
                 }
             }
         }
 
-        binding.apply {
+        binding.run {
 
             rvSetting.run {
-                adapter = object : BaseRecyclerAdapter.Create<SettingModel.Setting, ItemSettingBinding>(
-                    R.layout.item_setting,
-                    bindingVariableId = BR.itemSetting,
-                    bindingListener = BR.settingListener
-                ){
-                    override fun onItemClick(item: SettingModel.Setting, view: View) {
-                        when(item.title){
-                            DAILY_BOARED_SETTING -> navigate(R.id.action_settingFragment_to_boardSettingFragment)
-                            LOCATION_SETTING -> navigate(R.id.action_settingFragment_to_locationFragment)
-                            RESET -> showResetPopup()
+                adapter =
+                    object : BaseRecyclerAdapter.Create<SettingModel.Setting, ItemSettingBinding>(
+                        R.layout.item_setting,
+                        bindingVariableId = BR.itemSetting,
+                        bindingListener = BR.settingListener
+                    ) {
+                        override fun onItemClick(item: SettingModel.Setting, view: View) {
+                            when (item.title) {
+                                DAILY_BOARED_SETTING -> navigate(R.id.action_settingFragment_to_boardSettingFragment)
+                                LOCATION_SETTING -> navigate(R.id.action_settingFragment_to_locationFragment)
+                                RESET -> showResetPopup()
+                            }
                         }
                     }
-                }
             }
         }
     }
@@ -96,8 +96,7 @@ class SettingFragment
                 true
             )
             setDialogListener(object : OneButtonPopup.CustomDialogListener {
-                override fun onResultClicked(result: Boolean) {
-                }
+                override fun onResultClicked(result: Boolean) {}
             })
         }
     }
