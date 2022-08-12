@@ -106,6 +106,10 @@ class HomeFragment
                     bindingListener = BR.exchangeItemListener
                 ){
                     override fun onItemClick(item: ExchangeModel, view: View) {}
+
+                    override fun onItemLongClick(item: ExchangeModel, view: View): Boolean {
+                        return true
+                    }
                 }
             }
 
@@ -116,6 +120,10 @@ class HomeFragment
                     bindingListener = BR.calendarItemListener
                 ) {
                     override fun onItemClick(item: CalendarModels, view: View) {}
+
+                    override fun onItemLongClick(item: CalendarModels, view: View): Boolean {
+                        return true
+                    }
                 }
             }
 
@@ -125,6 +133,10 @@ class HomeFragment
                     bindingVariableId = BR.itemMemo,
                     bindingListener = BR.memoListener
                 ) {
+                    override fun onItemLongClick(item: MemoModels, view: View): Boolean {
+                        return true
+                    }
+
                     override fun onItemClick(item: MemoModels, view: View) {
                         sharedViewModel.selectMemoId.value = item.id_
                         (activity as MainActivity).binding.bottomNavView.selectedItemId = R.id.memo
@@ -140,6 +152,13 @@ class HomeFragment
                         bindingVariableId = BR.itemHourlyWeather,
                         bindingListener = BR.hourlyWeatherItemListener
                     ) {
+
+                    override fun onItemLongClick(
+                        item: HourlyWeatherModel.Weather,
+                        view: View
+                    ): Boolean {
+                        return true
+                    }
                     override fun onItemClick(item: HourlyWeatherModel.Weather, view: View) {}
                 }
             }
@@ -151,6 +170,9 @@ class HomeFragment
                         bindingVariableId = BR.itemRealTimeTop10,
                         bindingListener = BR.realTimeTop10ItemListener
                     ) {
+                    override fun onItemLongClick(item: RealTimeModel.Top10, view: View): Boolean {
+                        return true
+                    }
                     override fun onItemClick(item: RealTimeModel.Top10, view: View) {
                         startActivity(
                             Intent(
@@ -169,6 +191,12 @@ class HomeFragment
                         bindingVariableId = BR.itemPopularNews,
                         bindingListener = BR.popularNewsListener
                     ) {
+                    override fun onItemLongClick(
+                        item: RealTimeModel.Articles,
+                        view: View
+                    ): Boolean {
+                        return true
+                    }
                     override fun onItemClick(item: RealTimeModel.Articles, view: View) {
                         startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(item.link)))
                     }

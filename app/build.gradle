@@ -172,5 +172,8 @@ dependencies {
     implementation 'androidx.ads:ads-identifier:1.0.0-alpha01'
     implementation "com.kakao.adfit:ads-base:3.5.2"
 
+    // 슬라이드 레이아웃
+    implementation 'com.github.hannesa2:AndroidSlidingUpPanel:4.2.1'
+
 
 }

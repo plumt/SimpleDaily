@@ -38,6 +38,9 @@ class WeekWeatherFragment
                         bindingVariableId = BR.itemWeekWeather,
                         bindingListener = BR.weekWeatherListener
                     ) {
+                    override fun onItemLongClick(item: WeekWeatherModel.RS, view: View): Boolean {
+                        return true
+                    }
                     override fun onItemClick(item: WeekWeatherModel.RS, view: View) {}
                 }
             }

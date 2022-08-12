@@ -25,7 +25,8 @@ class TwoButtonPopup {
         title: String,
         contents: String,
         firstBtn: String = context.getString(R.string.cancel),
-        secondBtn: String = context.getString(R.string.exit)
+        secondBtn: String = context.getString(R.string.exit),
+        ads: Boolean = true
     ) {
         AlertDialog.Builder(context).run {
             setCancelable(true)
@@ -43,6 +44,7 @@ class TwoButtonPopup {
                 customDialogListener.onResultClicked(false)
             }
 
+            if(!ads) view.findViewById<TemplateView>(R.id.my_template).visibility = View.GONE
             setAds(context, view.findViewById(R.id.my_template))
 
             // 종료 버튼

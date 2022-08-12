@@ -37,6 +37,9 @@ class MemoListFragment
                     bindingVariableId = BR.itemMemo,
                     bindingListener = BR.memoListener
                 ) {
+                    override fun onItemLongClick(item: MemoModels, view: View): Boolean {
+                        return true
+                    }
                     override fun onItemClick(item: MemoModels, view: View) {
                         viewPagerFragment.screen.value = MEMO_DETAIL_SCREEN
                         viewPagerFragment.selectMemo.value = item

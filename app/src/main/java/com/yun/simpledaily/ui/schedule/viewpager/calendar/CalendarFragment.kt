@@ -1,10 +1,13 @@
 package com.yun.simpledaily.ui.schedule.viewpager.calendar
 
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.RecyclerView
+import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import com.yun.simpledaily.BR
 import com.yun.simpledaily.R
 import com.yun.simpledaily.base.BaseBindingFragment
@@ -18,6 +21,7 @@ import com.yun.simpledaily.databinding.FragmentCalendarBinding
 import com.yun.simpledaily.databinding.ItemCalendarBinding
 import com.yun.simpledaily.ui.popup.EditTextPopup
 import com.yun.simpledaily.ui.popup.OneButtonPopup
+import com.yun.simpledaily.ui.popup.TwoButtonPopup
 import com.yun.simpledaily.ui.schedule.ScheduleViewModel
 import org.joda.time.DateTime
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -40,11 +44,22 @@ class CalendarFragment
 
         viewModel.apply {
 
+            eventList.observe(viewLifecycleOwner){
+                if(it.size == 0){
+                    binding.mainFrame.isTouchEnabled = false
+                    binding.cvBar.visibility = View.INVISIBLE
+                } else {
+                    binding.mainFrame.isTouchEnabled = true
+                    binding.cvBar.visibility = View.VISIBLE
+                }
+//                binding.mainFrame.isTouchEnabled = it.size != 0
+            }
+
             isMonthEventSelectSuccess.observe(viewLifecycleOwner) {
                 if (it) {
                     isMonthEventSelectSuccess.value = false
                     selectEventCheck(selectDate.value == "")
-                    setCalendar()
+                    setCalendar(viewModel.moveMonth)
                 }
             }
 
@@ -69,11 +84,24 @@ class CalendarFragment
         binding.run {
 
             btnNext.setOnClickListener {
-                setCalendar(1)
+                viewModel.run {
+                    moveMonth = 1
+                    selectMonthEvent(
+                        DateTime(DateTime(cvCalendar.current).plusMonths(1)).getFormatString("yyyyMM01").toLong(),
+                        DateTime(DateTime(cvCalendar.current)).plusMonths(1).getFormatString("yyyyMM31").toLong()
+                    )
+                }
             }
 
             btnPre.setOnClickListener {
-                setCalendar(-1)
+                viewModel.run {
+                    moveMonth = -1
+                    selectMonthEvent(
+                        DateTime(DateTime(cvCalendar.current)).minusMonths(1).getFormatString("yyyyMM01").toLong(),
+                        DateTime(DateTime(cvCalendar.current)).minusMonths(1).getFormatString("yyyyMM31").toLong()
+                    )
+//                    cvCalendar.listener!!.onClick(DateTime(cvCalendar.current).minusMonths(1))
+                }
             }
 
             cvCalendar.listener = object : CalendarView.OnCalendarListener {
@@ -94,7 +122,20 @@ class CalendarFragment
                     override fun onItemClick(item: CalendarModels, view: View) {
                         Toast.makeText(requireContext(), item.event, Toast.LENGTH_SHORT).show()
                     }
+
+
+                    override fun onItemLongClick(item: CalendarModels, view: View): Boolean {
+                        deleteSchedule(item.id)
+                        return true
+                    }
                 }
+
+                addOnScrollListener(object : RecyclerView.OnScrollListener(){
+                    override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                        super.onScrollStateChanged(recyclerView, newState)
+                        mainFrame.isTouchEnabled = !recyclerView.canScrollVertically(-1)
+                    }
+                })
             }
         }
     }
@@ -103,6 +144,23 @@ class CalendarFragment
         viewModel.run {
             if (bool) selectEvent(DateTime(nowDate).getFormatString("yyyyMMdd").toLong())
             else selectEvent(DateTime.parse(selectDate.value).getFormatString("yyyyMMdd").toLong())
+        }
+    }
+
+    private fun deleteSchedule(position: Int){
+        Log.d(TAG, "deleteSchedule")
+        TwoButtonPopup().apply {
+            showPopup(requireContext(),"일정","일정을 삭제하시겠습니까?", secondBtn = "삭제", ads = false)
+            setDialogListener(object : TwoButtonPopup.CustomDialogListener{
+                override fun onResultClicked(result: Boolean) {
+                    if(result) {
+                        binding.mainFrame.panelState = SlidingUpPanelLayout.PanelState.COLLAPSED
+                        viewModel.run {
+                            deleteEvent(eventList.value!![position].date.replace("-","").toLong(), eventList.value!![position].event)
+                        }
+                    }
+                }
+            })
         }
     }
 

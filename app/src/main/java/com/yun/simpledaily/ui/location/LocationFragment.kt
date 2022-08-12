@@ -51,6 +51,12 @@ class LocationFragment
                         bindingVariableId = BR.itemLocation,
                         bindingListener = BR.locationListener
                     ) {
+                        override fun onItemLongClick(
+                            item: LocationModel.Items,
+                            view: View
+                        ): Boolean {
+                            return true
+                        }
                         override fun onItemClick(item: LocationModel.Items, view: View) {
                             when (viewModel.screen.value) {
 

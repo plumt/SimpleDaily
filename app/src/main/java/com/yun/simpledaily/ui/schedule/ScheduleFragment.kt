@@ -34,11 +34,11 @@ class ScheduleFragment
             binding.run {
 
                 imgAddSchedule.setOnClickListener {
-                    viewModel.addScheduleEvent.value = true
+                    addScheduleEvent.value = true
                 }
 
                 vpSchedule.run {
-                    isUserInputEnabled = true
+                    isUserInputEnabled = false
                     adapter = object : FragmentStateAdapter(this@ScheduleFragment) {
                         override fun getItemCount(): Int = 2
                         override fun createFragment(position: Int): Fragment {

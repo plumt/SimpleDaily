@@ -1,8 +1,10 @@
 package com.yun.simpledaily.ui.main
 
 import android.os.Bundle
+import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.forEach
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -63,7 +65,13 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.bottomNavView.run {
-            this.setOnNavigationItemSelectedListener {
+
+            // tooltip 제거
+            this.menu.forEach {
+                this.findViewById<View>(it.itemId).setOnLongClickListener { true }
+            }
+
+            setOnNavigationItemSelectedListener {
                 if (navController.currentDestination?.label != it.title) {
                     when (it.title) {
                         HOME -> navController.navigate(R.id.action_global_homeFragment)

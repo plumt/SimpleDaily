@@ -50,6 +50,9 @@ class ScheduleListFragment
                 bindingVariableId = BR.itemCalendar,
                 bindingListener = BR.calendarItemListener
             ) {
+                override fun onItemLongClick(item: CalendarModels, view: View): Boolean {
+                    return true
+                }
                 override fun onItemClick(item: CalendarModels, view: View) {
                     Toast.makeText(requireContext(), item.event, Toast.LENGTH_SHORT).show()
                 }

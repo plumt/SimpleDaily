@@ -43,6 +43,10 @@ class NaverNewsFragment
                     override fun onItemClick(item: RealTimeModel.Naver, view: View) {
                         startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(item.link)))
                     }
+
+                    override fun onItemLongClick(item: RealTimeModel.Naver, view: View): Boolean {
+                        return true
+                    }
                 }
             }
         }

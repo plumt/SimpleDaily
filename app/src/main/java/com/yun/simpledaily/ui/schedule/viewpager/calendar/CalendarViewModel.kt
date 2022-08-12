@@ -2,6 +2,7 @@ package com.yun.simpledaily.ui.schedule.viewpager.calendar
 
 import android.app.Application
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.yun.simpledaily.base.BaseViewModel
@@ -28,6 +29,7 @@ class CalendarViewModel(
     val isMonthEventSelectSuccess = MutableLiveData(false)
     val eventList = ListLiveData<CalendarModels>()
     val eventMonthList = ListLiveData<CalendarModels>()
+    var moveMonth = 0
 
     init {
         selectMonthEvent(
@@ -57,7 +59,7 @@ class CalendarViewModel(
         }
     }
 
-    private fun selectMonthEvent(startDt: Long, endDt: Long) {
+    fun selectMonthEvent(startDt: Long, endDt: Long) {
         viewModelScope.async {
             try {
                 val list = arrayListOf<CalendarModels>()
@@ -77,6 +79,24 @@ class CalendarViewModel(
                 eventMonthList.value = list
                 isMonthEventSelectSuccess.value = true
             } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    fun deleteEvent(date: Long, event: String){
+        viewModelScope.async {
+            try {
+                launch(newSingleThreadContext(Constant._SCHEDULE)){
+                    db.calendarDao().deleteEvent(date, event)
+                }.join()
+                selectMonthEvent(
+                    DateTime(selectDate.value).getFormatString("yyyyMM01").toLong(),
+                    DateTime(selectDate.value).getFormatString("yyyyMM31").toLong()
+                )
+                Toast.makeText(mContext,"일정을 삭제했습니다",Toast.LENGTH_SHORT).show()
+            } catch (e: Exception) {
+                Toast.makeText(mContext,"잠시 후 다시 시도해 주세요",Toast.LENGTH_SHORT).show()
                 e.printStackTrace()
             }
         }

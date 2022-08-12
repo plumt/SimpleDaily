@@ -55,6 +55,12 @@ class SettingFragment
                         bindingVariableId = BR.itemSetting,
                         bindingListener = BR.settingListener
                     ) {
+                        override fun onItemLongClick(
+                            item: SettingModel.Setting,
+                            view: View
+                        ): Boolean {
+                            return true
+                        }
                         override fun onItemClick(item: SettingModel.Setting, view: View) {
                             when (item.title) {
                                 DAILY_BOARED_SETTING -> navigate(R.id.action_settingFragment_to_boardSettingFragment)

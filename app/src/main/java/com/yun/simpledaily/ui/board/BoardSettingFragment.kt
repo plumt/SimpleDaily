@@ -43,6 +43,10 @@ class BoardSettingFragment
                     bindingVariableId = BR.itemBoard,
                     bindingListener = BR.boardListener
                 ) {
+                    override fun onItemLongClick(item: BoardModel.Board, view: View): Boolean {
+                        return true
+                    }
+
                     override fun onItemClick(item: BoardModel.Board, view: View) {
                         viewModel.boardList.value!![item.id].use = !item.use
                         notifyItemChanged(item.id)

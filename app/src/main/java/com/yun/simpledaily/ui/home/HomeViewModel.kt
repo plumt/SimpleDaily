@@ -136,14 +136,8 @@ class HomeViewModel(
     fun callApiList() {
         schedule()
 //        exchange()
-        //TODO 날씨 - 완료
-        //TODO 뉴스 - 완료
         //TODO 인터넷 원하는 링크 바로가기 기능도 추가 - 예정
-        //TODO 캘린더로 일정 관리 기능 추가 - 완료
-        //TODO 메모 기능 추가 - 완료
-        //TODO 코로나 확진자수 필요한지 - 필요없음
         //TODO 원하는 종목 주가 https://finance.daum.net/domestic/search?q=메지온 - 예정
-        //TODO 환율 정보 - 완료
     }
 
     private fun schedule() {
@@ -153,35 +147,29 @@ class HomeViewModel(
         }
         viewModelScope.async {
             try {
-                val nowDate =
-                    DateTime(DateTime().withTimeAtStartOfDay().millis).getFormatString("yyyyMMdd")
-                        .toLong()
                 val list = arrayListOf<CalendarModels>()
                 launch(newSingleThreadContext(SCHEDULE)) {
-                    val data = db.calendarDao().selectEvent(nowDate)
+                    val data = db.calendarDao().selectEvent(nowDate().toLong())
                     data.forEachIndexed { index, calendarModel ->
-                        list.add(
-                            CalendarModels(
-                                index,
-                                0,
-                                dateConvert(calendarModel.date.toString()),
-                                calendarModel.event
-                            )
-                        )
+                        list.add(addCalendarItem(index, calendarModel))
                     }
                 }.join()
-                if(list.size > 0) {
+                if (list.size > 0) {
                     list[list.lastIndex].last = true
                     scheduleEventList.value = list
                 }
                 scheduleSize.value = scheduleEventList.value!!.size
                 memo()
-            } catch (e: java.lang.Exception) {
-                error()
-                e.printStackTrace()
+            } catch (e: Exception) {
+                error(e)
             }
         }
     }
+
+    private fun nowDate() = DateTime(DateTime().withTimeAtStartOfDay().millis).getFormatString("yyyyMMdd")
+
+    private fun addCalendarItem(index: Int, cal: CalendarModel) : CalendarModels =
+        CalendarModels(index, 0,dateConvert("${cal.date}"),cal.event)
 
     private fun memo() {
         if (checkedShowBoard(MEMO)) {
@@ -195,28 +183,20 @@ class HomeViewModel(
                     val data = db.memoDao().selectMemo3()
                     val size = if (data.isEmpty()) 0 else data.size - 1
                     data.forEachIndexed { index, memoModel ->
-                        list.add(
-                            MemoModels(
-                                index,
-                                0,
-                                memoModel.id,
-                                memoModel.title,
-                                memoModel.memo,
-                                true,
-                                size
-                            )
-                        )
+                        list.add(addMemoItem(index, memoModel, size))
                     }
                 }.join()
                 memoList.value = list
-                memoSize.value = memoList.sizes()
+                memoSize.value = memoList.value!!.size
                 realtime()
-            } catch (e: java.lang.Exception) {
-                error()
-                e.printStackTrace()
+            } catch (e: Exception) {
+                error(e)
             }
         }
     }
+
+    private fun addMemoItem(index: Int, memo: MemoModel, size: Int) : MemoModels =
+        MemoModels(index,0,memo.id, memo.title, memo.memo, true, size)
 
     private fun realtime() {
         if (checkedShowBoard(REAL_TIME) && checkedShowBoard(NEWS)) {
@@ -226,21 +206,22 @@ class HomeViewModel(
         loading.value = true
         // api : https://api.signal.bz/news/realtime
         // 사이트 : https://www.signal.bz/
+        viewModelScope.async {
 
-        viewModelScope.launch {
             try {
-                (callApi(api.realtime()) as RealTimeModel.RS).run {
-                    realTimeTop10.value = this.top10
-                    setId(realTimeTop10.value!!)
-                    popularNews.value = this.articles
-                    setId(popularNews.value!!)
-                    naverNews.value = this.naver
-                    setId(naverNews.value!!)
-                    weather()
-                }
+                launch(newSingleThreadContext(REAL_TIME)) {
+                    (callApi(api.realtime()) as RealTimeModel.RS).run {
+                        realTimeTop10.postValue(top10)
+                        setId(realTimeTop10.value!!)
+                        popularNews.postValue(articles)
+                        setId(popularNews.value!!)
+                        naverNews.postValue(naver)
+                        setId(naverNews.value!!)
+                    }
+                }.join()
+                weather()
             } catch (e: Exception) {
-                error()
-                e.printStackTrace()
+                error(e)
             }
         }
     }
@@ -253,55 +234,55 @@ class HomeViewModel(
         }
         viewModelScope.async {
             try {
-                val arrayList = arrayListOf<ExchangeModel>()
-                arrayList.add(ExchangeModel(0,0,"통화명","","매매기준율","전일대비","등락률"))
                 var doc: Document? = null
                 launch(newSingleThreadContext(EXCHANGE)){
                     doc = Jsoup.connect(mContext.getString(R.string.exchange_url)).get()
                 }.join()
-
-                val regExp = Regex("[^0-9|.]")
-                doc!!.body().select(EXCHAGE_LIST).forEachIndexed { index, element ->
-                    val list = arrayListOf<String>()
-                    element.text().split(" ").forEach { data ->
-                        list.add(data)
-                    }
-                    if (list[0] == JAPAN) {
-                        list[4] = list[4].replace(regExp, "")
-                        list[1] = list[1] + list[2]
-                        list.removeAt(2)
-                    } else list[3] = list[3].replace(regExp, "")
-
-                    arrayList.add(
-                        ExchangeModel(
-                            index + 1,
-                            0,
-                            list[0],
-                            list[1],
-                            list[2],
-                            list[3],
-                            list[4]
-                        )
-                    )
-                }
-                exchangeList.value = arrayList
+                exchangeList.value = exchangeSetting(doc!!)
                 Log.d("lys","exchangeList.value : ${exchangeList.value}")
                 loading.value = false
-            } catch (e: java.lang.Exception){
-                error()
-                Log.e("lys","error : ${e.message}")
-                e.printStackTrace()
+            } catch (e: Exception){
+                error(e)
             }
         }
     }
 
+    private fun exchangeSetting(doc: Document) : ArrayList<ExchangeModel> {
+        val arrayList = arrayListOf<ExchangeModel>()
+        arrayList.add(ExchangeModel(0,0,"통화명","","매매기준율","전일대비","등락률"))
+        val regExp = Regex("[^0-9|.]")
+        doc.body().select(EXCHAGE_LIST).forEachIndexed { index, element ->
+            val list = arrayListOf<String>()
+            element.text().split(" ").forEach { data ->
+                list.add(data)
+            }
+            if (list[0] == JAPAN) {
+                list[4] = list[4].replace(regExp, "")
+                list[1] = list[1] + list[2]
+                list.removeAt(2)
+            } else list[3] = list[3].replace(regExp, "")
+
+            arrayList.add(
+                ExchangeModel(
+                    index + 1,
+                    0,
+                    list[0],
+                    list[1],
+                    list[2],
+                    list[3],
+                    list[4]
+                )
+            )
+        }
+        return arrayList
+    }
+
     private fun weather() {
+        loading.value = true
         if ((checkedShowBoard(WEATHER) && checkedShowBoard(_HOURLY)) || searchLocation.value == "") {
             exchange()
             return
         }
-
-        loading.value = true
 //        https://ssl.pstatic.net/sstatic/keypage/outside/scui/weather_new_new/img/weather_svg/icon_flat_wt41.svg
 
         viewModelScope.async {
@@ -352,8 +333,7 @@ class HomeViewModel(
                 weekWeatherList.value = addWeekWeather(doc!!.select(WEEK_FORECAST))
                 exchange()
             } catch (e: Exception) {
-                error()
-                e.printStackTrace()
+                error(e)
             }
         }
     }
@@ -366,18 +346,18 @@ class HomeViewModel(
                 WeekWeatherModel.RS(
                     index,
                     0,
-                    week[index].select(WEEK_DOW).text(),
-                    week[index].select(WEEK_TIME).text()
-                        .substring(0, week[index].select(WEEK_TIME).text().lastIndex)
+                    element.select(WEEK_DOW).text(),
+                    element.select(WEEK_TIME).text()
+                        .substring(0, element.select(WEEK_TIME).text().lastIndex)
                         .replace(".", "/"),
-                    week[index].select(WEEK_PRECIPITATION)[0].select(WEEK_PRECIPITATION_DETAIL)
+                    element.select(WEEK_PRECIPITATION)[0].select(WEEK_PRECIPITATION_DETAIL)
                         .text(),
-                    week[index].select(WEEK_PRECIPITATION)[1].select(WEEK_PRECIPITATION_DETAIL)
+                    element.select(WEEK_PRECIPITATION)[1].select(WEEK_PRECIPITATION_DETAIL)
                         .text(),
-                    week[index].select(WEEK_LOWEST).text().replace("기온", ""),
-                    week[index].select(WEEK_HIGHEST).text().replace("기온", ""),
-                    setImagePath(week[index].select(WEEK_WEATHER_IMG)[0].className()),
-                    setImagePath(week[index].select(WEEK_WEATHER_IMG)[1].className())
+                    element.select(WEEK_LOWEST).text().replace("기온", ""),
+                    element.select(WEEK_HIGHEST).text().replace("기온", ""),
+                    setImagePath(element.select(WEEK_WEATHER_IMG)[0].className()),
+                    setImagePath(element.select(WEEK_WEATHER_IMG)[1].className())
                 )
             )
         }
@@ -440,7 +420,8 @@ class HomeViewModel(
     private fun checkedShowBoard(type: String) =
         sharedPreferences.getString(mContext, type) == "false"
 
-    private fun error() {
+    private fun error(e: Throwable) {
+        e.printStackTrace()
         if (!isError.value!!) {
             isError.value = true
             loading.value = false

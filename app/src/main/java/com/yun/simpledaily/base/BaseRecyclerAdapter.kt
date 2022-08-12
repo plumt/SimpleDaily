@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
 class BaseRecyclerAdapter {
     interface OnItemClickListener<T, V> {
         fun onItemClick(item: T, view: V)
+        fun onItemLongClick(item: T, view: V) : Boolean
     }
 
     companion object {

@@ -52,6 +52,12 @@ class HourlyWeatherFragment
                         bindingVariableId = BR.itemHourlyRain,
                         bindingListener = BR.hourlyRainItemListener
                     ) {
+                    override fun onItemLongClick(
+                        item: HourlyWeatherModel.Weather,
+                        view: View
+                    ): Boolean {
+                        return true
+                    }
                     override fun onItemClick(item: HourlyWeatherModel.Weather, view: View) {}
                 }
             }
@@ -63,6 +69,12 @@ class HourlyWeatherFragment
                         bindingVariableId = BR.itemHourlyRain,
                         bindingListener = BR.hourlyRainItemListener
                     ) {
+                    override fun onItemLongClick(
+                        item: HourlyWeatherModel.Weather,
+                        view: View
+                    ): Boolean {
+                        return true
+                    }
                     override fun onItemClick(item: HourlyWeatherModel.Weather, view: View) {}
                 }
             }
@@ -74,6 +86,12 @@ class HourlyWeatherFragment
                         bindingVariableId = BR.itemHourlyRain,
                         bindingListener = BR.hourlyRainItemListener
                     ) {
+                    override fun onItemLongClick(
+                        item: HourlyWeatherModel.Weather,
+                        view: View
+                    ): Boolean {
+                        return true
+                    }
                     override fun onItemClick(item: HourlyWeatherModel.Weather, view: View) {}
                 }
             }
