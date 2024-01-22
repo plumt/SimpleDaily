@@ -132,7 +132,7 @@ object Util {
                 .init()
                 .with(context)
                 .setPlaceHolder(R.color.white, R.color.white)
-                .load(Uri.parse(path), this);
+                .load(Uri.parse(path), this)
         }
     }
 

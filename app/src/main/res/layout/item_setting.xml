@@ -7,9 +7,10 @@
             name="itemSetting"
             type="com.yun.simpledaily.data.model.SettingModel.Setting" />
 
-        <variable
-            name="settingListener"
-            type="com.yun.simpledaily.base.BaseRecyclerAdapter.OnItemClickListener" />
+
+    <variable
+        name="settingListener"
+        type="com.yun.simpledaily.base.BaseRecyclerAdapter.OnItemClickListener" />
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"

@@ -228,6 +228,7 @@ class HomeViewModel(
 
     // 환율
     private fun exchange(){
+        Log.d("lys","exchange")
         if (checkedShowBoard(EXCHANGE)) {
             loading.value = false
             return
@@ -242,6 +243,7 @@ class HomeViewModel(
                 Log.d("lys","exchangeList.value : ${exchangeList.value}")
                 loading.value = false
             } catch (e: Exception){
+                Log.e("lys"," exchange error > ${e.message}")
                 error(e)
             }
         }
